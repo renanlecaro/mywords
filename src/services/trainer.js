@@ -5,13 +5,13 @@ const defaultList= [
   {
     id:0,
     from:'Mom',
-    to:'mama',
+    to:'мама',
     comment:'Familiar term used by children'
   },
   {
     id:1,
     from:'Dad',
-    to:'papa',
+    to:'папа',
     comment:'Familiar term used by children'
   },
 ]

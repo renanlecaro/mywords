@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import {getNextWordToTrain, registerResult} from "../services/trainer";
 import {sameish} from "../services/sameish";
+import {sayInRussian} from "../services/say";
 export class Train extends Component{
   state={
   }
@@ -17,6 +18,7 @@ export class Train extends Component{
   onSubmitAnswer = e=>{
     e.preventDefault()
     const {word, answer} = this.state;
+    sayInRussian(word.to)
     if(sameish(word.to,answer)){
       this.setState({
         mode:'correct'

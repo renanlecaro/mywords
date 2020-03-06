@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import {addWordToList, getWordList} from "../services/trainer";
 import {sameish} from "../services/sameish";
+import {sayInRussian} from "../services/say";
 export class Edit extends Component{
   state={
     list:null
@@ -36,6 +37,7 @@ class AddWord extends Component{
     e.preventDefault()
     if(this.problem()) return
     addWordToList(this.state)
+    sayInRussian(this.state.to)
     this.setState({
       from:'',
       to:'',
