@@ -6,7 +6,7 @@ import {Train} from "./train";
 
 export default class App extends Component {
   state={
-    page:'train'
+    page:'edit'
   }
   go=page=>{
     this.setState({page})

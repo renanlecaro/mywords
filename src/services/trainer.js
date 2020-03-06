@@ -1,22 +1,26 @@
 // TODO store version of db
-let wordlist={
-  from: 'en',
-  to: 'ru',
-  words:[
-    {
-      id:0,
-      from:'Mom',
-      to:'mama',
-      comment:'Familiar term used by children'
-    },
-    {
-      id:1,
-      from:'Dad',
-      to:'papa',
-      comment:'Familiar term used by children'
-    },
-  ]
-};
+let wordlist=[]
+
+const defaultList= [
+  {
+    id:0,
+    from:'Mom',
+    to:'mama',
+    comment:'Familiar term used by children'
+  },
+  {
+    id:1,
+    from:'Dad',
+    to:'papa',
+    comment:'Familiar term used by children'
+  },
+]
+try{
+  wordlist=JSON.parse(localStorage.getItem('wordlist')) || defaultList
+}catch (e) {
+  console.debug(e,'No saved word list')
+  wordlist=defaultList
+}
 
 let trainingData = [
   {
@@ -25,13 +29,34 @@ let trainingData = [
     guessed:false
   }
 ]
-export function getWordList() {
 
+let  listeners=[]
+export function getWordList(cb) {
+  cb(wordlist)
+  listeners.push(cb)
+  return function clear() {
+    listeners=listeners.filter(_cb=>_cb!==cb)
+  }
+}
+
+function listChanged() {
+  listeners.forEach(cb=>cb(wordlist))
+  localStorage.setItem('wordlist',JSON.stringify(wordlist))
+}
+export function addWordToList({from,to, comment}) {
+  wordlist.push({
+    from,
+    to,
+    comment,
+    id: Math.max(0,...wordlist.map(w=>w.id))
+      +1
+  })
+  listChanged()
 }
 
 export function getNextWordToTrain() {
-  const index=trainingData.length%wordlist.words.length
-  return  wordlist.words[index]
+  const index=trainingData.length%wordlist.length
+  return  wordlist[index]
 }
 
 export function registerResult({id, guessed}) {

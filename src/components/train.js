@@ -1,11 +1,12 @@
 import { h, Component } from 'preact';
 import {getNextWordToTrain, registerResult} from "../services/trainer";
+import {sameish} from "../services/sameish";
 export class Train extends Component{
   state={
   }
   setNewWord(word){
     this.setState({
-      word:getNextWordToTrain(),
+      word,
       mode:'ask',
       answer:''
     })
@@ -72,6 +73,7 @@ function Ask({word,answer,setAnswer,onSubmitAnswer}) {
    <p>{word.comment}</p>
     <form onSubmit={onSubmitAnswer}>
       <input type="text"
+             autoFocus="true"
              value={answer}
              onKeyUp={setAnswer}
       />
@@ -115,11 +117,4 @@ class Nope extends Component{
       </form>
     );
   }
-}
-
-function sameish(a,b) {
-return simplify(a)==simplify(b)
-}
-function simplify(stringToCheck) {
-  return stringToCheck.toLowerCase().trim()
 }
