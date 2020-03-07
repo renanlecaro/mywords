@@ -135,7 +135,6 @@ export function registerResult({id, guessed}) {
 
   trainingData.push(event)
   analyseTrainingEvent(event)
-  console.info(stats)
   localStorage.setItem('trainingData',JSON.stringify(trainingData))
   return  getNextWordToTrain()
 }

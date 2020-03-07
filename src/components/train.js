@@ -101,13 +101,14 @@ class Nope extends Component{
   render({answer, word, confirm}, {check}) {
     return (
       <form onSubmit={this.checkCorrectAnswerGiven}   >
-
-
+ 
         <h1 className={'centered'}>{word.from}  is
           <strong><ShowDiff answer={answer} to={word.to}/></strong> in russian </h1>
 
         <label>Please type the correct answer below</label>
-        <input  type="text" ref={n=>this.input=n} value={check} placeholder={word.to} onKeyUp={e=>this.setState({check:e.target.value})}/>
+        <input  type="text" ref={n=>this.input=n}
+                value={check} placeholder={word.to}
+                onKeyUp={e=>this.setState({check:e.target.value})}/>
         <button  className={'primary float-bottom'} disabled={!this.isCorrect()}>Next word</button>
       </form>
     );
