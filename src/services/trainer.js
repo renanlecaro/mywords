@@ -76,7 +76,7 @@ trainingData.forEach(analyseTrainingEvent)
 
 let  listeners=[]
 export function getWordList(cb) {
-  cb(wordlist)
+  cb(addMinStepToWordList())
   listeners.push(cb)
   return function clear() {
     listeners=listeners.filter(_cb=>_cb!==cb)
@@ -85,7 +85,8 @@ export function getWordList(cb) {
 
 function listChanged() {
   wordlist=wordlist.filter(w=>w.to || w.from)
-  listeners.forEach(cb=>cb(wordlist))
+  const augmented=addMinStepToWordList()
+  listeners.forEach(cb=>cb(augmented))
   localStorage.setItem('wordlist',JSON.stringify(wordlist))
 }
 export function addWordToList({from,to }) {
@@ -99,17 +100,21 @@ export function addWordToList({from,to }) {
 }
 
 
-
-export function getNextWordToTrain() {
-  let currentStep=trainingData.length
-  let stepped=wordlist
+function addMinStepToWordList(){
+  const currentStep=trainingData.length
+  return wordlist
     .map(word=>{
       const stat=stats[word.id]
       return {
-       ...word, minStep:stat && stat.minStep
+        ...word, minStep:stat && stat.minStep - currentStep
       }
     })
-    .filter(word=>!word.minStep || currentStep > word.minStep)
+}
+
+export function getNextWordToTrain() {
+
+  let stepped=addMinStepToWordList()
+    .filter(word=>!word.minStep>0)
 
 
   let minStep=Math.min(...stepped.map(word=>word.minStep))
@@ -117,7 +122,6 @@ export function getNextWordToTrain() {
     return stepped.find(word=>word.minStep == minStep)
   else
     return stepped.find(word=>!word.minStep)
-
 
 }
 

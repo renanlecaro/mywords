@@ -23,19 +23,12 @@ export class Train extends Component{
     const {word, answer} = this.state;
     sayInRussian(word.to)
     if(sameish(word.to,answer)){
-      this.setState({
-        mode:'correct'
-      })
+      this.setNewWord( registerResult({id:word.id,  guessed:true}) )
     }else{
       this.setState({
         mode:'incorrect'
       })
     }
-  }
-  validateSuccess=e=>{
-    e.preventDefault()
-    const {word} = this.state;
-    this.setNewWord( registerResult({id:word.id,  guessed:true}) )
   }
   validateFailure=e=>{
     e.preventDefault()
@@ -48,9 +41,8 @@ export class Train extends Component{
   renderByMode(){
     const {word,answer,mode} = this.state;
     if(!word) return 'loading'
-    if(mode==='correct'){
-      return <Bravo confirm={this.validateSuccess}/>
-    }if(mode==='incorrect'){
+
+    if(mode==='incorrect'){
       return <Nope answer={answer} word={word} confirm={this.validateFailure}/>
     }
     return <Ask word={word} answer={answer} setAnswer={this.setAnswer}
@@ -91,18 +83,6 @@ class Ask extends Component {
   }
 }
 
-class Bravo extends Component{
-  componentDidMount() {
-    this.input.focus()
-  }
-  render({confirm}) {
-    return <form  onSubmit={confirm}>
-      <h1 className={'centered'}>Correct ! </h1>
-      <button  className={'primary float-bottom'}
-               ref={n=>this.input=n}  type={'submit'}>Next word</button>
-    </form>
-  }
-}
 
 class Nope extends Component{
   componentDidMount() {

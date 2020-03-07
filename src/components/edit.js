@@ -44,8 +44,12 @@ export class Edit extends Component{
                         value={to}
                         onChange={e=>updateWord(id, {to:e.target.value})}
           />
-        }
+        },
       },
+      {
+        name:'steps',
+        value:l=>l.minStep
+      }
     ]
   }
   render(props, {list}) {
