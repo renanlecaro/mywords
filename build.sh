@@ -1,5 +1,5 @@
 #!/bin/bash
-git diff-index --quiet HEAD -- || echo "untracked files!" && exit;
+git diff-index --quiet HEAD -- || (echo "untracked files!" && exit);
 set -e
 preact build --no-prerender
 git co gh-pages
