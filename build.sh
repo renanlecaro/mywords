@@ -3,7 +3,7 @@ git diff-index --quiet HEAD -- || git commit -am "Auto: untracked files at build
 set -e
 preact build --no-prerender
 git co gh-pages
-cp build/* ./*
+find build -maxdepth 1 -mindepth 1 -exec mv {} . \;
 git add .
 git commit -m "Build"
 git push origin/gh-pages
