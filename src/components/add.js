@@ -11,7 +11,7 @@ export class Add extends Component{
     list:[]
   }
   componentDidMount() {
-    this.clearListener=getWordList(list=>this.setState({list:list.reverse()}))
+    this.clearListener=getWordList(list=>this.setState({list}))
   }
   componentWillUnmount() {
     this.clearListener()

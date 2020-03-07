@@ -11,7 +11,7 @@ export function Table({data, columns}) {
     {data.map(row=>
       <tr>
         {columns.map(c=>
-          <td>{c.value(row)}</td>
+          <td>{c.render ? c.render(row)  : c.value(row)}</td>
         )}
       </tr>
     )}

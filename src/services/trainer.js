@@ -1,5 +1,6 @@
 // TODO store version of db
 import {defaultWords} from "./defaultWords";
+import list from "less/lib/less/functions/list";
 
 let wordlist=[]
 
@@ -29,16 +30,17 @@ export function getWordList(cb) {
 }
 
 function listChanged() {
+  wordlist=wordlist.filter(w=>w.to || w.from)
   listeners.forEach(cb=>cb(wordlist))
   localStorage.setItem('wordlist',JSON.stringify(wordlist))
 }
 export function addWordToList({from,to }) {
-  wordlist.push({
+  wordlist=[{
     from,
     to,
     id: Math.max(0,...wordlist.map(w=>w.id))
       +1
-  })
+  },...wordlist]
   listChanged()
 }
 
@@ -56,3 +58,8 @@ export function registerResult({id, guessed}) {
   return  getNextWordToTrain()
 }
 
+export function updateWord(id, change) {
+  wordlist=wordlist.map(item=>item.id==id ?
+    {...item, ...change}:item);
+  listChanged()
+}
