@@ -7,7 +7,8 @@ export function ShowDiff({answer, to}) {
     {
       jsdiff
         .diffChars(answer, to, {ignoreCase: true})
-        .map(({added, removed, value})=>
+        .filter(e=>!e.removed)
+        .map(({added,  value})=>
         (added && <ins>{value}</ins>) ||  <span>{value}</span> )
     }
   </span>
