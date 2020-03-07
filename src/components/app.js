@@ -20,7 +20,6 @@ export default class App extends Component {
         return Train;
       case "add":
         return Add;
-
     }
 
   }

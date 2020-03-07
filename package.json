@@ -11,7 +11,8 @@
     "serve": "preact build && sirv build --cors --single",
     "dev": "preact watch",
     "lint": "eslint src",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "npm run build && git commit -am build && git push"
   },
   "eslintConfig": {
     "extends": "preact",
