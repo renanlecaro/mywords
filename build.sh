@@ -4,7 +4,6 @@ set -e
 preact build --no-prerender
 git co gh-pages
 find build -maxdepth 1 -mindepth 1 -exec mv {} . \;
-git add .
-git commit -m "Build"
+git diff-index --quiet HEAD -- || git commit -am "Build"; 
 git push -f
 git co master
