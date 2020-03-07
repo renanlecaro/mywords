@@ -1,20 +1,9 @@
 // TODO store version of db
+import {defaultWords} from "./defaultWords";
+
 let wordlist=[]
 
-const defaultList= [
-  {
-    id:0,
-    from:'Mom',
-    to:'мама',
-    comment:'Familiar term used by children'
-  },
-  {
-    id:1,
-    from:'Dad',
-    to:'папа',
-    comment:'Familiar term used by children'
-  },
-]
+const defaultList=defaultWords.map(({from,to}, id)=>({from,to,id}))
 try{
   wordlist=JSON.parse(localStorage.getItem('wordlist')) || defaultList
 }catch (e) {
@@ -43,11 +32,10 @@ function listChanged() {
   listeners.forEach(cb=>cb(wordlist))
   localStorage.setItem('wordlist',JSON.stringify(wordlist))
 }
-export function addWordToList({from,to, comment}) {
+export function addWordToList({from,to }) {
   wordlist.push({
     from,
     to,
-    comment,
     id: Math.max(0,...wordlist.map(w=>w.id))
       +1
   })
@@ -67,3 +55,4 @@ export function registerResult({id, guessed}) {
   })
   return  getNextWordToTrain()
 }
+

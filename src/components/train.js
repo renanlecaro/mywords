@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import {getNextWordToTrain, registerResult} from "../services/trainer";
 import {sameish} from "../services/sameish";
 import {sayInRussian} from "../services/say";
+import {ShowDiff} from "./diff";
 export class Train extends Component{
   state={
   }
@@ -50,11 +51,8 @@ export class Train extends Component{
     }if(mode==='incorrect'){
       return <Nope answer={answer} word={word} confirm={this.validateFailure}/>
     }
-    return Ask({
-      word,answer,
-      setAnswer:this.setAnswer,
-      onSubmitAnswer:this.onSubmitAnswer
-    })
+    return <Ask word={word} answer={answer} setAnswer={this.setAnswer}
+      onSubmitAnswer={this.onSubmitAnswer}/>
   }
   backToEdit=e=>{
     e.preventDefault()
@@ -62,37 +60,54 @@ export class Train extends Component{
   }
   render({go}) {
     return <div>
+      <button onClick={this.backToEdit}>‹ wordlist</button>
       {this.renderByMode()}
-      <button onClick={this.backToEdit}>Edit my wordlist</button>
     </div>
   }
 }
 
-function Ask({word,answer,setAnswer,onSubmitAnswer}) {
- return <div>
-   <p> How do you say <strong>{word.from}</strong> in russian ?
-   </p>
-   <p>{word.comment}</p>
-    <form onSubmit={onSubmitAnswer}>
-      <input type="text"
-             autoFocus="true"
-             value={answer}
-             onKeyUp={setAnswer}
-      />
-      <button type="submit">
-        {answer ? 'Check':'I don\'t know'}
-      </button>
-    </form>
-  </div>
+class Ask extends Component {
+  componentDidMount() {
+    this.input.focus()
+  }
+  render() {
+    let {word, answer, setAnswer, onSubmitAnswer} = this.props;
+    return <div>
+
+      <h1 className={'centered'}> How do you say
+      <strong>{word.from}</strong>
+      in russian ?</h1>
+      <form onSubmit={onSubmitAnswer}>
+        <label>Please type the russian word below</label>
+        <input type="text"
+               ref={n=>this.input=n}
+               value={answer}
+               onKeyUp={setAnswer}
+        />
+        <button className={'primary float-bottom'} type="submit">
+          {answer ? 'Check' : 'I don\'t know'}
+        </button>
+      </form>
+    </div>
+  }
 }
 
-function Bravo({confirm}) {
-  return <div>
-    Correct ! <button onClick={confirm}>Next word</button>
-  </div>
+class Bravo extends Component{
+  componentDidMount() {
+    this.input.focus()
+  }
+  render({confirm}) {
+    return <div>
+      <h1 className={'centered'}>Correct ! </h1>
+      <button  className={'primary float-bottom'} ref={n=>this.input=n}  onClick={confirm}>Next word</button>
+    </div>
+  }
 }
 
 class Nope extends Component{
+  componentDidMount() {
+    this.input.focus()
+  }
   state={check:''}
   isCorrect(){
     return sameish(this.state.check,this.props.word.to)
@@ -107,15 +122,14 @@ class Nope extends Component{
     return (
       <form onSubmit={this.checkCorrectAnswerGiven}>
 
-        {answer && <p>Sorry, that's wrong, it is not not <del>{answer}</del></p>}
+        {answer && <p>Sorry, there was a mistake : <ShowDiff answer={answer} to={word.to}/></p>}
 
-        <p>{word.from}  is
-          <strong>{word.to}</strong> in russian
-        </p>
+        <h1 className={'centered'}>{word.from}  is
+          <strong>{word.to}</strong> in russian </h1>
 
-        <p>Please type the correct answer below</p>
-        <input value={check} onKeyUp={e=>this.setState({check:e.target.value})}/>
-        <button disabled={!this.isCorrect()}>Next word</button>
+        <label>Please type the correct answer below</label>
+        <input  type="text" ref={n=>this.input=n} value={check} placeholder={word.to} onKeyUp={e=>this.setState({check:e.target.value})}/>
+        <button  className={'primary float-bottom'} disabled={!this.isCorrect()}>Next word</button>
       </form>
     );
   }
