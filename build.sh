@@ -6,5 +6,5 @@ git co gh-pages
 find build -maxdepth 1 -mindepth 1 -exec mv {} . \;
 git add .
 git commit -m "Build"
-git push origin/gh-pages
+git push -f
 git co master
