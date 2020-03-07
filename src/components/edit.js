@@ -53,12 +53,21 @@ export class Edit extends Component{
     return <div className={ style.this}>
 
       <h1>My {list.length} words
-        <button className={'primary inline'} onClick={this.goToAdd}>Add</button>
+        <button className={'primary '+style.addButton} onClick={this.goToAdd}>+</button>
       </h1>
       <Table data={list} columns={this.columns()}/>
+      <button onClick={e=>{
+        e.preventDefault()
+        if(window.confirm('This will reset all your words and progress, are you sure')){
+          localStorage.clear()
+          window.location.reload()
+        }
+
+      }}>Reset app state to default</button>
       <footer>
       <button className={' primary'} onClick={this.goToTraining}>Start learning ›</button>
       </footer>
+
     </div>
   }
 }

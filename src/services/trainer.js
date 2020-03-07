@@ -1,7 +1,5 @@
 // TODO store version of db
 import {defaultWords} from "./defaultWords";
-import list from "less/lib/less/functions/list";
-
 let wordlist=[]
 
 const defaultList=defaultWords.map(({from,to}, id)=>({from,to,id}))
