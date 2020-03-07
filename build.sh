@@ -1,5 +1,5 @@
 #!/bin/bash
-git diff-index --quiet HEAD -- || (echo "untracked files!" && exit);
+git diff-index --quiet HEAD -- || git commit -am "Auto: untracked files at build time";
 set -e
 preact build --no-prerender
 git co gh-pages
