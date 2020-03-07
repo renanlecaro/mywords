@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
-
+import style from './table.less'
 export function Table({data, columns}) {
-  return <table className={'mw-table'}>
+  return <table className={'mw-table '+style.this}>
     <thead>
       <tr>
       {columns.map(c=><th>{c.name}</th>)}

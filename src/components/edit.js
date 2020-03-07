@@ -3,6 +3,7 @@ import {addWordToList, getWordList} from "../services/trainer";
 import {sameish} from "../services/sameish";
 import {sayInRussian} from "../services/say";
 import {Table} from "./table";
+import style from './edit.less'
 export class Edit extends Component{
   state={
     list:null
@@ -23,7 +24,7 @@ export class Edit extends Component{
   }
   render(props, {list}) {
     if(!list) return 'loading'
-    return <div>
+    return <div className={ style.this}>
 
       <h1>My {list.length} words
         <button className={'primary inline'} onClick={this.goToAdd}>Add</button>
@@ -32,7 +33,9 @@ export class Edit extends Component{
         {name:'English', value:l=>l.from},
         {name:'Russian', value:l=>l.to},
       ]}/>
-      <button className={'float-bottom primary'} onClick={this.goToTraining}>Start learning ›</button>
+      <footer>
+      <button className={' primary'} onClick={this.goToTraining}>Start learning ›</button>
+      </footer>
     </div>
   }
 }

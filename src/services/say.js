@@ -10,8 +10,6 @@ synth.addEventListener('voiceschanged',parseVoices)
 export function sayInRussian(toText) {
   if(!voice) return
   const utterance=new SpeechSynthesisUtterance(toText)
-  console.log(voice)
   utterance.voice=voice
-
   synth.speak(utterance)
 }

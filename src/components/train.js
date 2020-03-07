@@ -3,6 +3,8 @@ import {getNextWordToTrain, registerResult} from "../services/trainer";
 import {sameish} from "../services/sameish";
 import {sayInRussian} from "../services/say";
 import {ShowDiff} from "./diff";
+import style from './train.less'
+
 export class Train extends Component{
   state={
   }
@@ -59,7 +61,7 @@ export class Train extends Component{
     this.props.go('edit')
   }
   render({go}) {
-    return <div>
+    return <div className={style.this}>
       <button onClick={this.backToEdit}>‹ wordlist</button>
       {this.renderByMode()}
     </div>
@@ -72,12 +74,10 @@ class Ask extends Component {
   }
   render() {
     let {word, answer, setAnswer, onSubmitAnswer} = this.props;
-    return <div>
-
-      <h1 className={'centered'}> How do you say
-      <strong>{word.from}</strong>
-      in russian ?</h1>
-      <form onSubmit={onSubmitAnswer}>
+    return  <form onSubmit={onSubmitAnswer}>
+        <h1 className={'centered'}> How do you say
+          <strong>{word.from}</strong>
+          in russian ?</h1>
         <label>Please type the russian word below</label>
         <input type="text"
                ref={n=>this.input=n}
@@ -88,7 +88,6 @@ class Ask extends Component {
           {answer ? 'Check' : 'I don\'t know'}
         </button>
       </form>
-    </div>
   }
 }
 
@@ -97,10 +96,11 @@ class Bravo extends Component{
     this.input.focus()
   }
   render({confirm}) {
-    return <div>
+    return <form  onSubmit={confirm}>
       <h1 className={'centered'}>Correct ! </h1>
-      <button  className={'primary float-bottom'} ref={n=>this.input=n}  onClick={confirm}>Next word</button>
-    </div>
+      <button  className={'primary float-bottom'}
+               ref={n=>this.input=n}  type={'submit'}>Next word</button>
+    </form>
   }
 }
 
@@ -120,7 +120,7 @@ class Nope extends Component{
   }
   render({answer, word, confirm}, {check}) {
     return (
-      <form onSubmit={this.checkCorrectAnswerGiven}>
+      <form onSubmit={this.checkCorrectAnswerGiven}   >
 
         {answer && <p>Sorry, there was a mistake : <ShowDiff answer={answer} to={word.to}/></p>}
 
