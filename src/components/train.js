@@ -3,7 +3,7 @@ import {getNextWordToTrain, registerResult} from "../services/trainer";
 import {sameish} from "../services/sameish";
 import {sayInRussian} from "../services/say";
 import {ShowDiff} from "./diff";
-import style from './train.less'
+import style from './miniform.less'
 
 export class Train extends Component{
   state={

@@ -2,7 +2,7 @@ import {Component} from "preact";
 import {addWordToList, getWordList} from "../services/trainer";
 import {sayInRussian} from "../services/say";
 import {sameish} from "../services/sameish";
-import style from './add.less'
+import style from './miniform.less'
 export class Add extends Component{
   state={
     from:'',
@@ -42,15 +42,17 @@ export class Add extends Component{
     this.props.go('edit')
   }
   render(props, {from,to,comment, list}){
-    return  <form onSubmit={this.onSubmit} className={style.this}>
+    return  <div className={style.this}>
       <button onClick={this.backToEdit}>‹ wordlist ({list.length} words)</button>
-      <h1>Add a word</h1>
-      <label htmlFor={'enterEnglish'}>English word</label>
-      <input id={"enterEnglish"} type={'text'} placeholder={'English'} value={from} onKeyUp={e=>this.setState({from:e.target.value})}/>
-      <label htmlFor={'enterRussian'}>Russian translation to learn</label>
-      <input id="enterRussian" type={'text'} placeholder={'Russian'} value={to} onKeyUp={e=>this.setState({to:e.target.value})}/>
+      <form onSubmit={this.onSubmit} >
+       <h1>Add a word</h1>
+        <label htmlFor={'enterEnglish'}>English word</label>
+        <input id={"enterEnglish"} type={'text'} placeholder={'English'} value={from} onKeyUp={e=>this.setState({from:e.target.value})}/>
+        <label htmlFor={'enterRussian'}>Russian translation to learn</label>
+        <input id="enterRussian" type={'text'} placeholder={'Russian'} value={to} onKeyUp={e=>this.setState({to:e.target.value})}/>
 
-      <button className={'primary float-bottom'} id={'submitWord'}>Add</button>
-    </form>
+        <button className={'primary float-bottom'} id={'submitWord'}>Add</button>
+      </form>
+    </div>
   }
 }
