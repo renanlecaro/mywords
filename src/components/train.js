@@ -125,7 +125,7 @@ class Nope extends Component{
         {answer && <p>Sorry, there was a mistake : <ShowDiff answer={answer} to={word.to}/></p>}
 
         <h1 className={'centered'}>{word.from}  is
-          <strong>{word.to}</strong> in russian </h1>
+          <strong>{' '+word.to+' '}</strong> in russian </h1>
 
         <label>Please type the correct answer below</label>
         <input  type="text" ref={n=>this.input=n} value={check} placeholder={word.to} onKeyUp={e=>this.setState({check:e.target.value})}/>
