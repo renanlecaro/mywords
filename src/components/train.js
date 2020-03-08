@@ -25,8 +25,6 @@ export class Train extends Component{
     sayInRussian(word.to)
     if(sameish(word.to,answer)){
       this.setNewWord( registerResult({id:word.id,  guessed:true}) )
-
-      showToast('Correct !');
     }else{
       this.setState({
         mode:'incorrect'
@@ -67,6 +65,12 @@ class Ask extends Component {
   componentDidMount() {
     this.input.focus()
   }
+  componentWillReceiveProps(nextProps) {
+    if(this.props.word.id!=nextProps.word.id){
+      this.input.focus()
+    }
+  }
+
   render() {
     let {word, answer, setAnswer, onSubmitAnswer} = this.props;
     return  <form onSubmit={onSubmitAnswer}>

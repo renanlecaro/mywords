@@ -53,7 +53,9 @@ function analyseTrainingEvent({id, time, guessed,index} ){
     s.failInARowCount++
   }
 
-  s.minStep= index+scheduleNext(s)
+  const delay=scheduleNext(s)
+  s.minStep= index+delay
+  return delay
 }
 
 function scheduleNext({guessCount,
@@ -90,7 +92,7 @@ export function getWordList(cb) {
 
 function listChanged() {
   wordlist=wordlist.filter(w=>w.to || w.from)
-  events.emit('change',addMinStepToWordList()) 
+  events.emit('change',addMinStepToWordList())
   localStorage.setItem('wordlist',JSON.stringify(wordlist))
 }
 export function addWordToList({from,to }) {
@@ -138,7 +140,8 @@ export function registerResult({id, guessed}) {
   }
 
   trainingData.push(event)
-  analyseTrainingEvent(event)
+  const delay=analyseTrainingEvent(event)
+  showToast('We\'ll ask again in '+delay+' cards.')
   localStorage.setItem('trainingData',JSON.stringify(trainingData))
   return  getNextWordToTrain()
 }
