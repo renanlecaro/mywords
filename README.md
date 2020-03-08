@@ -1,22 +1,18 @@
-# mywords
+# My words
 
-## CLI Commands
+This is a simple words learning app made because I was frustrated by the current 
+offering.
+
+It's meant to be free and ad free, and to stay simple.
+
+## Development
+
+This is base on [Preact CLI](https://github.com/developit/preact-cli/blob/master/README.md).
 
 ``` bash
-# install dependencies
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm start
 
-# build for production with minification
-npm run build
-
-# test the production build locally
-npm run serve
-
-# run tests with jest and preact-render-spy 
-npm run test
 ```
-
-For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).

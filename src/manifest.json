@@ -1,11 +1,11 @@
 {
-  "name": "mywords",
-  "short_name": "mywords",
+  "name": "my words : learn russian vocabulary",
+  "short_name": "my words",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fff",
-  "theme_color": "#673ab8",
+  "theme_color": "#189ac1",
   "icons": [
     {
       "src": "/assets/icons/android-chrome-192x192.png",
