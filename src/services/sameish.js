@@ -4,6 +4,6 @@ export function sameish(a,b) {
 }
 function simplify(stringToCheck) {
   return stringToCheck.toLowerCase()
-    .replace(/[ .,\/#!$%\^&\*;:{}=\-_`~()]/g,"")
+    .replace(/[ .,\/#!?$%\^&\*;:{}=\-_`~()]/g,"")
     .trim()
 }
