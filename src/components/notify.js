@@ -1,6 +1,6 @@
 import {h,Component} from "preact";
-import EventEmitter from 'events'
 import style from './notify.less'
+import EventEmitter from 'events'
 const toastEvents=new EventEmitter()
 
 export class ToastDisplay extends Component{

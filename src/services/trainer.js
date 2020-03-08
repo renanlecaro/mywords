@@ -4,6 +4,10 @@ import functionCaller from "less/lib/less/functions/function-caller";
 import {showToast} from "../components/notify";
 let wordlist=[]
 
+import EventEmitter from 'events'
+const events=new EventEmitter()
+
+
 const defaultList=defaultWords.map(({from,to}, id)=>({from,to,id}))
 try{
   wordlist=JSON.parse(localStorage.getItem('wordlist')) || defaultList
@@ -77,17 +81,16 @@ trainingData.forEach(analyseTrainingEvent)
 
 let  listeners=[]
 export function getWordList(cb) {
+  events.on('change',cb)
   cb(addMinStepToWordList())
-  listeners.push(cb)
   return function clear() {
-    listeners=listeners.filter(_cb=>_cb!==cb)
+    events.off('change',cb)
   }
 }
 
 function listChanged() {
   wordlist=wordlist.filter(w=>w.to || w.from)
-  const augmented=addMinStepToWordList()
-  listeners.forEach(cb=>cb(augmented))
+  events.emit('change',addMinStepToWordList()) 
   localStorage.setItem('wordlist',JSON.stringify(wordlist))
 }
 export function addWordToList({from,to }) {
