@@ -4,6 +4,7 @@ import {sameish} from "../services/sameish";
 import {sayInRussian} from "../services/say";
 import {ShowDiff} from "./diff";
 import style from './miniform.less'
+import {showToast} from "./notify";
 
 export class Train extends Component{
   state={
@@ -24,6 +25,8 @@ export class Train extends Component{
     sayInRussian(word.to)
     if(sameish(word.to,answer)){
       this.setNewWord( registerResult({id:word.id,  guessed:true}) )
+
+      showToast('Correct !');
     }else{
       this.setState({
         mode:'incorrect'
@@ -101,7 +104,7 @@ class Nope extends Component{
   render({answer, word, confirm}, {check}) {
     return (
       <form onSubmit={this.checkCorrectAnswerGiven}   >
- 
+
         <h1 className={'centered'}>{word.from}  is
           <strong><ShowDiff answer={answer} to={word.to}/></strong> in russian </h1>
 

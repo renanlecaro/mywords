@@ -3,6 +3,7 @@ import {addWordToList, getWordList} from "../services/trainer";
 import {sayInRussian} from "../services/say";
 import {sameish} from "../services/sameish";
 import style from './miniform.less'
+import {showToast} from "./notify";
 export class Add extends Component{
   state={
     from:'',
@@ -22,6 +23,7 @@ export class Add extends Component{
     if(this.problem()) return alert(this.problem())
     addWordToList(this.state)
     sayInRussian(this.state.to)
+    showToast('Word "'+this.state.to+'" added to your list');
     this.setState({
       from:'',
       to:'',

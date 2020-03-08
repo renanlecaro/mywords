@@ -1,6 +1,7 @@
 // TODO store version of db
 import {defaultWords} from "./defaultWords";
 import functionCaller from "less/lib/less/functions/function-caller";
+import {showToast} from "../components/notify";
 let wordlist=[]
 
 const defaultList=defaultWords.map(({from,to}, id)=>({from,to,id}))
@@ -143,4 +144,5 @@ export function updateWord(id, change) {
   wordlist=wordlist.map(item=>item.id==id ?
     {...item, ...change}:item);
   listChanged()
+  showToast('Word updated')
 }

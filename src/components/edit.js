@@ -22,6 +22,7 @@ export class Edit extends Component{
     e.preventDefault()
     this.props.go('add')
   }
+
   columns(){
     return [
       {
@@ -57,7 +58,9 @@ export class Edit extends Component{
     return <div className={ style.this}>
 
       <h1>My {list.length} words
-        <button className={'primary '+style.addButton} onClick={this.goToAdd}>+</button>
+        <button className={'primary '+style.addButton} onClick={this.goToAdd}>
+          Add words
+        </button>
       </h1>
       <Table data={list} columns={this.columns()}/>
       <button onClick={e=>{
