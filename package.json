@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "diff": "^4.0.2",
+    "fuse.js": "^3.6.1",
     "preact": "^10.3.2",
     "preact-render-to-string": "^5.1.4",
     "preact-router": "^3.2.1"

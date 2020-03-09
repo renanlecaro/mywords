@@ -7,7 +7,7 @@ import {ToastDisplay} from "./components/notify";
 
 export default class App extends Component {
   state={
-    page:'edit'
+    page:'add'
   }
   go=page=>{
     this.setState({page})

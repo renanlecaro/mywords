@@ -1,5 +1,4 @@
 // TODO store version of db
-import {defaultWords} from "./defaultWords";
 import functionCaller from "less/lib/less/functions/function-caller";
 import {showToast} from "../components/notify";
 let wordlist=[]
@@ -7,13 +6,11 @@ let wordlist=[]
 import EventEmitter from 'events'
 const events=new EventEmitter()
 
-
-const defaultList=defaultWords.map(({from,to}, id)=>({from,to,id}))
 try{
-  wordlist=JSON.parse(localStorage.getItem('wordlist')) || defaultList
+  wordlist=JSON.parse(localStorage.getItem('wordlist')) || []
 }catch (e) {
   console.debug(e,'No saved word list')
-  wordlist=defaultList
+  wordlist=[]
 }
 
 let trainingData = [

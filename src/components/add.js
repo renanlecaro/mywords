@@ -4,12 +4,14 @@ import {sayInRussian} from "../services/say";
 import {sameish} from "../services/sameish";
 import style from './miniform.less'
 import {showToast} from "./notify";
+import {suggestions} from "../services/suggest";
+import debounce from 'lodash/debounce';
 export class Add extends Component{
   state={
     from:'',
     to:'',
-    comment:'',
-    list:[]
+    list:[],
+    suggestions:[]
   }
   componentDidMount() {
     this.clearListener=getWordList(list=>this.setState({list}))
@@ -27,7 +29,7 @@ export class Add extends Component{
     this.setState({
       from:'',
       to:'',
-      comment:''
+      suggestions:[]
     })
   }
   problem=()=>{
@@ -43,16 +45,32 @@ export class Add extends Component{
     e.preventDefault()
     this.props.go('edit')
   }
-  render(props, {from,to,comment, list}){
+  suggest=(str)=>{
+    this.setState({
+      suggestions:suggestions(str)
+    })
+  }
+  suggestDelayed=debounce(this.suggest, 300)
+  textChange(change){
+    this.setState(change)
+    this.suggestDelayed(change.from || change.to)
+  }
+  render(props, {from,to,list,suggestions}){
     return  <div className={style.this}>
       <button onClick={this.backToEdit}>‹ wordlist ({list.length} words)</button>
       <form onSubmit={this.onSubmit} >
        <h1>Add a word</h1>
         <label htmlFor={'enterEnglish'}>English word</label>
-        <input id={"enterEnglish"} type={'text'} placeholder={'English'} value={from} onKeyUp={e=>this.setState({from:e.target.value})}/>
+        <input autoComplete={false} id={"enterEnglish"} type={'text'} placeholder={'English'} value={from} onKeyUp={e=>this.textChange({from:e.target.value})}/>
         <label htmlFor={'enterRussian'}>Russian translation to learn</label>
-        <input id="enterRussian" type={'text'} placeholder={'Russian'} value={to} onKeyUp={e=>this.setState({to:e.target.value})}/>
-
+        <input autoComplete={false} id="enterRussian" type={'text'} placeholder={'Russian'} value={to} onKeyUp={e=>this.textChange({to:e.target.value})}/>
+        {
+          suggestions.map((s)=>
+            <button onClick={e=>{
+              this.setState(s,()=>this.onSubmit(e))
+            }}>{s.from} -> {s.to}</button>
+          )
+        }
         <button className={'primary float-bottom'} id={'submitWord'}>Add</button>
       </form>
     </div>
