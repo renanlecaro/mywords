@@ -1,13 +1,30 @@
-import Fuse from 'fuse.js';
+
 import list from './dictionary'
 
-const fuse = new Fuse(list, {
-  keys: ['from', 'to']
-})
-
-export function suggestions(search='') {
-  if(search.length<3) return []
-  // returns some suggestions for the search
-  return fuse.search(search).slice(0,3)
+export function suggestions(search='', cb) {
+  search=search.trim().toLowerCase()
+  if(!search) return []
+  return firstX(list, 3, ({from,to})=>
+    from.toLowerCase().indexOf(search)!=-1 ||
+    to.toLowerCase().indexOf(search)!=-1
+  ,cb
+  )
 }
 
+
+
+
+export function firstX(list, count, test,cb, result=[], i=0) {
+  const yieldAt= i+100
+  while(i<list.length && result.length<count && i<yieldAt){
+    if(test(list[i])){
+      result.push(list[i])
+    }
+    i++
+  }
+  if(i===yieldAt){
+    firstX(list, count, test,cb, result, i)
+  }else{
+    cb(result)
+  }
+}

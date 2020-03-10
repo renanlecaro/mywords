@@ -1,6 +1,7 @@
 // TODO store version of db
 import functionCaller from "less/lib/less/functions/function-caller";
 import {showToast} from "../components/notify";
+
 let wordlist=[]
 
 import EventEmitter from 'events'
