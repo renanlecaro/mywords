@@ -7,6 +7,9 @@ import style from './miniform.less'
 import {showToast} from "./notify";
 
 export function starsSplit(word) {
+  if(word.replace(/[^*]/gi,'').length!=2){
+    return ['',word,'']
+  }
   return (' '+word+' ').split('*').map(w=>w==' '?'':w)
 }
 
@@ -23,16 +26,14 @@ export class Train extends Component{
   componentDidMount() {
     this.setNewWord( getNextWordToTrain() )
   }
-  isFillBlankMode(){
-    return starsSplit(this.state.word.to).length==3
-  }
+
 
   onSubmitAnswer = e=>{
     e.preventDefault()
     const {word, answer} = this.state;
     sayInRussian(word.to)
 
-    const target= this.isFillBlankMode()?starsSplit(word.to)[1]:word.to
+    const target= starsSplit(word.to)[1]
 
     if(sameish(answer,target)){
       this.setNewWord( registerResult({id:word.id,  guessed:true}) )
@@ -56,10 +57,10 @@ export class Train extends Component{
 
     if(mode==='incorrect'){
       return <Nope answer={answer} word={word} confirm={this.validateFailure}
-                   isFillBlankMode={this.isFillBlankMode()}/>
+             />
     }
     return <Ask
-      isFillBlankMode={this.isFillBlankMode()}
+
       word={word} answer={answer} setAnswer={this.setAnswer}
       onSubmitAnswer={this.onSubmitAnswer}/>
   }
@@ -86,13 +87,13 @@ class Ask extends Component {
   }
 
   render() {
-    let {word, answer, setAnswer, onSubmitAnswer,isFillBlankMode} = this.props;
+    let {word, answer, setAnswer, onSubmitAnswer} = this.props;
     return  <form onSubmit={onSubmitAnswer}>
         <label>How do you say this in russian ?</label>
 
         <h1>{word.from}</h1>
 
-      {Question({word, value:answer, onKeyUp:setAnswer,isFillBlankMode, onRef:n=>this.input=n})}
+      {Question({word, value:answer, onKeyUp:setAnswer, onRef:n=>this.input=n})}
 
         <button className={'primary float-bottom'} type="submit">
           {answer ? 'Check' : 'I don\'t know'}
@@ -101,9 +102,8 @@ class Ask extends Component {
   }
 }
 
-export function Question({word, value, onKeyUp,isFillBlankMode, onRef,showPlaceHolder}) {
+export function Question({word, value, onKeyUp, onRef,showPlaceHolder}) {
 
-  if(isFillBlankMode){
     let parts=starsSplit(word.to)
     return <div className={style.fillTheBlank}>
       <span>{parts[0]}</span>
@@ -116,14 +116,7 @@ export function Question({word, value, onKeyUp,isFillBlankMode, onRef,showPlaceH
       />
       <span>{parts[2]}</span>
     </div>
-  }else{
-    return <input type="text"
-                  ref={onRef}
-                  value={value}
-                  placeHolder={showPlaceHolder?word.to:''}
-                  onKeyUp={onKeyUp}
-    />
-  }
+
 }
 
 export function measureWidth(text) {
@@ -150,8 +143,8 @@ class Nope extends Component{
   }
   state={check:''}
   isCorrect(){
-    const {isFillBlankMode, word}=this.props;
-    const target= isFillBlankMode?starsSplit(word.to)[1]:word.to
+    const { word}=this.props;
+    const target= starsSplit(word.to)[1]
     return sameish(this.state.check,target)
   }
   checkCorrectAnswerGiven=e=>{
@@ -160,7 +153,7 @@ class Nope extends Component{
       this.props.confirm(e)
     }
   }
-  render({answer, word, confirm,isFillBlankMode}, {check}) {
+  render({answer, word, confirm}, {check}) {
     return (
       <form onSubmit={this.checkCorrectAnswerGiven}   >
 
@@ -168,7 +161,7 @@ class Nope extends Component{
         {/*  <strong>*/}
         {/*    */}
         {/*  </strong> in russian </h1>*/}
-        <label>Sorry that's wrong, it's <ShowDiff isFillBlankMode={isFillBlankMode} answer={answer} to={word.to}/></label>
+        <label>Sorry that's wrong, it's <ShowDiff answer={answer} to={word.to}/></label>
 
         <h1>{word.from}</h1>
 
@@ -177,7 +170,6 @@ class Nope extends Component{
           word,
           value:check,
           onKeyUp:e=>this.setState({check:e.target.value}),
-          isFillBlankMode,
           onRef:n=>this.input=n,
           showPlaceHolder:true
         })}
