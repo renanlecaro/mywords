@@ -60,7 +60,6 @@ export class Train extends Component{
              />
     }
     return <Ask
-
       word={word} answer={answer} setAnswer={this.setAnswer}
       onSubmitAnswer={this.onSubmitAnswer}/>
   }
@@ -82,7 +81,7 @@ class Ask extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if(this.props.word.id!=nextProps.word.id){
-      this.input.focus()
+      setTimeout(()=>this.input.focus())
     }
   }
 
