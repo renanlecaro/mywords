@@ -9,7 +9,7 @@ synth.addEventListener('voiceschanged',parseVoices)
 
 export function sayInRussian(toText) {
   if(!voice) return
-  const utterance=new SpeechSynthesisUtterance(toText)
+  const utterance=new SpeechSynthesisUtterance(toText.replace(/\*/gi,''))
   utterance.voice=voice
   synth.speak(utterance)
 }

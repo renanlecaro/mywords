@@ -1,5 +1,12 @@
 
 import list from './dictionary'
+import {getListOfRussianWords} from "./trainer";
+import {sameish} from "./sameish";
+
+export function getWordToAddToList(){
+  const reject=getListOfRussianWords()
+  return list.find(word=>!reject.find(rejected=>sameish(rejected, word.to)))
+}
 
 export function suggestions(search='', cb) {
   search=search.trim().toLowerCase()
@@ -14,16 +21,16 @@ export function suggestions(search='', cb) {
 
 
 
-export function firstX(list, count, test,cb, result=[], i=0) {
+export function firstX(arr, count, test,cb, result=[], i=0) {
   const yieldAt= i+100
-  while(i<list.length && result.length<count && i<yieldAt){
-    if(test(list[i])){
-      result.push(list[i])
+  while(i<arr.length && result.length<count && i<yieldAt){
+    if(test(arr[i])){
+      result.push(arr[i])
     }
     i++
   }
   if(i===yieldAt){
-    firstX(list, count, test,cb, result, i)
+    firstX(arr, count, test,cb, result, i)
   }else{
     cb(result)
   }

@@ -6,6 +6,10 @@ import {ShowDiff} from "./diff";
 import style from './miniform.less'
 import {showToast} from "./notify";
 
+export function starsSplit(word) {
+  return (' '+word+' ').split('*').map(w=>w==' '?'':w)
+}
+
 export class Train extends Component{
   state={
   }
@@ -19,11 +23,18 @@ export class Train extends Component{
   componentDidMount() {
     this.setNewWord( getNextWordToTrain() )
   }
+  isFillBlankMode(){
+    return starsSplit(this.state.word.to).length==3
+  }
+
   onSubmitAnswer = e=>{
     e.preventDefault()
     const {word, answer} = this.state;
     sayInRussian(word.to)
-    if(sameish(word.to,answer)){
+
+    const target= this.isFillBlankMode()?starsSplit(word.to)[1]:word.to
+
+    if(sameish(answer,target)){
       this.setNewWord( registerResult({id:word.id,  guessed:true}) )
     }else{
       this.setState({
@@ -44,9 +55,12 @@ export class Train extends Component{
     if(!word) return 'loading'
 
     if(mode==='incorrect'){
-      return <Nope answer={answer} word={word} confirm={this.validateFailure}/>
+      return <Nope answer={answer} word={word} confirm={this.validateFailure}
+                   isFillBlankMode={this.isFillBlankMode()}/>
     }
-    return <Ask word={word} answer={answer} setAnswer={this.setAnswer}
+    return <Ask
+      isFillBlankMode={this.isFillBlankMode()}
+      word={word} answer={answer} setAnswer={this.setAnswer}
       onSubmitAnswer={this.onSubmitAnswer}/>
   }
   backToEdit=e=>{
@@ -72,17 +86,14 @@ class Ask extends Component {
   }
 
   render() {
-    let {word, answer, setAnswer, onSubmitAnswer} = this.props;
+    let {word, answer, setAnswer, onSubmitAnswer,isFillBlankMode} = this.props;
     return  <form onSubmit={onSubmitAnswer}>
-        <h1 className={'centered'}> How do you say
-          <strong>{word.from}</strong>
-          in russian ?</h1>
-        <label>Please type the russian word below</label>
-        <input type="text"
-               ref={n=>this.input=n}
-               value={answer}
-               onKeyUp={setAnswer}
-        />
+        <label>How do you say this in russian ?</label>
+
+        <h1>{word.from}</h1>
+
+      {Question({word, value:answer, onKeyUp:setAnswer,isFillBlankMode, onRef:n=>this.input=n})}
+
         <button className={'primary float-bottom'} type="submit">
           {answer ? 'Check' : 'I don\'t know'}
         </button>
@@ -90,6 +101,46 @@ class Ask extends Component {
   }
 }
 
+export function Question({word, value, onKeyUp,isFillBlankMode, onRef,showPlaceHolder}) {
+
+  if(isFillBlankMode){
+    let parts=starsSplit(word.to)
+    return <div className={style.fillTheBlank}>
+      <span>{parts[0]}</span>
+      <input type="text"
+            placeHolder={showPlaceHolder?parts[1]:''}
+             ref={onRef}
+             style={{width:measureWidth(parts[1])}}
+             value={value}
+             onKeyUp={onKeyUp}
+      />
+      <span>{parts[2]}</span>
+    </div>
+  }else{
+    return <input type="text"
+                  ref={onRef}
+                  value={value}
+                  placeHolder={showPlaceHolder?word.to:''}
+                  onKeyUp={onKeyUp}
+    />
+  }
+}
+
+export function measureWidth(text) {
+  var block=document.createElement('DIV')
+  block.innerText=text
+  block.style.padding='10px 20px'
+  block.style.fontSize='20px'
+  block.style.lineHeight='20px'
+  block.style.position='absolute'
+  block.style.border='1px solid'
+  block.style.left='-10000px'
+
+  document.body.appendChild(block)
+  const width= block.getBoundingClientRect().width
+  document.body.removeChild(block)
+  return width
+}
 
 class Nope extends Component{
   componentDidMount() {
@@ -97,7 +148,9 @@ class Nope extends Component{
   }
   state={check:''}
   isCorrect(){
-    return sameish(this.state.check,this.props.word.to)
+    const {isFillBlankMode, word}=this.props;
+    const target= isFillBlankMode?starsSplit(word.to)[1]:word.to
+    return sameish(this.state.check,target)
   }
   checkCorrectAnswerGiven=e=>{
     e.preventDefault()
@@ -105,17 +158,27 @@ class Nope extends Component{
       this.props.confirm(e)
     }
   }
-  render({answer, word, confirm}, {check}) {
+  render({answer, word, confirm,isFillBlankMode}, {check}) {
     return (
       <form onSubmit={this.checkCorrectAnswerGiven}   >
 
-        <h1 className={'centered'}>{word.from}  is
-          <strong><ShowDiff answer={answer} to={word.to}/></strong> in russian </h1>
+        {/*<h1 className={'centered'}>"{word.from}"  is*/}
+        {/*  <strong>*/}
+        {/*    */}
+        {/*  </strong> in russian </h1>*/}
+        <label>Sorry that's wrong, it's <ShowDiff isFillBlankMode={isFillBlankMode} answer={answer} to={word.to}/></label>
 
-        <label>Please type the correct answer below</label>
-        <input  type="text" ref={n=>this.input=n}
-                value={check} placeholder={word.to}
-                onKeyUp={e=>this.setState({check:e.target.value})}/>
+        <h1>{word.from}</h1>
+
+        {/*<label>Please type the correct answer below</label>*/}
+        {Question({
+          word,
+          value:check,
+          onKeyUp:e=>this.setState({check:e.target.value}),
+          isFillBlankMode,
+          onRef:n=>this.input=n,
+          showPlaceHolder:true
+        })}
         <button  className={'primary float-bottom'} disabled={!this.isCorrect()}>Next word</button>
       </form>
     );

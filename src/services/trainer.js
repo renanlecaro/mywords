@@ -5,6 +5,7 @@ import {showToast} from "../components/notify";
 let wordlist=[]
 
 import EventEmitter from 'events'
+import {getWordToAddToList} from "./suggest";
 const events=new EventEmitter()
 
 try{
@@ -27,7 +28,6 @@ try{
 }catch (e) {
   trainingData=[]
 }
-
 
 let stats={}
 
@@ -93,14 +93,17 @@ function listChanged() {
   events.emit('change',addMinStepToWordList())
   localStorage.setItem('wordlist',JSON.stringify(wordlist))
 }
+
 export function addWordToList({from,to }) {
-  wordlist=[{
+  const word={
     from,
     to,
     id: Math.max(0,...wordlist.map(w=>w.id))
       +1
-  },...wordlist]
+  }
+  wordlist=[word,...wordlist]
   listChanged()
+  return word
 }
 
 
@@ -120,14 +123,19 @@ export function getNextWordToTrain() {
   let stepped=addMinStepToWordList()
     .filter(word=>!word.minStep>0)
 
-
-  let minStep=Math.min(...stepped.map(word=>word.minStep))
-  if(minStep)
-    return stepped.find(word=>word.minStep == minStep)
-  else
-    return stepped.find(word=>!word.minStep)
-
+  if(stepped.length){
+    let minStep=Math.min(...stepped.map(word=>word.minStep))
+    if(minStep){
+      return stepped.find(word=>word.minStep == minStep)
+    }
+    const notSeenYet=stepped.find(word=>!word.minStep)
+    if(notSeenYet) return  notSeenYet
+  }
+  return  addWordToList(getWordToAddToList())
 }
+
+
+
 
 export function registerResult({id, guessed}) {
   const event={
@@ -149,4 +157,8 @@ export function updateWord(id, change) {
     {...item, ...change}:item);
   listChanged()
   showToast('Word updated')
+}
+
+export function getListOfRussianWords(){
+  return wordlist.map(w=>w.to)
 }
