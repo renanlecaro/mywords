@@ -135,11 +135,13 @@ export function measureWidth(text) {
   block.style.position='absolute'
   block.style.border='1px solid'
   block.style.left='-10000px'
+  block.style.fontWeight='400'
 
   document.body.appendChild(block)
   const width= block.getBoundingClientRect().width
   document.body.removeChild(block)
-  return width
+  // Chrome still crops a bit for some reason
+  return Math.floor(width)+20
 }
 
 class Nope extends Component{
