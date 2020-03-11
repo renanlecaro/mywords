@@ -53,13 +53,21 @@ export class Edit extends Component{
           </div>
         )
       }
-      <Add search={search} list={list}/>
+      <Add
+        clear={this.clear} search={search} list={list}/>
     </div>
+  }
+  clear=()=>{
+    this.setState({search:''})
+    setTimeout(()=>this.searchInput.focus(),10)
   }
   render(props, {list,search}) {
     if(!list) return 'loading'
     return <div className={ style.this}>
-      <SearchBox value={search} save={search=>this.setState({search})}/>
+      <SearchBox
+        onRef={n=>this.searchInput=n}
+        clear={this.clear}
+        value={search} save={search=>this.setState({search})}/>
 
       {this.renderList()}
 

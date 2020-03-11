@@ -38,7 +38,7 @@ export function firstX(arr, count, test,cb, result=[], i=0, parentOp=0) {
     operationNumber=runs.length-1
   }
   if(runs[operationNumber]==false) return console.log('Search cancelled')
-  const yieldAt= i+100
+  const yieldAt= i+500
   while(i<arr.length && result.length<count && i<yieldAt){
     if(test(arr[i])){
       result.push(arr[i])

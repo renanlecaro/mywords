@@ -13,6 +13,7 @@ export class Add extends Component{
 
   componentWillReceiveProps({search, list}) {
     if(search!=this.props.search || list!=this.props.list){
+      this.setState({suggestions:[]})
       this.suggestDelayed(search)
     }
   }
@@ -51,7 +52,7 @@ export class Add extends Component{
     sayInRussian(to)
     showToast('Word "'+to+'" added to your list');
     this.manualEntryInput.value=''
-
+    this.props.clear()
   }
 
   problem=({from,to})=>{
@@ -107,6 +108,9 @@ export class Add extends Component{
     if(!search) return null;
 
     return  <Fragment>
+
+      {this.manualEntry()}
+
       {suggestions.length?<label suggestions-label>Suggestions</label>:''}
       {
         suggestions.map((s)=>
@@ -122,7 +126,6 @@ export class Add extends Component{
           </div>
         )
       }
-      {this.manualEntry()}
 
     </Fragment>
   }
