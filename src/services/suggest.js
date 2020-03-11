@@ -15,12 +15,16 @@ export function suggestions(search='', cb) {
   const nodupes=forAutocomplete.filter(word=>!reject.find(rejected=>sameish(rejected, word.to)))
   search=search.trim().toLowerCase()
   if(!search) return ()=>null
-  return firstX(nodupes, 5, wordMatch(search)  ,cb )
+  return firstX(nodupes, 10, wordMatch(search)  ,cb )
 }
 
-export const wordMatch= search=>({from,to})=>(
-  !search || from.toLowerCase().indexOf(search)!=-1 || to.toLowerCase().indexOf(search)!=-1
-)
+export const wordMatch= search=>{
+  search=search.toLowerCase()
+  return ({from,to})=>(
+    !search || from.toLowerCase().indexOf(search)!=-1 || to.toLowerCase().indexOf(search)!=-1
+  )
+
+}
 
 
 const runs=[false]
@@ -43,7 +47,6 @@ export function firstX(arr, count, test,cb, result=[], i=0, parentOp=0) {
   }
   if(i===yieldAt){
     setTimeout(()=>firstX(arr, count, test,cb, result, i,operationNumber), 10)
-
   }else{
     cb(result)
   }
