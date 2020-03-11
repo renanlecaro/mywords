@@ -4,10 +4,10 @@ import {Train} from "./components/train";
 import {Add} from "./components/add";
 import './index.less'
 import {ToastDisplay} from "./components/notify";
-
+import '@fortawesome/fontawesome-free/css/all.css'
 export default class App extends Component {
   state={
-    page:'train'
+    page:'edit'
   }
   go=page=>{
     this.setState({page})
@@ -18,8 +18,6 @@ export default class App extends Component {
         return Edit;
       case "train":
         return Train;
-      case "add":
-        return Add;
     }
 
   }

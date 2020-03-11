@@ -9,16 +9,17 @@ export function getWordToAddToList(){
 }
 
 export function suggestions(search='', cb) {
+  const reject=getListOfRussianWords()
+  const nodupes=list.filter(word=>!reject.find(rejected=>sameish(rejected, word.to)))
   search=search.trim().toLowerCase()
   if(!search) return []
-  return firstX(list, 3, ({from,to})=>
-    from.toLowerCase().indexOf(search)!=-1 ||
-    to.toLowerCase().indexOf(search)!=-1
-  ,cb
+    return firstX(nodupes, 5, wordMatch(search)  ,cb
   )
 }
 
-
+export const wordMatch= search=>({from,to})=>(
+  !search || from.toLowerCase().indexOf(search)!=-1 || to.toLowerCase().indexOf(search)!=-1
+)
 
 
 export function firstX(arr, count, test,cb, result=[], i=0) {

@@ -1,28 +1,44 @@
-import {Component} from "preact";
+import {Component,h,Fragment} from "preact";
 import {addWordToList, getWordList} from "../services/trainer";
 import {sayInRussian} from "../services/say";
-import {sameish} from "../services/sameish";
-import style from './miniform.less'
+import {sameish, simplify} from "../services/sameish";
+import style from './edit.less'
 import {showToast} from "./notify";
-import {suggestions} from "../services/suggest";
+import {suggestions, wordMatch} from "../services/suggest";
 import debounce from 'lodash/debounce';
 export class Add extends Component{
   state={
-    list:[],
     suggestions:[]
   }
-  componentDidMount() {
-    this.clearListener=getWordList(list=>this.setState({list}))
+
+  componentWillReceiveProps({search, list}) {
+    if(search!=this.props.search || list!=this.props.list){
+      this.suggestDelayed(search)
+    }
   }
-  componentWillUnmount() {
-    this.clearListener()
+  componentDidMount() {
+    this.suggest(this.props.search)
   }
 
   onSubmit=e=>{
     e.preventDefault()
-    const from=this.inputFrom.value,
-      to=this.inputTo.value;
-    this.addWord({from,to})
+    this.addWord(this.getFromTo())
+  }
+
+  getFromTo(){
+    const {search} = this.props;
+    const searchIsRU = isRussian(search)
+    const inputVal=this.manualEntryInput.value
+    if(searchIsRU)
+      return{
+        from:inputVal,
+        to:search
+      }
+
+    return{
+      from:search,
+      to:inputVal
+    }
 
   }
 
@@ -34,15 +50,12 @@ export class Add extends Component{
     })
     sayInRussian(to)
     showToast('Word "'+to+'" added to your list');
-    this.inputFrom.value=''
-    this.inputTo.value=''
-    this.setState({
-      suggestions:[]
-    })
+    this.manualEntryInput.value=''
+
   }
 
   problem=({from,to})=>{
-    const {list} = this.state;
+    const {list} = this.props;
 
     from=from||this.inputFrom.value;
       to=to||this.inputTo.value;
@@ -53,10 +66,7 @@ export class Add extends Component{
       return 'Word already in your list'
     }
   }
-  backToEdit=e=>{
-    e.preventDefault()
-    this.props.go('edit')
-  }
+
   suggest=(str)=>{
     suggestions(str, result=>{
       this.setState({
@@ -64,37 +74,59 @@ export class Add extends Component{
       })
     })
   }
+
   suggestDelayed=debounce(this.suggest, 100)
 
-  render(props, {from,to,list,suggestions}){
-    return  <div className={style.this}>
-      <button onClick={this.backToEdit}>‹ wordlist ({list.length} words)</button>
-      <form onSubmit={this.onSubmit} >
-       <h1>Add a word</h1>
-        <label htmlFor={'enterEnglish'}>English word</label>
-        <input
-          ref={n=>this.inputFrom=n}
-          onKeyUp={e=>this.suggestDelayed(e.target.value)}
-          autoComplete={'off'} id={"enterEnglish"} type={'text'} placeholder={'English'}
-        />
-        <label htmlFor={'enterRussian'}>Russian translation to learn</label>
-        <input
-          ref={n=>this.inputTo=n}
-          autoComplete={'off'} id="enterRussian" type={'text'} placeholder={'Russian'}
-          onKeyUp={e=>this.suggestDelayed(e.target.value)}
-        />
+  manualEntry(){
+    const {search, list} = this.props;
 
-        {
-          suggestions.map((s)=>
-            <div className={style.suggestion} onClick={e=>{
-              e.preventDefault()
-              this.addWord(s)
-            }}><span>{s.from}</span><strong>{s.to}</strong></div>
-          )
-        }
-        <button className={'primary float-bottom'} id={'submitWord'}>Add</button>
+    const present= list.find(({from,to})=>sameish(from,search) || sameish(to,search))
+    if(present) return null
+
+
+    const currentKey=isRussian(search)?'to':'from'
+
+    return <Fragment>
+      <label suggestions-label>
+        Manual entry
+      </label>
+      <form onSubmit={this.onSubmit} manual-entry>
+        <input type={'text'}
+               placeholder={(currentKey=='to'?
+                 'English':'Russian')+' for "'+search+'"'}
+               autoComplete={'off'} ref={n=>this.manualEntryInput=n}/>
+        <button className={'primary'}>Add</button>
       </form>
 
-    </div>
+    </Fragment>
   }
+  render({search, list}, {from,to,suggestions}){
+
+    if(!search) return null;
+
+    return  <Fragment>
+      {suggestions.length?<label suggestions-label>Suggestions</label>:''}
+      {
+        suggestions.map((s)=>
+          <div className={style.suggestion} suggestion >
+            <div>
+              <div>{s.from}</div>
+              <div>{s.to}</div>
+            </div>
+            <button className={'primary'} onClick={e=>{
+              e.preventDefault()
+              this.addWord(s)
+            }}>Add</button>
+          </div>
+        )
+      }
+      {this.manualEntry()}
+
+    </Fragment>
+  }
+}
+
+function isRussian(string='') {
+  string=simplify(string)
+  return string.replace(/[^A-Za-z ]/gi,'').length<Math.floor(string.length/2)
 }

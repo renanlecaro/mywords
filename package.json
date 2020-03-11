@@ -36,6 +36,7 @@
     "sirv-cli": "^0.4.5"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
     "diff": "^4.0.2",
     "fuse.js": "^3.6.1",
     "preact": "^10.3.2",

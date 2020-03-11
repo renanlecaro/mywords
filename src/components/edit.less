@@ -1,27 +1,23 @@
 .this{
->button{
-  margin: 0 auto 80px auto;
 
-}
+  div[class="full-list"]{
+    min-height: 80vh;
+    >*{
+    border-bottom: 1px solid #fff;
 
+    }
 
-}
-.addButton{
-  float: right;
-}
-table{
-  margin-bottom: 40px;
-  td{
-    padding: 0;
-  }
-  input{
-    &:not(:focus){
-      border-color: transparent;
-      background: transparent;
+   > label {
+      line-height: 20px;
+      padding:20px 20px;
     }
   }
+  >button{
+    margin: 20vh auto;
+  }
 
 }
+
 
 footer {
    position: fixed;
@@ -44,4 +40,71 @@ pointer-events: none;
 
 footer button{
   position: relative;
+}
+.word{
+  display: flex;
+
+  >div{
+    width:50%;
+    input{
+      &:not(:focus){
+        border-color: transparent;
+        background: transparent;
+      }
+    }
+  }
+}
+
+.suggestion{
+  display: flex;
+  align-items: center;
+  >div{
+    line-height: 20px;
+    overflow: hidden;
+    padding: 10px 20px;
+    flex-grow: 1;
+  }
+  button{
+    margin-right: 20px;
+  }
+
+}
+
+form[manual-entry]{
+  display: flex;
+  align-items: center;
+  input{
+    flex-grow: 1;
+    margin: 0 20px;
+  }
+  button{
+    margin-right: 20px;
+  }
+}
+div[welcome-message]{
+  text-align: center;
+
+  min-height: 80vh;
+  i{
+    font-size: 40px;
+    margin: 40px 0;
+    opacity: 0.4;
+    line-height: 20px;
+    animation: wiggle infinite 1s;
+  }
+  h1{
+    font-weight: normal;
+  }
+}
+
+@keyframes wiggle {
+  0%{
+    transform: translate(0,10px);
+  }
+  50%{
+    transform: translate(0,0px);
+  }
+  100%{
+     transform: translate(0,10px);
+   }
 }
