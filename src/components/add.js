@@ -68,7 +68,9 @@ export class Add extends Component{
   }
 
   suggest=(str)=>{
-    suggestions(str, result=>{
+    this.cancelSearch && this.cancelSearch();
+
+    this.cancelSearch=suggestions(str, result=>{
       this.setState({
         suggestions:result
       })
