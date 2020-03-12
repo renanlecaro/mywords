@@ -12,27 +12,27 @@ export class Settings extends Component {
     const {whenEmptyList,useSounds} = this.state;
     return <div settings>
       <h2>App settings</h2>
-      <label>When out of words to learn</label>
+      <label>When out of new words to learn</label>
       <label>
         <input type={"radio"} name={'whenEmptyList'}
                checked={whenEmptyList==='add-word'}
                onChange={e=>this.change('whenEmptyList','add-word')}/>
-        Add common word
+        Add a common word to the list
       </label>
       <label>
         <input type={"radio"} name={'whenEmptyList'}
                checked={whenEmptyList==='add-sentence'}
                onChange={e=>this.change('whenEmptyList','add-sentence')}/>
-        Add idiomatic sentences
+        Add an idiomatic sentences
       </label>
       <label>
         <input type={"radio"} name={'whenEmptyList'}
                checked={whenEmptyList==='rework'}
                onChange={e=>this.change('whenEmptyList','rework')}/>
-        Work on already known words
+        Study already known words
       </label>
 
-      <label>Audio (does not work in every browser)</label>
+      <label>Read russian words out loud</label>
       <label>
         <input type={"radio"} name={'useSounds'}
                checked={useSounds}
