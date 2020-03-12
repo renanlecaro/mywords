@@ -9,11 +9,10 @@ import uniqBy from 'lodash/uniqBy';
 export const forAutocomplete=uniqBy(all.concat(common), w=>w.to)
 
 
-let reject=[]
+let reject=[],nodupes=[]
 
 
-self.addEventListener('message', e=>{
-  console.log('worker recieved',e.data)
+self.addEventListener('message', e=>{ 
   const {action, ...content}=e.data
   switch(action){
     case 'updateWords':
@@ -24,7 +23,11 @@ self.addEventListener('message', e=>{
 })
 
 function updateWords({banned}){
-  reject=banned
+  reject=banned;
+
+  nodupes=forAutocomplete
+    .filter(word=>!reject.find(rejected=>sameish(rejected, word.to)));
+
 }
 
 let runningSeach=null
@@ -40,9 +43,6 @@ function search({search,msgId}){
   }
   runningSeach=msgId
 
-  const nodupes=forAutocomplete
-    .filter(word=>!reject.find(rejected=>sameish(rejected, word.to)));
-
   firstX(nodupes, 10, wordMatch(search)  ,result=>{
     runningSeach=null
 
@@ -50,7 +50,6 @@ function search({search,msgId}){
       action:'searchResult',
       result,msgId
     }
-    console.log('worker posted',resultMsg)
     self.postMessage(resultMsg)
   })
 }

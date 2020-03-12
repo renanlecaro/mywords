@@ -6,6 +6,7 @@ import style from './edit.less'
 import {showToast} from "./notify";
 import {suggestions} from "../services/suggest";
 import debounce from 'lodash/debounce';
+import {wordMatch} from "../services/wordMatch";
 export class Add extends Component{
   state={
     suggestions:[]
@@ -13,7 +14,8 @@ export class Add extends Component{
 
   componentWillReceiveProps({search, list}) {
     if(search!=this.props.search || list!=this.props.list){
-      // this.setState({suggestions:[]})
+      this.setState({suggestions:this.state.suggestions
+          .filter(wordMatch(search))})
       this.suggestDelayed(search)
     }
   }
@@ -107,6 +109,8 @@ export class Add extends Component{
 
     return  <Fragment>
 
+      {/*Shown above so that suggestions can lag*/}
+      {this.manualEntry()}
 
       {suggestions.length?<label suggestions-label>Suggestions</label>:''}
       {
@@ -124,7 +128,6 @@ export class Add extends Component{
         )
       }
 
-      {this.manualEntry()}
     </Fragment>
   }
 }

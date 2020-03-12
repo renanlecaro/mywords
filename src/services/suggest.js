@@ -9,7 +9,6 @@ import Worker from 'worker-loader!./search.worker.js';
 const worker = new Worker();
 
 export function tellWorkerAboutBanedWords() {
-
   worker.postMessage({action:'updateWords', banned:getListOfRussianWords()});
 }
 
