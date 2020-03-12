@@ -1,5 +1,5 @@
 
-import {wordMatch} from "./wordMatch"; 
+import {wordMatch} from "./wordMatch";
 import {sameish} from "./sameish";
 import all from "./dicts/alltypes";
 import common from "./dicts/common";
@@ -26,12 +26,26 @@ self.addEventListener('message', e=>{
 function updateWords({banned}){
   reject=banned
 }
+
+let runningSeach=null
+let timeoutToCancel=null
 function search({search,msgId}){
+  if(runningSeach){
+    clearTimeout(timeoutToCancel)
+    self.postMessage({
+      action:'searchResult',
+      result:null,
+      msgId:runningSeach
+    })
+  }
+  runningSeach=msgId
 
   const nodupes=forAutocomplete
     .filter(word=>!reject.find(rejected=>sameish(rejected, word.to)));
 
   firstX(nodupes, 10, wordMatch(search)  ,result=>{
+    runningSeach=null
+
     const resultMsg={
       action:'searchResult',
       result,msgId
@@ -41,9 +55,10 @@ function search({search,msgId}){
   })
 }
 
+
 function firstX(arr, count, test,cb, result=[], i=0) {
 
-  const yieldAt= i+500
+  const yieldAt= i+100
   while(i<arr.length && result.length<count && i<yieldAt){
     if(test(arr[i])){
       result.push(arr[i])
@@ -51,7 +66,7 @@ function firstX(arr, count, test,cb, result=[], i=0) {
     i++
   }
   if(i===yieldAt){
-    setTimeout(()=>firstX(arr, count, test,cb, result, i), 10)
+    timeoutToCancel=setTimeout(()=>firstX(arr, count, test,cb, result, i),0)
   }else{
     cb(result)
   }

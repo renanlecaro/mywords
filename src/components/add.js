@@ -107,7 +107,6 @@ export class Add extends Component{
 
     return  <Fragment>
 
-      {this.manualEntry()}
 
       {suggestions.length?<label suggestions-label>Suggestions</label>:''}
       {
@@ -125,6 +124,7 @@ export class Add extends Component{
         )
       }
 
+      {this.manualEntry()}
     </Fragment>
   }
 }

@@ -29,7 +29,7 @@ export function suggestions(search='', cb) {
 
     console.log('cb recieved',ev)
     if(ev.data.msgId==currentMsgId){
-      cb(ev.data.result)
+      ev.data.result && cb(ev.data.result)
       worker.removeEventListener("message", onResult);
     }
   }
