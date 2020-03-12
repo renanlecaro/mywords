@@ -6,7 +6,7 @@ import {Table} from "./table";
 import VirtualList from 'preact-virtual-list';
 import style from './edit.less'
 import {SearchBox} from "./seachbox";
-import {wordMatch} from "../services/suggest";
+import {wordMatch} from "../services/wordMatch";
 import {Add} from "./add";
 import {Settings} from "./settings";
 export class Edit extends Component{

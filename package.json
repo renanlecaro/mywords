@@ -33,7 +33,8 @@
     "per-env": "^1.0.2",
     "preact-cli": "^3.0.0-rc.6",
     "preact-render-spy": "^1.2.1",
-    "sirv-cli": "^0.4.5"
+    "sirv-cli": "^0.4.5",
+    "worker-loader": "^2.0.0"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.1",

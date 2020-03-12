@@ -4,7 +4,7 @@ import {sayInRussian} from "../services/say";
 import {sameish, simplify} from "../services/sameish";
 import style from './edit.less'
 import {showToast} from "./notify";
-import {suggestions, wordMatch} from "../services/suggest";
+import {suggestions} from "../services/suggest";
 import debounce from 'lodash/debounce';
 export class Add extends Component{
   state={
@@ -13,7 +13,7 @@ export class Add extends Component{
 
   componentWillReceiveProps({search, list}) {
     if(search!=this.props.search || list!=this.props.list){
-      this.setState({suggestions:[]})
+      // this.setState({suggestions:[]})
       this.suggestDelayed(search)
     }
   }
@@ -69,9 +69,7 @@ export class Add extends Component{
   }
 
   suggest=(str)=>{
-    this.cancelSearch && this.cancelSearch();
-
-    this.cancelSearch=suggestions(str, result=>{
+     suggestions(str, result=>{
       this.setState({
         suggestions:result
       })

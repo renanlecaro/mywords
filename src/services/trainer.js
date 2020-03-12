@@ -5,7 +5,7 @@ import {showToast} from "../components/notify";
 let wordlist=[]
 
 import EventEmitter from 'events'
-import {getWordToAddToList} from "./suggest";
+import {getWordToAddToList, tellWorkerAboutBanedWords} from "./suggest";
 import {getSetting} from "./settings";
 const events=new EventEmitter()
 
@@ -93,7 +93,9 @@ function listChanged() {
   wordlist=wordlist.filter(w=>w.to || w.from)
   events.emit('change',addMinStepToWordList())
   localStorage.setItem('wordlist',JSON.stringify(wordlist))
+  tellWorkerAboutBanedWords()
 }
+listChanged()
 
 export function addWordToList({from,to }) {
   const word={
