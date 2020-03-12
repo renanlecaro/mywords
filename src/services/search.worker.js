@@ -12,7 +12,7 @@ export const forAutocomplete=uniqBy(all.concat(common), w=>w.to)
 let reject=[],nodupes=[]
 
 
-self.addEventListener('message', e=>{ 
+self.addEventListener('message', e=>{
   const {action, ...content}=e.data
   switch(action){
     case 'updateWords':

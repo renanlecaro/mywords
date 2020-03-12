@@ -67,21 +67,34 @@ export class Edit extends Component{
     this.setState({search:''})
     setTimeout(()=>this.searchInput.focus(),10)
   }
+
+  renderFooter(){
+    const {search} = this.state
+    if(search) return null
+    return <footer>
+      <button
+        className={' primary'}
+        onClick={this.goToTraining}>
+        Start learning ›
+      </button>
+    </footer>
+  }
+  renderSearch(){
+    const {search} = this.state
+    return <SearchBox
+      onRef={n=>this.searchInput=n}
+      clear={this.clear}
+      value={search} save={search=>this.setState({search})}/>
+  }
   render(props, {list,search}) {
     if(!list) return 'loading'
     return <div className={ style.this}>
-      <SearchBox
-        onRef={n=>this.searchInput=n}
-        clear={this.clear}
-        value={search} save={search=>this.setState({search})}/>
 
+      {this.renderSearch()}
       {this.renderList()}
-
-
+      {this.renderFooter()}
       <Settings/>
-      <footer>
-      <button className={' primary'} onClick={this.goToTraining}>Start learning ›</button>
-      </footer>
+
 
     </div>
   }

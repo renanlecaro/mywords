@@ -102,7 +102,8 @@ export function addWordToList({from,to }) {
     from,
     to,
     id: Math.max(0,...wordlist.map(w=>w.id))
-      +1
+      +1,
+    addedAt:new Date()
   }
   wordlist=[word,...wordlist]
   listChanged()

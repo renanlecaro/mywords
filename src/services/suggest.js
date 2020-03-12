@@ -1,10 +1,22 @@
+import all from './dicts/alltypes'
+import phrases from './dicts/phrases'
+import common from './dicts/common'
 
-import {forAutoAdd} from './dictionary'
 import {getListOfRussianWords} from "./trainer";
 import {sameish} from "./sameish";
 
 import Worker from 'worker-loader!./search.worker.js';
 
+import {getSetting} from "./settings";
+
+  function forAutoAdd(){
+  switch (getSetting().whenEmptyList) {
+    case 'add-word':
+      return common.filter(w=>w.from.match(/noun|verb|adjective/)).concat(all)
+    case 'add-sentence':
+      return phrases
+  }
+}
 
 const worker = new Worker();
 

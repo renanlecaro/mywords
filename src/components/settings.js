@@ -11,6 +11,7 @@ export class Settings extends Component {
   render(props, state, context) {
     const {whenEmptyList,useSounds} = this.state;
     return <div settings>
+      <h2>App settings</h2>
       <label>When out of words to learn</label>
       <label>
         <input type={"radio"} name={'whenEmptyList'}
