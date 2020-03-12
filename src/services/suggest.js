@@ -7,8 +7,10 @@ import {sameish} from "./sameish";
 
 export function getWordToAddToList(){
   const reject=getListOfRussianWords()
-  return forAutoAdd.find(word=>!reject.find(rejected=>sameish(rejected, word.to)))
+  return forAutoAdd()
+    .find(word=>!reject.find(rejected=>sameish(rejected, word.to)))
 }
+
 
 export function suggestions(search='', cb) {
   const reject=getListOfRussianWords()

@@ -42,10 +42,21 @@ footer button{
   position: relative;
 }
 .word{
-  display: flex;
+  height: 40px;
+  position: relative;
+  width: 100%;
+
 
   >div{
+    position: absolute;
     width:50%;
+    top: 0;
+    &:first-child{
+      left: 0;
+    }
+    &:last-child{
+      left: 50%;
+    }
     input{
       &:not(:focus){
         border-color: transparent;

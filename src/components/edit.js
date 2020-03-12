@@ -3,10 +3,12 @@ import {addWordToList, getWordList, updateWord} from "../services/trainer";
 import {sameish} from "../services/sameish";
 import {sayInRussian} from "../services/say";
 import {Table} from "./table";
+import VirtualList from 'preact-virtual-list';
 import style from './edit.less'
 import {SearchBox} from "./seachbox";
 import {wordMatch} from "../services/suggest";
 import {Add} from "./add";
+import {Settings} from "./settings";
 export class Edit extends Component{
   state={
     list:null,
@@ -31,28 +33,32 @@ export class Edit extends Component{
         <h1>Use the search to fill your list</h1>
       </div>
     }
+
    return  <div className={'full-list'}>
+
       {filteredList.length && search ? <label>Results in your list</label>:null}
-      {
-        filteredList.map(({from,to, id})=>
-          <div className={style.word}>
-            <div>
-              <input type={'text'}
-                     className={'text-like'}
-                     value={from}
-                     onChange={e=>updateWord(id, {from:e.target.value})}
-              />
-            </div>
-            <div>
-              <input type={'text'}
-                     className={'text-like'}
-                     value={to}
-                     onChange={e=>updateWord(id, {to:e.target.value})}
-              />
-            </div>
-          </div>
-        )
-      }
+
+       <VirtualList
+         data={filteredList}
+         rowHeight={40}
+         renderRow={({from,to, id})=>
+           <div className={style.word}>
+             <div>
+               <input type={'text'}
+                      className={'text-like'}
+                      value={from}
+                      onChange={e=>updateWord(id, {from:e.target.value})}
+               />
+             </div>
+             <div>
+               <input type={'text'}
+                      className={'text-like'}
+                      value={to}
+                      onChange={e=>updateWord(id, {to:e.target.value})}
+               />
+             </div>
+           </div>}
+       />
       <Add
         clear={this.clear} search={search} list={list}/>
     </div>
@@ -71,14 +77,8 @@ export class Edit extends Component{
 
       {this.renderList()}
 
-      <button onClick={e=>{
-        e.preventDefault()
-        if(window.confirm('This will reset all your words and progress, are you sure')){
-          localStorage.clear()
-          window.location.reload()
-        }
 
-      }}>Reset app state to default</button>
+      <Settings/>
       <footer>
       <button className={' primary'} onClick={this.goToTraining}>Start learning ›</button>
       </footer>

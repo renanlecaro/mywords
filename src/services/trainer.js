@@ -6,6 +6,7 @@ let wordlist=[]
 
 import EventEmitter from 'events'
 import {getWordToAddToList} from "./suggest";
+import {getSetting} from "./settings";
 const events=new EventEmitter()
 
 try{
@@ -121,20 +122,36 @@ function addMinStepToWordList(){
 export function getNextWordToTrain() {
 
   let stepped=addMinStepToWordList()
-    .filter(word=>!word.minStep>0)
 
-  if(stepped.length){
-    let minStep=Math.min(...stepped.map(word=>word.minStep))
-    if(minStep){
-      return stepped.find(word=>word.minStep == minStep)
-    }
-    const notSeenYet=stepped.find(word=>!word.minStep)
-    if(notSeenYet) return  notSeenYet
-  }
-  return  addWordToList(getWordToAddToList())
+
+  return (
+    getWordAtMinStep(stepped.filter(word=>!word.minStep>0)) ||
+    getNewWord(stepped)  ||
+    addNewWord() ||
+    getWordAtMinStep(stepped.filter(({id})=>id!==trainingData[trainingData.length-1].id))
+  )
+
+
 }
 
+function getWordAtMinStep(list){
+  if(!list.length) return null
+  let minStep=Math.min(...list.map(word=>word.minStep))
+  if(minStep){
+    return list.find(word=>word.minStep == minStep)
+  }
+}
 
+function getNewWord(list){
+  const unseen=list.filter(word=>!word.minStep)
+  return unseen[unseen.length-1]
+}
+
+function addNewWord(){
+  if(getSetting().whenEmptyList!='rework'){
+    return addWordToList(getWordToAddToList())
+  }
+}
 
 
 export function registerResult({id, guessed}) {
@@ -147,7 +164,9 @@ export function registerResult({id, guessed}) {
 
   trainingData.push(event)
   const delay=analyseTrainingEvent(event)
-  showToast('We\'ll ask again in '+delay+' cards.')
+  if(getSetting().whenEmptyList!='rework'){
+    showToast('We\'ll ask again in '+delay+' cards.')
+  }
   localStorage.setItem('trainingData',JSON.stringify(trainingData))
   return  getNextWordToTrain()
 }
