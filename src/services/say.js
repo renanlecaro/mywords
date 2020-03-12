@@ -1,18 +1,12 @@
 import {getSetting} from "./settings";
 
-const synth=window.speechSynthesis
-let voice=null
-function parseVoices(){
-  voice=synth.getVoices()
-    .filter(v=>v.lang.startsWith('ru'))[0]
-}
-parseVoices()
-synth.addEventListener('voiceschanged',parseVoices)
+const synth=window.speechSynthesis;
+synth.getVoices();
 
 export function sayInRussian(toText) {
   if(!getSetting().useSounds) return;
-  if(!voice) return
+
   const utterance=new SpeechSynthesisUtterance(toText.replace(/\*/gi,''))
-  utterance.voice=voice
+  utterance.lang='ru_RU'
   synth.speak(utterance)
 }

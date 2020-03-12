@@ -1,6 +1,7 @@
 {
   "name": "my words",
   "short_name": "my words",
+  "description": "A minimal app to learn russian vocabulary from english.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
