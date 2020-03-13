@@ -1,5 +1,5 @@
 node_modules
 /*.log
 *.lock
-
+build
 package-lock.json
