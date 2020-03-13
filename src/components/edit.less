@@ -27,20 +27,19 @@ footer {
    padding: 20px;
    display: flex;
   justify-content: flex-end;
+  &:before{
+    content:"";
+    display: block;
+    position: absolute;
+    top: -40px;
+    left:0;right:0;bottom: 0;
+    background: linear-gradient(to bottom, #ffffff00,#ffffffff);
+    pointer-events: none;
+  }
+  button,a{
+    position: relative;
+  }
  }
-footer:before{
-  content:"";
-  display: block;
-  position: absolute;
-  top: -40px;
-  left:0;right:0;bottom: 0;
-  background: linear-gradient(to bottom, #ffffff00,#ffffffff);
-pointer-events: none;
-}
-
-footer button{
-  position: relative;
-}
 .word{
   height: 40px;
   position: relative;

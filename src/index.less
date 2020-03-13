@@ -54,8 +54,8 @@ span[input-placeholder-wrapper]{
   }
 }
 
-button{
-  display: flex;
+button,a[class*="button"]{
+  display: inline-flex;
   padding: 0.5em 0.75em;
   font-size: 16px;
   text-transform: uppercase;
@@ -64,6 +64,7 @@ button{
   color: #666;
   background: white;
   border:1px solid #666;
+  text-decoration: none;
   &.primary {
     color: white;
     border: none;

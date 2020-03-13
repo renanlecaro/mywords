@@ -1,8 +1,7 @@
 import { h, Component } from 'preact';
-import {addWordToList, getWordList, updateWord} from "../services/trainer";
-import {sameish} from "../services/sameish";
-import {sayInRussian} from "../services/say";
-import {Table} from "./table";
+import { Link } from 'preact-router/match';
+import {  getWordList, updateWord} from "../services/trainer";
+
 import VirtualList from 'preact-virtual-list';
 import style from './edit.less'
 import {SearchBox} from "./seachbox";
@@ -19,10 +18,6 @@ export class Edit extends Component{
   }
   componentWillUnmount() {
     this.clearListener()
-  }
-  goToTraining=e=>{
-    e.preventDefault()
-    this.props.go('train')
   }
   renderList(){
     const {list,search}=this.state;
@@ -77,11 +72,11 @@ export class Edit extends Component{
         onClick={this.clear}>
           Clear search
       </button>:
-        <button
-        className={' primary'}
-        onClick={this.goToTraining}>
+        <Link
+          href={'/train'}
+        className={'button primary'} >
         Start learning ›
-      </button>}
+      </Link>}
     </footer>
   }
   renderSearch(){

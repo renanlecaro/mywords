@@ -1,10 +1,11 @@
-import { h, Component } from 'preact';
+import {   Component } from 'preact';
 import {getNextWordToTrain, registerResult} from "../services/trainer";
 import {sameish} from "../services/sameish";
 import {sayInRussian} from "../services/say";
 import {ShowDiff} from "./diff";
 import style from './miniform.less'
-import {showToast} from "./notify";
+
+import { Link } from 'preact-router/match';
 
 export function starsSplit(word) {
   if(word.replace(/[^*]/gi,'').length!=2){
@@ -64,13 +65,9 @@ export class Train extends Component{
       word={word} answer={answer} setAnswer={this.setAnswer}
       onSubmitAnswer={this.onSubmitAnswer}/>
   }
-  backToEdit=e=>{
-    e.preventDefault()
-    this.props.go('edit')
-  }
-  render({go}) {
+  render() {
     return <div className={style.this}>
-      <button onClick={this.backToEdit}>‹ wordlist</button>
+      <Link className={' button '} href={'/'}>‹ wordlist</Link>
       {this.renderByMode()}
     </div>
   }
