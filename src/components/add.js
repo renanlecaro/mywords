@@ -134,5 +134,5 @@ export class Add extends Component{
 
 function isRussian(string='') {
   string=simplify(string)
-  return string.replace(/[^A-Za-z ]/gi,'').length<Math.floor(string.length/2)
+  return string.replace(/[\wа-я]/gi,'').length>Math.floor(string.length/2)
 }
