@@ -1,14 +1,17 @@
 const defaultSettings={
   whenEmptyList:'add-word',
-  useSounds:true
+  useSounds:true,
+  fullBackup:true,
+  restoreProgress:false,
 }
 
-let settings=defaultSettings
+let settings={}
 try{
-  settings=JSON.parse(localStorage.getItem('settings')) || defaultSettings
+  settings=JSON.parse(localStorage.getItem('settings')) || {}
 }catch (e) {
-  settings=defaultSettings
 }
+
+settings={...defaultSettings, ...settings}
 
 export function getSetting() {
   return settings

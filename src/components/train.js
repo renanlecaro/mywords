@@ -45,8 +45,9 @@ export class Train extends Component{
   }
   validateFailure=e=>{
     e.preventDefault()
-    const {word} = this.state;
-    this.setNewWord( registerResult({id:word.id,  guessed:false}) )
+    const {word,answer} = this.state;
+    this.setNewWord(
+      registerResult({id:word.id,  guessed:false, answer}) )
   }
   setAnswer=e=>{
     this.setState({answer:e.target.value})

@@ -1,6 +1,7 @@
 import {h,Component,Fragment} from "preact";
 import {getSetting, setSetting} from "../services/settings";
 import './settings.less'
+import {downloadBackup, restoreBackup} from "../services/backupAndLoad";
 
 export class Settings extends Component {
   state=getSetting()
@@ -9,7 +10,7 @@ export class Settings extends Component {
     setSetting(key, value)
   }
   render(props, state, context) {
-    const {whenEmptyList,useSounds} = this.state;
+    const {whenEmptyList,useSounds,fullBackup,restoreProgress} = this.state;
     return <div settings>
       <h2>App settings</h2>
       <label>When out of new words to learn</label>
@@ -46,15 +47,59 @@ export class Settings extends Component {
         Off
       </label>
 
-      <label>Reset the app (erases all content and progress)</label>
+
+      <label>Backup</label>
+      <label>
+        <input type={"radio"} name={'fullBackup'}
+               checked={!fullBackup}
+               onChange={e=>this.change('fullBackup',false)}/>
+        just words
+      </label>
+      <label>
+        <input type={"radio"} name={'fullBackup'}
+               checked={fullBackup}
+               onChange={e=>this.change('fullBackup',true)}/>
+        words and progress
+      </label>
+      <button onClick={e=>{
+        e.preventDefault()
+        downloadBackup(getSetting().fullBackup);
+      }}>Download</button>
+
+
+
+      <label>Restore</label>
+      <label>
+        <input type={"radio"} name={'restoreProgress'}
+               checked={!restoreProgress}
+               onChange={e=>this.change('restoreProgress',false)}/>
+        Only add missing words
+      </label>
+      <label>
+        <input type={"radio"} name={'restoreProgress'}
+               checked={restoreProgress}
+               onChange={e=>this.change('restoreProgress',true)}/>
+        Replace current state with backup
+      </label>
+      <input type={'file'} onChange={e=>{
+        restoreBackup(e.target,getSetting().restoreProgress)
+      }}/>
+
+
+
+
+
+      <label>Reset the app (will store a full)</label>
       <button onClick={e=>{
         e.preventDefault()
         if(window.confirm('This will reset all your words and progress, are you sure ?')){
+
+          downloadBackup(true)
           localStorage.clear()
           window.location.reload()
         }
-
       }}>Hard reset ...</button>
+
     </div>
   }
 }

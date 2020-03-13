@@ -157,12 +157,13 @@ function addNewWord(){
 }
 
 
-export function registerResult({id, guessed}) {
+export function registerResult({id, guessed,answer}) {
   const event={
     time:new Date(),
     id,
     guessed,
-    index:trainingData.length
+    index:trainingData.length,
+    answer
   }
 
   trainingData.push(event)
