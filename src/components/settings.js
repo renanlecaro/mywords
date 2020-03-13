@@ -3,7 +3,7 @@ import {getSetting, setSetting} from "../services/settings";
 
 import { Link } from 'preact-router/match';
 import {downloadBackup, restoreBackup} from "../services/backupAndLoad";
-
+import style from './settings.less'
 export class Settings extends Component {
   state=getSetting()
   change(key,value){
@@ -12,7 +12,7 @@ export class Settings extends Component {
   }
   render(props, state, context) {
     const {whenEmptyList,useSounds,fullBackup,restoreProgress} = this.state;
-    return <div settings  style={{padding:20}}>
+    return <div settings  className={style.this}>
 
       <Link
         href={'/'}
@@ -20,8 +20,13 @@ export class Settings extends Component {
         <i className={'fa fa-angle-left'}/>
         <span>Word List</span>
       </Link>
-      <form> 
-      <label>When out of new words to learn</label>
+      <form>
+      <h2>List mastered</h2>
+        <p>Whenever you guess a word right, we wait a bit before
+          asking you about it again. If you've mastered all the words in your list
+          but you keep training, we can either give you more words to learn or keep
+          training already know words.
+        </p>
       <label>
         <input type={"radio"} name={'whenEmptyList'}
                checked={whenEmptyList==='add-word'}
@@ -41,7 +46,11 @@ export class Settings extends Component {
         Study already known words
       </label>
 
-      <label>Read russian words out loud</label>
+        <h2>Audio</h2>
+        <p>We use the text to speech engine of your device to playback words while you're
+          learning them, but this might cut off your music if you like to train with music.
+          For this reason, you might want to turn that feature off.
+        </p>
       <label>
         <input type={"radio"} name={'useSounds'}
                checked={useSounds}
@@ -56,7 +65,13 @@ export class Settings extends Component {
       </label>
 
 
-      <label>Backup</label>
+        <h2>Backup</h2>
+        <p>You want to change on which device you are training ?
+          Then select "words and progress" below, generate your backup file, and load it
+          on another device. If you just want to share your vocabulary list with a friend,
+          select "just words" and they'll be able to import it to complete their existing
+          list.
+        </p>
       <label>
         <input type={"radio"} name={'fullBackup'}
                checked={!fullBackup}
@@ -69,14 +84,20 @@ export class Settings extends Component {
                onChange={e=>this.change('fullBackup',true)}/>
         words and progress
       </label>
-      <button onClick={e=>{
+      <button className={'primary'} onClick={e=>{
         e.preventDefault()
         downloadBackup(getSetting().fullBackup);
       }}>Download</button>
 
 
+        <h2>Restore</h2>
+        <p>If you restore a file that was exported with "only words" selected, then
+          we'll just add the words to the list.
+          If the file is a full backup, then you can choose to replace your current word
+          list and progress with the ones from this file. You can also just extract the words
+          from the backup. If a word is already present in your list, we won't touch it.
+        </p>
 
-      <label>Restore</label>
       <label>
         <input type={"radio"} name={'restoreProgress'}
                checked={!restoreProgress}
@@ -96,9 +117,14 @@ export class Settings extends Component {
 
 
 
+        <h2>Reset app</h2>
+        <p>This is the equivalent of uninstalling the app and reinstalling it.
+          It will trigger a download of a full backup, so that you can recover your
+          progress and word list if you made a mistake.
+        </p>
 
-      <label>Reset the app (will store a full)</label>
-      <button onClick={e=>{
+
+      <button className={'primary'} onClick={e=>{
         e.preventDefault()
         if(window.confirm('This will reset all your words and progress, are you sure ?')){
 
