@@ -63,20 +63,25 @@ export class Edit extends Component{
         clear={this.clear} search={search} list={list}/>
     </div>
   }
-  clear=()=>{
+  clear=(e)=>{
+    e&&e.preventDefault()
     this.setState({search:''})
     setTimeout(()=>this.searchInput.focus(),10)
   }
 
   renderFooter(){
     const {search} = this.state
-    if(search) return null
     return <footer>
-      <button
+      {search?<button
+        className={''}
+        onClick={this.clear}>
+          Clear search
+      </button>:
+        <button
         className={' primary'}
         onClick={this.goToTraining}>
         Start learning ›
-      </button>
+      </button>}
     </footer>
   }
   renderSearch(){
