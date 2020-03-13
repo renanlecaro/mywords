@@ -30,6 +30,28 @@ input[type="text"]{
   width: 100%;
   box-sizing: border-box;
   font-family: inherit;
+  border:1px solid #dedede;
+
+}
+
+
+span[input-placeholder-wrapper]{
+  position: relative;
+
+  display: inline-block;
+  >span{
+    display: block;
+    position:absolute;
+    left:0;
+    top:0;
+    pointer-events: none;
+    border:1px solid transparent;
+    padding: 10px 20px;
+    font-size: 20px;
+    line-height: 20px;
+    margin: 0;
+    opacity: 0.5;
+  }
 }
 
 button{

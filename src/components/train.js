@@ -93,7 +93,9 @@ class Ask extends Component {
 
         <h1>{word.from}</h1>
 
-      {Question({word, value:answer, onKeyUp:setAnswer, onRef:n=>this.input=n})}
+      {Question({word, value:answer,
+        onKeyUp:setAnswer,
+        onRef:n=>this.input=n})}
 
         <button className={'primary float-bottom'} type="submit">
           {answer ? 'Check' : 'I don\'t know'}
@@ -102,18 +104,22 @@ class Ask extends Component {
   }
 }
 
-export function Question({word, value, onKeyUp, onRef,showPlaceHolder}) {
+export function Question({word, value, onKeyUp,
+                           onRef,placeHolder=''}) {
 
     let parts=starsSplit(word.to)
+
     return <div className={style.fillTheBlank}>
       <span>{parts[0]}</span>
-      <input type="text"
-            placeHolder={showPlaceHolder?parts[1]:''}
-             ref={onRef}
-             style={{width:measureWidth(parts[1])}}
-             value={value}
-             onKeyUp={onKeyUp}
-      />
+      <span input-placeholder-wrapper>
+        <input type="text"
+               ref={onRef}
+               style={{width:measureWidth(parts[1])}}
+               value={value}
+               onKeyUp={onKeyUp}
+        />
+        <span>{!value && placeHolder || ''}</span>
+      </span>
       <span>{parts[2]}</span>
     </div>
 
@@ -156,22 +162,17 @@ class Nope extends Component{
   render({answer, word, confirm}, {check}) {
     return (
       <form onSubmit={this.checkCorrectAnswerGiven}   >
-
-        {/*<h1 className={'centered'}>"{word.from}"  is*/}
-        {/*  <strong>*/}
-        {/*    */}
-        {/*  </strong> in russian </h1>*/}
-        <label>Sorry that's wrong, it's <ShowDiff answer={answer} to={word.to}/></label>
+        <label>It was <ShowDiff answer={answer} to={word.to}/></label>
 
         <h1>{word.from}</h1>
 
-        {/*<label>Please type the correct answer below</label>*/}
+
         {Question({
           word,
           value:check,
           onKeyUp:e=>this.setState({check:e.target.value}),
           onRef:n=>this.input=n,
-          showPlaceHolder:true
+          placeHolder:<ShowDiff answer={answer} to={word.to}/>
         })}
         <button  className={'primary float-bottom'} disabled={!this.isCorrect()}>Next word</button>
       </form>
