@@ -1,6 +1,7 @@
 import {h,Component,Fragment} from "preact";
 import {getSetting, setSetting} from "../services/settings";
-import './settings.less'
+
+import { Link } from 'preact-router/match';
 import {downloadBackup, restoreBackup} from "../services/backupAndLoad";
 
 export class Settings extends Component {
@@ -11,8 +12,15 @@ export class Settings extends Component {
   }
   render(props, state, context) {
     const {whenEmptyList,useSounds,fullBackup,restoreProgress} = this.state;
-    return <div settings>
-      <h2>App settings</h2>
+    return <div settings  style={{padding:20}}>
+
+      <Link
+        href={'/'}
+        className={'button'} >
+        <i className={'fa fa-angle-left'}/>
+        <span>Word List</span>
+      </Link>
+      <form> 
       <label>When out of new words to learn</label>
       <label>
         <input type={"radio"} name={'whenEmptyList'}
@@ -99,7 +107,7 @@ export class Settings extends Component {
           window.location.reload()
         }
       }}>Hard reset ...</button>
-
+      </form>
     </div>
   }
 }

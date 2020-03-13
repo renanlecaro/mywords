@@ -66,17 +66,30 @@ export class Edit extends Component{
 
   renderFooter(){
     const {search} = this.state
-    return <footer>
-      {search?<button
-        className={''}
-        onClick={this.clear}>
+    if(search){
+      return <footer>
+        <button
+          className={''}
+          onClick={this.clear}>
           Clear search
-      </button>:
-        <Link
+        </button>
+      </footer>
+    }
+    return <footer>
+
+      <Link
+        href={'/settings'}
+        className={'button'} >
+        <i className={'fa fa-cog'}/>
+        <span>Settings</span>
+      </Link>
+      <div style={{flexGrow:1}}/>
+      <Link
           href={'/train'}
         className={'button primary'} >
-        Start learning ›
-      </Link>}
+        <span>Learn</span>
+        <i className={'fa fa-angle-right'}/>
+      </Link>
     </footer>
   }
   renderSearch(){
@@ -89,13 +102,9 @@ export class Edit extends Component{
   render(props, {list,search}) {
     if(!list) return 'loading'
     return <div className={ style.this}>
-
       {this.renderSearch()}
       {this.renderList()}
       {this.renderFooter()}
-      <Settings/>
-
-
     </div>
   }
 }

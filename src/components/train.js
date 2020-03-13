@@ -67,7 +67,10 @@ export class Train extends Component{
   }
   render() {
     return <div className={style.this}>
-      <Link className={' button '} href={'/'}>‹ wordlist</Link>
+      <Link className={' button '} href={'/'}>
+        <i className={'fa fa-angle-left'}/>
+        <span>Word List</span>
+      </Link>
       {this.renderByMode()}
     </div>
   }
