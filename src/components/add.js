@@ -91,7 +91,7 @@ export class Add extends Component{
 
     return <Fragment>
       <label suggestions-label>
-        Manual entry
+        Manual entry {isRussian()?'':'(*star* a word to only ask for that word)'}
       </label>
       <form onSubmit={this.onSubmit} manual-entry>
         <input type={'text'}
