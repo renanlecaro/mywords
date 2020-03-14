@@ -160,6 +160,8 @@ class Nope extends Component{
     }
   }
   render({answer, word, confirm}, {check}) {
+
+    let parts=starsSplit(word.to)
     return (
       <form onSubmit={this.checkCorrectAnswerGiven}   >
         <label>It was <ShowDiff answer={answer} to={word.to}/></label>
@@ -172,7 +174,7 @@ class Nope extends Component{
           value:check,
           onKeyUp:e=>this.setState({check:e.target.value}),
           onRef:n=>this.input=n,
-          placeHolder:<ShowDiff answer={answer} to={word.to}/>
+          placeHolder:<ShowDiff answer={answer} to={parts[1]}/>
         })}
         <button  className={'primary float-bottom'} disabled={!this.isCorrect()}>Next word</button>
       </form>

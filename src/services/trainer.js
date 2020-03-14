@@ -12,7 +12,6 @@ const events=new EventEmitter()
 try{
   wordlist=JSON.parse(localStorage.getItem('wordlist')) || []
 }catch (e) {
-  console.debug(e,'No saved word list')
   wordlist=[]
 }
 

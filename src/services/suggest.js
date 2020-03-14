@@ -34,11 +34,10 @@ export function getWordToAddToList(){
 let msgId=0
 export function suggestions(search='', cb) {
 
-  search=search.trim().toLowerCase()
+  search=search.replace(/^ +/,'').toLowerCase()
   const currentMsgId=msgId++
   const onResult=ev=>{
 
-    console.log('cb recieved',ev)
     if(ev.data.msgId==currentMsgId){
       ev.data.result && cb(ev.data.result)
       worker.removeEventListener("message", onResult);

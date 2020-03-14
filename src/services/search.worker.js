@@ -1,12 +1,10 @@
 
 import {wordMatch} from "./wordMatch";
 import {sameish} from "./sameish";
-import all from "./dicts/alltypes";
-import common from "./dicts/common";
+import big from "./dicts/big";
 
-import uniqBy from 'lodash/uniqBy';
+export const forAutocomplete=big
 
-export const forAutocomplete=uniqBy(all.concat(common), w=>w.to)
 
 
 let reject=[],nodupes=[]
