@@ -6,8 +6,17 @@ const synth=window.speechSynthesis;
 synth.getVoices();
 
 export function sayInRussian(toText) {
+  const voice=synth.getVoices().find(v=>v.lang.startsWith('ru'))
   if(!getSetting().useSounds) return;
-  const utterance=new SpeechSynthesisUtterance(toText.replace(/\*/gi,''))
-  utterance.lang='ru_RU'
+  const cleaned=toText.replace(/\*/gi,'')
+    .split(/\(|\//gi)[0]
+  const utterance=new SpeechSynthesisUtterance(cleaned)
+  if(voice){
+    utterance.voice=voice
+    utterance.lang=voice.lang
+  }else{
+    utterance.lang='ru_RU'
+  }
+
   synth.speak(utterance)
 }
