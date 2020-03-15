@@ -36,7 +36,7 @@ export class Edit extends Component{
        <VirtualList
          data={filteredList}
          rowHeight={40}
-         renderRow={({from,to, id})=>
+         renderRow={({from,to, id,minStep})=>
            <div className={style.word}>
              <div>
                <input type={'text'}
@@ -45,6 +45,8 @@ export class Edit extends Component{
                       onChange={e=>updateWord(id, {from:e.target.value})}
                />
              </div>
+             <div min-step>{minStep}</div>
+
              <div>
                <input type={'text'}
                       className={'text-like'}
