@@ -59,6 +59,7 @@ function analyseTrainingEvent({id, time, guessed,index} ){
 function wordCat(wordStats){
   if(!wordStats) return 'new'
   if(scheduleNext(wordStats)>=100) return 'known'
+  if(scheduleNext(wordStats)<10) return 'hot'
   return 'learning'
 
 }
