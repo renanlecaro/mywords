@@ -60,9 +60,9 @@ function scheduleNext({guessCount,
                         failCount,
                         guessInARowCount,
                         failInARowCount}){
-  // Known from the start, ask 100 cards later, then 1000, etc ..
-  if(!failCount){
-    return Math.floor(100*Math.pow(1.5, guessInARowCount))
+  
+  if(guessCount/(failCount+guessCount)>0.9){
+    return Math.floor(100*Math.pow(2.5, guessInARowCount))
   }
 
   // Learning and successfully guessed at least once, ask less and less often
