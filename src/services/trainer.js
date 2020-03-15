@@ -62,12 +62,12 @@ function scheduleNext({guessCount,
                         failInARowCount}){
   // Known from the start, ask 100 cards later, then 1000, etc ..
   if(!failCount){
-    return 100*Math.pow(1.5, guessInARowCount)
+    return Math.floor(100*Math.pow(1.5, guessInARowCount))
   }
 
   // Learning and successfully guessed at least once, ask less and less often
   if(guessInARowCount){
-    return 10*Math.pow(1.5, guessInARowCount)
+    return Math.floor(10*Math.pow(1.5, guessInARowCount))
   }
   // Still learning, ask super often
   return 2
@@ -123,7 +123,7 @@ export function getNextWordToTrain() {
 
 
   return (
-    getWordAtMinStep(stepped.filter(word=>!word.minStep>0)) ||
+    getWordAtMinStep(stepped.filter(word=>word.minStep<=0)) ||
     getNewWord(stepped)  ||
     addNewWord() ||
     getWordAtMinStep(stepped.filter(({id})=>id!==trainingData[trainingData.length-1].id))
