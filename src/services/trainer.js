@@ -163,9 +163,7 @@ export function registerResult({id, guessed,answer}) {
 
   trainingData.push(event)
   const delay=analyseTrainingEvent(event)
-  if(getSetting().whenEmptyList!='rework'){
-    showToast('We\'ll ask again in '+delay+' cards.')
-  }
+  showToast('We\'ll ask again in '+delay+' cards.')
   localStorage.setItem('trainingData',JSON.stringify(trainingData))
   return  getNextWordToTrain()
 }
