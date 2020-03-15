@@ -56,18 +56,25 @@ function analyseTrainingEvent({id, time, guessed,index} ){
   return delay
 }
 
+function wordCat(wordStats){
+  if(!wordStats) return 'new'
+  if(scheduleNext(wordStats)>=100) return 'known'
+  return 'learning'
+
+}
+
 function scheduleNext({guessCount,
                         failCount,
                         guessInARowCount,
                         failInARowCount}){
-  
+
   if(guessCount/(failCount+guessCount)>0.9){
     return Math.floor(100*Math.pow(2.5, guessInARowCount))
   }
 
   // Learning and successfully guessed at least once, ask less and less often
   if(guessInARowCount){
-    return Math.floor(10*Math.pow(1.5, guessInARowCount))
+    return Math.floor(4*Math.pow(1.5, guessInARowCount))
   }
   // Still learning, ask super often
   return 2
@@ -112,7 +119,9 @@ function addMinStepToWordList(){
     .map(word=>{
       const stat=stats[word.id]
       return {
-        ...word, minStep:stat && stat.minStep - currentStep
+        ...word,
+        status:wordCat(stat),
+        minStep:stat && stat.minStep - currentStep
       }
     })
 }
