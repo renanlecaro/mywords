@@ -103,12 +103,12 @@ function scheduleNext({guessCount,
                         failInARowCount}){
 
   if(guessCount/(failCount+guessCount)>0.9){
-    return Math.floor(100*Math.pow(2.5, guessInARowCount))
+    return Math.floor(100*Math.pow(5, guessInARowCount))
   }
 
   // Learning and successfully guessed at least once, ask less and less often
   if(guessInARowCount){
-    return Math.floor(4*Math.pow(1.5, guessInARowCount))
+    return Math.floor(5*Math.pow(3, guessInARowCount))
   }
   // Still learning, ask super often
   return 2
