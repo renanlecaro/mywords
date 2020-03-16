@@ -1,0 +1,72 @@
+@import "./colors";
+
+.page {
+  padding: 20px;
+}
+
+.graph {
+
+  margin: 40px 0;
+
+  line-height: 2em;
+
+  > div {
+    position: relative;
+    > div {
+      // Columns
+      overflow: hidden;
+
+      margin-left: 80px;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: flex-start;
+      margin-bottom: 10px;
+
+      > div {
+        // bar part
+        flex-grow: 0;
+        flex-shrink: 0;
+        position: relative;
+        height: 2em;
+        &:first-child{
+          border-radius: 4px 0 0 4px;
+        }
+        &:last-child{
+          border-radius: 0 4px  4px 0;
+        }
+
+        &[class="train-new"]{
+          background: @train-new;
+        }
+        &[class="train-hot"]{
+          background: @train-hot;
+        }
+        &[class="train-learning"]{
+          background: @train-learning;
+        }
+        &[class="train-known"]{
+          background: @train-known;
+        }
+
+        > span {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: white;
+        }
+      }
+    }
+
+    > span {
+      // time info
+      font-size: 12px;
+      margin-right: 5px;
+      position: absolute;
+      left:0;
+      top: 0;
+      text-align: center;
+    }
+  }
+}

@@ -7,6 +7,7 @@ let wordlist=[]
 import EventEmitter from 'events'
 import {getWordToAddToList, tellWorkerAboutBanedWords} from "./suggest";
 import {getSetting} from "./settings";
+import {dateKey} from "./formatDate";
 const events=new EventEmitter()
 
 try{
@@ -30,30 +31,59 @@ try{
 }
 
 let stats={}
+let catStats=[]
 
-function analyseTrainingEvent({id, time, guessed,index} ){
-  stats[id]=stats[id]||{
+
+function trackChange(event,cb){
+  const {id, time, guessed,index}=event
+  const day=dateKey(time)
+  let lastDay=catStats[catStats.length-1]
+  if(!lastDay){
+    catStats.push({day})
+  }else if(lastDay.day!=day){
+    catStats.push({...lastDay, day})
+  }
+  lastDay=catStats[catStats.length-1]
+  if(stats[id]){
+    const prevCat=wordCat(getStatsById(id))
+    lastDay[prevCat]=(lastDay[prevCat]||0)-1
+  }
+  const result=cb()
+  const newCat=wordCat(getStatsById(id))
+  lastDay[newCat]=(lastDay[newCat]||0)+1
+  return result
+}
+
+function getStatsById(id){
+  return stats[id]||{
     guessCount:0,
     failCount:0,
     guessInARowCount:0,
     failInARowCount:0,
   }
-  const s=stats[id]
-  s.lastSeen=index
+}
 
-  if(guessed){
-    s.guessCount++
-    s.guessInARowCount++
-    s.failInARowCount=0
-  } else {
-    s.failCount++
-    s.guessInARowCount=0
-    s.failInARowCount++
-  }
+function analyseTrainingEvent(event ){
+  return trackChange(event, ()=>{
+    const {id, time, guessed,index}=event
+    stats[id]=getStatsById(id)
+    const s=stats[id]
+    s.lastSeen=index
 
-  const delay=scheduleNext(s)
-  s.minStep= index+delay
-  return delay
+    if(guessed){
+      s.guessCount++
+      s.guessInARowCount++
+      s.failInARowCount=0
+    } else {
+      s.failCount++
+      s.guessInARowCount=0
+      s.failInARowCount++
+    }
+
+    const delay=scheduleNext(s)
+    s.minStep= index+delay
+    return delay
+  })
 }
 
 function wordCat(wordStats){
@@ -62,6 +92,9 @@ function wordCat(wordStats){
   if(scheduleNext(wordStats)<10) return 'hot'
   return 'learning'
 
+}
+export function getCatStats() {
+  return catStats
 }
 
 function scheduleNext({guessCount,
@@ -82,6 +115,8 @@ function scheduleNext({guessCount,
 }
 
 trainingData.forEach(analyseTrainingEvent)
+
+console.table(catStats)
 
 let  listeners=[]
 export function getWordList(cb) {

@@ -6,6 +6,7 @@ import {ToastDisplay} from "./components/notify";
 import '@fortawesome/fontawesome-free/css/all.css'
 import Router from 'preact-router';
 import {Settings} from "./components/settings";
+import {Charts} from "./components/charts";
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
         <Edit path="/"/>
         <Train path="/train"/>
         <Settings path="/settings"/>
+        <Charts path="/charts"/>
       </Router>
     </div>
   );

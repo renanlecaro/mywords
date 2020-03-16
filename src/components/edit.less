@@ -1,3 +1,4 @@
+@import "./colors";
 .this{
 
   div[class="full-list"]{
@@ -30,7 +31,9 @@ footer {
   button,a{
     position: relative;
   }
+
  }
+
 .word{
   height: 40px;
   position: relative;
@@ -50,19 +53,18 @@ footer {
       bottom: 0;
       width: 5px;
       pointer-events: none;
-      opacity: 0.5;
       &[class="new"]{
-        background: #333;
+        background: @train-new;
       }
 
       &[class="learning"]{
-        background: orange;
+        background: @train-learning;
       }
       &[class="known"]{
-        background: green;
+        background: @train-known;
       }
       &[class="hot"]{
-        background: red;
+        background: @train-hot;
       }
 
     }

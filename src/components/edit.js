@@ -7,7 +7,6 @@ import style from './edit.less'
 import {SearchBox} from "./seachbox";
 import {wordMatch} from "../services/wordMatch";
 import {Add} from "./add";
-import {Settings} from "./settings";
 export class Edit extends Component{
   state={
     list:null,
@@ -81,10 +80,18 @@ export class Edit extends Component{
 
       <Link
         href={'/settings'}
-        className={'button'} >
+        className={'button'} style={{marginRight:5}} >
         <i className={'fa fa-cog'}/>
-        <span>Settings</span>
+        {/*<span>Settings</span>*/}
       </Link>
+      <Link
+        href={'/charts'}
+        className={'button'} >
+        <i className={'fa fa-chart-area'}/>
+        {/*<span>Settings</span>*/}
+      </Link>
+
+
       <div style={{flexGrow:1}}/>
       <Link
           href={'/train'}
