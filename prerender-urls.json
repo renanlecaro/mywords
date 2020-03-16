@@ -8,5 +8,8 @@
   },
   {
     "url": "/settings"
+  },
+  {
+    "url": "/charts"
   }
 ]
