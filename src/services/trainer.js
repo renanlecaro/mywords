@@ -116,7 +116,7 @@ function scheduleNext({guessCount,
 
 trainingData.forEach(analyseTrainingEvent)
 
-console.table(catStats)
+
 
 let  listeners=[]
 export function getWordList(cb) {
