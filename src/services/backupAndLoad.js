@@ -26,6 +26,18 @@ function downloadJSON(object) {
 
 }
 
+export function importWords(wordlist) {
+
+  const reject=getListOfRussianWords()
+  let  added=0
+  wordlist.forEach(word=>{
+    if(!reject.find(w=>sameish(w,word.to))){
+      addWordToList(word)
+      added++
+    }
+  })
+  showToast(added+' words added to your list')
+}
 export function restoreBackup(fileInput, restoreProgress) {
 
   var reader = new FileReader();
@@ -38,15 +50,7 @@ export function restoreBackup(fileInput, restoreProgress) {
       localStorage.setItem('trainingData',JSON.stringify(trainingData))
       window.location.reload()
     }else{
-      const reject=getListOfRussianWords()
-      let  added=0
-      wordlist.forEach(word=>{
-        if(!reject.find(w=>sameish(w,word.to))){
-          addWordToList(word)
-          added++
-        }
-      })
-      showToast(added+' words added to your list')
+      importWords(wordlist)
     }
   }
 }

@@ -132,7 +132,7 @@ export class Add extends Component{
   }
 }
 
-function isRussian(string='') {
+export function isRussian(string='') {
   string=simplify(string)
   return string
     .replace(/[аАбБвВгГдДеЕёЁжЖзЗиИйЙкКлЛмМнНоОпПрРсСтТуУфФхХцЦчЧшШщЩъЪыЫьЬэЭюЮяЯ]/gi,'')

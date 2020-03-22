@@ -7,6 +7,7 @@ import Router from 'preact-router';
 import {Settings} from "./components/settings";
 import {Charts} from "./components/charts";
 import './index.less'
+import {BatchAdd} from "./components/BatchAdd";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Train path="/train"/>
         <Settings path="/settings"/>
         <Charts path="/charts"/>
+        <BatchAdd path="/batch"/>
       </Router>
     </div>
   );
