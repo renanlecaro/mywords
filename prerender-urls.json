@@ -11,5 +11,8 @@
   },
   {
     "url": "/charts"
+  },
+  {
+    "url": "/batch"
   }
 ]
