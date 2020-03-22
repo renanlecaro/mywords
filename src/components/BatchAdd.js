@@ -3,6 +3,9 @@ import {showToast} from "./notify";
 import {importWords} from "../services/backupAndLoad";
 import {isRussian} from "./add";
 import style from './BatchAdd.less'
+function splitUsing(val, regex) {
+return val.split(regex).map(i=>i.trim()).filter(i=>i);
+}
 export class BatchAdd extends Component {
   state={
     from:'',
@@ -21,8 +24,12 @@ export class BatchAdd extends Component {
       return showToast('The russian words seem in the wrong place')
     }
 
-    let splitFrom=from.split(/[,\n;]/gi).map(i=>i.trim()).filter(i=>i);
-    let splitTo=to.split(/[,\n;]/gi).map(i=>i.trim()).filter(i=>i);
+    let splitFrom=splitUsing(from,/[,\n;]/gi)
+    let splitTo=splitUsing(to,/[,\n;]/gi)
+    if(splitFrom.length==1 && from.length>10){
+       splitFrom=splitUsing(from,/ /gi)
+       splitTo=splitUsing(to,/ /gi)
+    }
     if(splitFrom.length!==splitTo.length) return showToast('Please add one translation per word')
     importWords(splitFrom.map((from,i)=>({
       from,
