@@ -12,10 +12,7 @@ export function SearchBox({value, save , onRef,clear}) {
       ref={onRef}
     />
     <i className={'fa fa-search '} searchicon/>
-    {!!value.length &&
-        <i onClick={clear}
-           className={'fa fa-times '} clearicon/>
-    }
+
   </label>
 
 }

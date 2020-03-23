@@ -51,6 +51,7 @@ function trackChange(event,cb){
   const result=cb()
   const newCat=wordCat(getStatsById(id))
   lastDay[newCat]=(lastDay[newCat]||0)+1
+  events.emit('stats', catStats)
   return result
 }
 
@@ -93,8 +94,10 @@ function wordCat(wordStats){
   return 'learning'
 
 }
-export function getCatStats() {
-  return catStats
+export function getCatStats(cb) {
+  events.on('stats',cb)
+  cb(catStats)
+  return ()=>events.off('stats',cb)
 }
 
 function scheduleNext({guessCount,
@@ -118,7 +121,6 @@ trainingData.forEach(analyseTrainingEvent)
 
 
 
-let  listeners=[]
 export function getWordList(cb) {
   events.on('change',cb)
   cb(addMinStepToWordList())

@@ -36,7 +36,7 @@ export class Edit extends Component{
          data={filteredList}
          rowHeight={40}
          renderRow={({from,to, id,minStep,status})=>
-           <div className={style.word}>
+           <div className={style.word +' '+status}>
              <div>
                <input type={'text'}
                       className={'text-like'}
@@ -44,7 +44,6 @@ export class Edit extends Component{
                       onChange={e=>updateWord(id, {from:e.target.value})}
                />
              </div>
-             <div min-step className={status}></div>
 
              <div>
                <input type={'text'}

@@ -6,6 +6,7 @@ import {ShowDiff} from "./diff";
 import style from './train.less'
 
 import { Link } from 'preact-router/match';
+import {StatsBackground} from "./charts";
 
 export function starsSplit(word) {
   if(word.replace(/[^*]/gi,'').length!=2){
@@ -67,10 +68,8 @@ export class Train extends Component{
   }
   render() {
     return <div className={style.this}>
-      <Link className={' button '} href={'/'}>
-        <i className={'fa fa-angle-left'}/>
-        <span>Word List</span>
-      </Link>
+      <StatsBackground/>
+
       {this.renderByMode()}
     </div>
   }
@@ -97,7 +96,7 @@ class Ask extends Component {
         onKeyUp:setAnswer,
         onRef:n=>this.input=n})}
 
-        <button className={'primary float-bottom'} type="submit">
+        <button className={' float-bottom'} type="submit">
           {answer ? 'Check' : 'I don\'t know'}
         </button>
       </form>

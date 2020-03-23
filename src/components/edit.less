@@ -19,15 +19,7 @@ footer {
    padding: 20px;
    display: flex;
   justify-content: flex-end;
-  &:before{
-    content:"";
-    display: block;
-    position: absolute;
-    top: -40px;
-    left:0;right:0;bottom: 0;
-    background: linear-gradient(to bottom, #ffffff00,#ffffffff);
-    pointer-events: none;
-  }
+  background: rgba(0,0,0,0.5);
   button,a{
     position: relative;
   }
@@ -38,6 +30,19 @@ footer {
   height: 40px;
   position: relative;
   width: 100%;
+  color: white;
+  &[class*="new"]{
+    background: @train-new;
+  }
+  &[class*="learning"]{
+    background: @train-learning;
+  }
+  &[class*="known"]{
+    background: @train-known;
+  }
+  &[class*="hot"]{
+    background: @train-hot;
+  }
 
 
   >div{
@@ -53,29 +58,16 @@ footer {
       bottom: 0;
       width: 5px;
       pointer-events: none;
-      &[class="new"]{
-        background: @train-new;
-      }
-
-      &[class="learning"]{
-        background: @train-learning;
-      }
-      &[class="known"]{
-        background: @train-known;
-      }
-      &[class="hot"]{
-        background: @train-hot;
-      }
 
     }
     &:last-child{
       left: 50%;
     }
     input{
-      &:not(:focus){
-        border-color: transparent;
-        background: transparent;
-      }
+      color: inherit;
+      background: transparent;
+      border-color: transparent;
+
     }
   }
 }
