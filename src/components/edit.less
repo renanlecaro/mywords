@@ -16,12 +16,19 @@ footer {
    bottom: 0;
    left: 0;
    right: 0;
-   padding: 20px;
    display: flex;
   justify-content: flex-end;
-  background: rgba(0,0,0,0.5);
+  background: white;
   button,a{
     position: relative;
+    border:none;
+    display: block;
+    line-height: 20px;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    text-transform: uppercase;
+    min-width: 40px;
   }
 
  }
@@ -31,18 +38,6 @@ footer {
   position: relative;
   width: 100%;
   color: white;
-  &[class*="new"]{
-    background: @train-new;
-  }
-  &[class*="learning"]{
-    background: @train-learning;
-  }
-  &[class*="known"]{
-    background: @train-known;
-  }
-  &[class*="hot"]{
-    background: @train-hot;
-  }
 
 
   >div{
@@ -66,7 +61,7 @@ footer {
     input{
       color: inherit;
       background: transparent;
-      border-color: transparent;
+      border: none;
 
     }
   }

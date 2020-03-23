@@ -78,25 +78,21 @@ export class Edit extends Component{
     return <footer>
 
       <Link
-        href={'/settings'}
-        className={'button'} style={{marginRight:5}} >
+        href={'/settings'}  >
         <i className={'fa fa-cog'}/>
       </Link>
       <Link
-        href={'/charts'}
-        className={'button'} style={{marginRight:5}}>
+        href={'/charts'}  >
         <i className={'fa fa-chart-area'}/>
       </Link>      <Link
-        href={'/batch'}
-        className={'button'} >
+        href={'/batch'} >
         <i className={'fa fa-list'}/>
       </Link>
 
 
       <div style={{flexGrow:1}}/>
       <Link
-          href={'/train'}
-        className={'button primary'} >
+          href={'/train'}  >
         <span>Learn</span>
         <i className={'fa fa-angle-right'}/>
       </Link>

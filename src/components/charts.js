@@ -42,7 +42,7 @@ function BarChart({data,columns}) {
             columns.map(column=>{
               const percent=Math.round(atTime[column]/maxH*100)
               const abs=window.innerHeight * percent/100
-              return <div className={'train-'+column}
+              return <div className={ column}
                           style={{
                 height:percent+'%'
               }}>
