@@ -3,6 +3,7 @@ import { h, Component } from 'preact';
 import style from './charts.less'
 import {getCatStats, getListOfRussianWords, getWordList} from "../services/trainer";
 import {Link} from "preact-router/match";
+import list from "less/lib/less/functions/list";
 
 
 export class Charts extends Component{
@@ -76,14 +77,24 @@ export class StatsBackground extends Component{
   }
   barH(val){
     const {list} = this.state
-    return Math.round(val/(list.length||1)*100)+'%'
+    return (val/(list.length||1)*100)
   }
   render(){
     const {hot, learning, known} = this.state.stats;
-    return <div className={style.statsBackground}>
-      <div className={'hot'} style={{height: this.barH(hot)}}/>
-      <div className={'learning'} style={{height: this.barH(learning)}}/>
-      <div className={'known'} style={{height: this.barH(known)}}/>
-    </div>
+    const P_new=(
+      this.state.list.length - (hot+learning+known) )/
+      this.state.list.length * 100;
+    const P_learn = P_new+this.barH(hot);
+    const P_known = P_learn+this.barH(learning);
+    const background = `linear-gradient(
+      #5eb3d9 0%,
+      #0084c8 ${P_new.toFixed(2)}%,
+      #005c94 ${P_learn.toFixed(2)}%,
+      #0e232e ${P_known.toFixed(2)}%,
+      #0e232e 100%
+    )`.replace(/ *\n */gi, ' ');
+    console.log(background)
+    return <div className={style.statsBackground}
+    style={{background}}/>
   }
 }

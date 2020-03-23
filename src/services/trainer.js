@@ -36,6 +36,7 @@ let catStats=[]
 
 function trackChange(event,cb){
   const {id, time, guessed,index}=event
+  if(!wordlist.find(w=>w.id==id)) return cb()
   const day=dateKey(time)
   let lastDay=catStats[catStats.length-1]
   if(!lastDay){
