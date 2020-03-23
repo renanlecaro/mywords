@@ -23,7 +23,7 @@
       flex-direction: column;
       align-items: stretch;
       justify-content: flex-end;
-      height: calc( 100vh   - 2em);
+      height: calc( 100vh   - 4em);
 
 
       > div {
@@ -74,10 +74,41 @@
   left: 0;
   right: 0;
   height: 100vh;
-  //background: @train-new;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-
-
+  &[class*="new"]{
+    background: @train-new;
+  }
+  &[class*="hot"]{
+    background: @train-hot;
+  }
+  &[class*="learning"]{
+    background: @train-learning;
+  }
+  &[class*="known"]{
+    background: @train-known;
+  }
+  >div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: flex-start;
+    background: @train-new;
+    >span{
+      display: block;
+      height: 1em;
+      &[class*="hot"]{
+        background: @train-hot;
+      }
+      &[class*="learning"]{
+        background: @train-learning;
+      }
+      &[class*="known"]{
+        background: @train-known;
+      }
+    }
+  }
 }

@@ -56,7 +56,6 @@ export class Train extends Component{
   }
   renderByMode(){
     const {word,answer,mode} = this.state;
-    if(!word) return 'loading'
 
     if(mode==='incorrect'){
       return <Nope answer={answer} word={word} confirm={this.validateFailure}
@@ -67,8 +66,9 @@ export class Train extends Component{
       onSubmitAnswer={this.onSubmitAnswer}/>
   }
   render() {
+    if(!this.state.word) return 'loading'
     return <div className={style.this}>
-      <StatsBackground/>
+      <StatsBackground status={this.state.word.status}/>
 
       {this.renderByMode()}
     </div>

@@ -14,12 +14,12 @@ export class Settings extends Component {
     const {whenEmptyList,useSounds,fullBackup,restoreProgress} = this.state;
     return <div settings  className={style.this}>
 
-      <Link
-        href={'/'}
-        className={'button'} >
-        <i className={'fa fa-angle-left'}/>
-        <span>Word List</span>
-      </Link>
+      {/*<Link*/}
+      {/*  href={'/'}*/}
+      {/*  className={'button'} >*/}
+      {/*  <i className={'fa fa-angle-left'}/>*/}
+      {/*  <span>Word List</span>*/}
+      {/*</Link>*/}
       <form>
       <h2>List mastered</h2>
         <p>Whenever you guess a word right, we wait a bit before

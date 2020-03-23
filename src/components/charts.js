@@ -70,26 +70,21 @@ export class StatsBackground extends Component{
     this.clear1()
     this.clear2()
   }
-  barH(val){
+  barW(val){
     const {list} = this.state
-    return (val/(list.length||1)*100)
+    return (val/(list.length||1)*100)+'%'
   }
+  height=window.innerHeight;
   render(){
     const {hot, learning, known} = this.state.stats;
-    const P_new=(
-      this.state.list.length - (hot+learning+known) )/
-      this.state.list.length * 100;
-    const P_learn = P_new+this.barH(hot);
-    const P_known = P_learn+this.barH(learning);
-    const background = `linear-gradient(
-      #5eb3d9 0%,
-      #0084c8 ${P_new.toFixed(2)}%,
-      #005c94 ${P_learn.toFixed(2)}%,
-      #0e232e ${P_known.toFixed(2)}%,
-      #0e232e 100%
-    )`.replace(/ *\n */gi, ' ');
-    console.log(background)
-    return <div className={style.statsBackground}
-    style={{background}}/>
+    return <div className={style.statsBackground+' '+this.props.status}
+    style={{height:this.height}}>
+      <div>
+        <span className={'known'} style={{width:this.barW(known)}}/>
+        <span className={'learning'} style={{width:this.barW(learning)}}/>
+        <span className={'hot'} style={{width:this.barW(hot)}}/>
+      </div>
+    </div>
+
   }
 }
