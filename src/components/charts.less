@@ -1,40 +1,37 @@
 @import "./colors";
 
 .page {
-  padding: 20px;
+  padding: 0;
+  overflow-y: hidden;
+  height: 100vh;
 }
 
 .graph {
 
-  margin: 40px 0;
-
+  padding-bottom: 2em;
   line-height: 2em;
 
+  display: flex;
+  flex-direction: row;
   > div {
     position: relative;
     > div {
       // Columns
       overflow: hidden;
 
-      margin-left: 80px;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: stretch;
-      justify-content: flex-start;
-      margin-bottom: 10px;
+      justify-content: flex-end;
+      height: calc( 100vh   - 2em);
+
 
       > div {
         // bar part
         flex-grow: 0;
         flex-shrink: 0;
         position: relative;
-        height: 2em;
-        &:first-child{
-          border-radius: 4px 0 0 4px;
-        }
-        &:last-child{
-          border-radius: 0 4px  4px 0;
-        }
+        width: 4em;
 
         &[class="train-new"]{
           background: @train-new;
@@ -62,10 +59,10 @@
     > span {
       // time info
       font-size: 12px;
-      margin-right: 5px;
       position: absolute;
       left:0;
-      top: 0;
+      right: 0;
+      top: 100%;
       text-align: center;
     }
   }

@@ -17,20 +17,12 @@ export class Charts extends Component{
     this.clear()
   }
 
-
   render(){
-    return <div className={style.page}>
+    return <div className={style.page}  >
 
-      <Link className={' button '} href={'/'}>
-        <i className={'fa fa-angle-left'}/>
-        <span>Word List</span>
-      </Link>
       <BarChart
         data={this.state.stats}
-        columns={[,
-          {name:'Known', key:'known'},
-          {name:'Learning', key:'learning'},
-          {name:'Hot', key:'hot'}
+        columns={[ 'hot','learning','known'
         ]}
       />
     </div>
@@ -38,7 +30,7 @@ export class Charts extends Component{
 }
 
 function BarChart({data,columns}) {
-  const maxH=Math.max(...data.map(dat=>columns.map(col=>dat[col.key]).reduce((a,b)=>(a||0)+(b||0))))
+  const maxH=Math.max(...data.map(dat=>columns.map(col=>dat[col]).reduce((a,b)=>(a||0)+(b||0))))
 
   return <div className={style.graph}>
     {
@@ -48,10 +40,13 @@ function BarChart({data,columns}) {
           <div>
           {
             columns.map(column=>{
-              return <div className={'train-'+column.key} style={{
-                width:Math.round(atTime[column.key]/maxH*100)+'%'
+              const percent=Math.round(atTime[column]/maxH*100)
+              const abs=window.innerHeight * percent/100
+              return <div className={'train-'+column}
+                          style={{
+                height:percent+'%'
               }}>
-                <span>{atTime[column.key]}</span>
+                  {abs > 20 && <span>{atTime[column]}</span>}
               </div>
             })
           }</div>
