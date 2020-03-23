@@ -35,8 +35,8 @@ export class Edit extends Component{
        <VirtualList
          data={filteredList}
          rowHeight={40}
-         renderRow={({from,to, id,minStep,status})=>
-           <div className={style.word +' '+status}>
+         renderRow={({from,to, id, status})=>
+           <div status={status} className={style.word}>
              <div>
                <input type={'text'}
                       className={'text-like'}

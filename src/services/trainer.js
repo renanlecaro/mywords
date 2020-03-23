@@ -88,12 +88,11 @@ function analyseTrainingEvent(event ){
   })
 }
 
+export const wordCatsList=  ['0','1','2','3','4','5','6','7','8'];
 function wordCat(wordStats){
-  if(!wordStats) return 'new'
-  if(scheduleNext(wordStats)>=100) return 'known'
-  if(scheduleNext(wordStats)<10) return 'hot'
-  return 'learning'
-
+  if(!wordStats) return '0'
+  const log=Math.ceil(Math.log10(scheduleNext(wordStats)))
+  return Math.min(log, 8).toString()
 }
 export function getCatStats(cb) {
   events.on('stats',cb)

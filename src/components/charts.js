@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 
 import style from './charts.less'
-import {getCatStats, getListOfRussianWords, getWordList} from "../services/trainer";
+import {getCatStats, getListOfRussianWords, getWordList, wordCatsList} from "../services/trainer";
 import {Link} from "preact-router/match";
 import list from "less/lib/less/functions/list";
 
@@ -22,13 +22,11 @@ export class Charts extends Component{
 
       <BarChart
         data={this.state.stats}
-        columns={[ 'hot','learning','known'
-        ]}
+        columns={wordCatsList}
       />
     </div>
   }
 }
-
 function BarChart({data,columns}) {
   const maxH=Math.max(...data.map(dat=>columns.map(col=>dat[col]).reduce((a,b)=>(a||0)+(b||0))))
 
@@ -42,7 +40,7 @@ function BarChart({data,columns}) {
             columns.map(column=>{
               const percent=Math.round(atTime[column]/maxH*100)
               const abs=window.innerHeight * percent/100
-              return <div className={ column}
+              return <div status={ column}
                           style={{
                 height:percent+'%'
               }}>
@@ -76,13 +74,16 @@ export class StatsBackground extends Component{
   }
   height=window.innerHeight;
   render(){
-    const {hot, learning, known} = this.state.stats;
-    return <div className={style.statsBackground+' '+this.props.status}
+    return <div className={style.statsBackground } status={this.props.status}
     style={{height:this.height}}>
-      <div>
-        <span className={'known'} style={{width:this.barW(known)}}/>
-        <span className={'learning'} style={{width:this.barW(learning)}}/>
-        <span className={'hot'} style={{width:this.barW(hot)}}/>
+      <div status={'0'}>
+        {
+          wordCatsList.map(s=>{
+          const width=this.barW(this.state.stats[s])
+           return  <span status={s}
+                  style={{width}}/>
+          })
+        }
       </div>
     </div>
 
