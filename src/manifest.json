@@ -4,9 +4,9 @@
   "description": "A minimal app to learn russian vocabulary from english.",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#0e232e",
-  "theme_color": "#0e232e",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "/assets/icons/android-chrome-192x192.png",
