@@ -1,4 +1,6 @@
 @import "./colors";
+
+
 .this{
 
   div[class="full-list"]{
@@ -24,25 +26,31 @@
 
   background: #013551;
   color:white;
+  line-height: 20px;
+  font-size: 20px;
   input[type="text"]{
     background: none;
     color: inherit;
     border:none;
-    line-height: 19px;
+    line-height: inherit;
+    padding: 20px 60px;
     border-radius: 0;
-    padding: 10px 60px;
-    font-size:20px;
+    font-size:inherit;
   }
   >i[searchicon]{
     pointer-events: none;
     position: absolute;
-    top:10px;
-    left:10px;
-    font-size: 20px;
+    top:20px;
+    left:0;
+    width: 60px;
+    text-align: center;
+
+    font-size:inherit;
+    line-height: inherit;
   }
 
   &+*{
-    margin-top: 40px;
+    margin-top: 60px;
   }
 }
 
@@ -61,7 +69,7 @@ footer {
     border:none;
     display: block;
     line-height: 20px;
-    padding: 10px;
+    padding: 20px;
     text-decoration: none;
     color: inherit;
     text-transform: uppercase;
@@ -72,7 +80,7 @@ footer {
  }
 
 .word{
-  height: 40px;
+  height: 60px;
   position: relative;
   width: 100%;
   &:nth-child(2n){
@@ -91,7 +99,8 @@ footer {
     input{
       color: inherit;
       border: none;
-
+    line-height: 60px;
+      padding: 0 0 0 20px ;
       font-weight: bold;
       font-size: 16px;
       background: transparent;
@@ -106,7 +115,7 @@ footer {
     margin:auto 0;
     width:20px;
     height: 20px;
-    border-radius: 10px;
+    border-radius: 2px;
     pointer-events: none;
 
   }

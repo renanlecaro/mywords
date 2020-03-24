@@ -34,7 +34,7 @@ export class Edit extends Component{
 
        <VirtualList
          data={filteredList}
-         rowHeight={40}
+         rowHeight={60}
          renderRow={({from,to, id, status})=>
            <div  className={style.word}>
              <div>

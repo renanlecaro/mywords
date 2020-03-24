@@ -209,8 +209,7 @@ export function registerResult({id, guessed,answer}) {
   }
 
   trainingData.push(event)
-  const delay=analyseTrainingEvent(event)
-  // showToast('We\'ll ask again in '+delay+' cards.')
+  analyseTrainingEvent(event)
   localStorage.setItem('trainingData',JSON.stringify(trainingData))
   return  getNextWordToTrain()
 }
