@@ -53,39 +53,39 @@ function BarChart({data,columns}) {
     }
   </div>
 }
-
-export class StatsBackground extends Component{
-  state={
-    stats:{},
-    list:[],
-  }
-  componentDidMount() {
-    this.clear1=getCatStats(
-      stats=>this.setState({stats:stats[stats.length-1]}))
-    this.clear2=getWordList(list=>this.setState({list}))
-  }
-  componentWillUnmount() {
-    this.clear1()
-    this.clear2()
-  }
-  barW(val){
-    const {list} = this.state
-    return (val/(list.length||1)*100)+'%'
-  }
-  height=window.innerHeight;
-  render(){
-    return <div className={style.statsBackground } status={this.props.status}
-    >
-      <div status={'0'}>
-        {
-          wordCatsList.map(s=>{
-          const width=this.barW(this.state.stats[s])
-           return  <span status={s}
-                  style={{width}}/>
-          })
-        }
-      </div>
-    </div>
-
-  }
-}
+//
+// export class StatsBackground extends Component{
+//   state={
+//     stats:{},
+//     list:[],
+//   }
+//   componentDidMount() {
+//     this.clear1=getCatStats(
+//       stats=>this.setState({stats:stats[stats.length-1]}))
+//     this.clear2=getWordList(list=>this.setState({list}))
+//   }
+//   componentWillUnmount() {
+//     this.clear1()
+//     this.clear2()
+//   }
+//   barW(val){
+//     const {list} = this.state
+//     return (val/(list.length||1)*100)+'%'
+//   }
+//   height=window.innerHeight;
+//   render(){
+//     return <div className={style.statsBackground } status={this.props.status}
+//     >
+//       <div status={'0'}>
+//         {
+//           wordCatsList.map(s=>{
+//           const width=this.barW(this.state.stats[s])
+//            return  <span status={s}
+//                   style={{width}}/>
+//           })
+//         }
+//       </div>
+//     </div>
+//
+//   }
+// }

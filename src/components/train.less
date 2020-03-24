@@ -1,5 +1,10 @@
 .this{
   min-height: 100vh;
+
+  background-image:
+          linear-gradient(
+          rgba(0,0,0,0),
+          rgba(0,0,0,0.1));
    >a{
     position: absolute;
     top:10px;
@@ -52,14 +57,22 @@
   span{
 
   }
-  input[type="text"]{
-    font-size: inherit;
-    display: inline-block;
-    width: 100px;
-    font-weight: bold;
-  }
-  ins{
-    text-decoration: none;
-    color:#d71717;
+  span[input-placeholder-wrapper]{
+
+    >input[type="text"]{
+      font-size: inherit;
+      display: inline-block;
+      width: 100px;
+      font-weight: bold;
+      text-shadow: none;
+    }
+    >span{
+      text-shadow: none;
+
+      ins{
+        text-decoration: none;
+        color:#d71717;
+      }
+    }
   }
 }
