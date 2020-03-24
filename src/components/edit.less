@@ -3,6 +3,8 @@
 
   div[class="full-list"]{
 
+    background: #0e232e;
+    color: #ddd;
    > label {
       line-height: 20px;
       padding:20px 20px;
@@ -18,11 +20,12 @@
   right: 0;
   z-index: 1;
 
-  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  box-shadow: 0 0 5px black;
 
-  color:black;
+  background: #013551;
+  color:white;
   input[type="text"]{
-    background: white;
+    background: none;
     color: inherit;
     border:none;
     line-height: 19px;
@@ -44,14 +47,15 @@
 }
 
 footer {
-  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  box-shadow: 0 0 5px black;
    position: fixed;
    bottom: 0;
    left: 0;
    right: 0;
    display: flex;
   justify-content: flex-end;
-  background: white;
+  background: #013551;
+  color: white;
   button,a{
     position: relative;
     border:none;
@@ -59,9 +63,10 @@ footer {
     line-height: 20px;
     padding: 10px;
     text-decoration: none;
-    color: #333;
+    color: inherit;
     text-transform: uppercase;
     min-width: 40px;
+    background: none;
   }
 
  }
@@ -71,22 +76,22 @@ footer {
   position: relative;
   width: 100%;
   &:nth-child(2n){
-    background: #fff;
+    background: rgba(0,0,0,0.1);
   }
   >div{
     position: absolute;
-    width:50%;
+    width:calc(50% - 20px);
     top: 0;
     &:first-child{
       left: 0;
     }
     &:last-child{
-      left: 50%;
+      left:calc(50% - 20px);
     }
     input{
       color: inherit;
       border: none;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.11);
+
       font-weight: bold;
       font-size: 16px;
       background: transparent;

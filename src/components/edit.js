@@ -70,7 +70,6 @@ export class Edit extends Component{
     if(search){
       return <footer>
         <button
-          className={''}
           onClick={this.clear}>
           Clear search
         </button>

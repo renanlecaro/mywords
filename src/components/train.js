@@ -67,8 +67,8 @@ export class Train extends Component{
   }
   render() {
     if(!this.state.word) return 'loading'
-    return <div className={style.this}>
-      <StatsBackground status={this.state.word.status}/>
+    return <div className={style.this} status={this.state.word.status}>
+      {/*<StatsBackground status={this.state.word.status}/>*/}
 
       {this.renderByMode()}
     </div>
@@ -88,7 +88,7 @@ class Ask extends Component {
   render() {
     let {word, answer, setAnswer, onSubmitAnswer} = this.props;
     return  <form onSubmit={onSubmitAnswer}>
-        <label>How do you say this in russian ?</label>
+        {/*<label>How do you say this in russian ?</label>*/}
 
         <h1>{word.from}</h1>
 
@@ -163,7 +163,7 @@ class Nope extends Component{
     let parts=starsSplit(word.to)
     return (
       <form onSubmit={this.checkCorrectAnswerGiven}   >
-        <label>It was <ShowDiff answer={answer} to={word.to}/></label>
+        {/*<label>It was <ShowDiff answer={answer} to={word.to}/></label>*/}
 
         <h1>{word.from}</h1>
 
