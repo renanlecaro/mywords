@@ -1,4 +1,4 @@
-import style from './searchbox.less'
+import style from './edit.less'
 import { h, Component } from 'preact';
 
 

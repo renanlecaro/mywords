@@ -36,7 +36,7 @@ export class Edit extends Component{
          data={filteredList}
          rowHeight={40}
          renderRow={({from,to, id, status})=>
-           <div status={status} className={style.word}>
+           <div  className={style.word}>
              <div>
                <input type={'text'}
                       className={'text-like'}
@@ -45,6 +45,7 @@ export class Edit extends Component{
                />
              </div>
 
+             <span status={status}/>
              <div>
                <input type={'text'}
                       className={'text-like'}

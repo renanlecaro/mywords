@@ -75,7 +75,7 @@ export class StatsBackground extends Component{
   height=window.innerHeight;
   render(){
     return <div className={style.statsBackground } status={this.props.status}
-    style={{height:this.height}}>
+    >
       <div status={'0'}>
         {
           wordCatsList.map(s=>{
