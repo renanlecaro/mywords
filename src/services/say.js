@@ -6,8 +6,7 @@ const synth=window.speechSynthesis;
 synth && synth.getVoices();
 
 export function sayInRussian(toText) {
-  if(!synth) return;
-  synth.cancel()
+  if(!synth) return; 
   const voice=synth.getVoices().find(v=>v.lang.startsWith('ru'))
   if(!getSetting().useSounds) return;
   const cleaned=toText.replace(/\*/gi,'')
@@ -20,18 +19,7 @@ export function sayInRussian(toText) {
     utterance.lang='ru_RU'
   }
   utterance.rate=0.9
-  let paused=false,restarted=false;
-  utterance.addEventListener('start', ()=>{
-    if(!restarted){
-      synth.pause()
-      paused=true
-    }
-  })
-  synth.speak(utterance)
   return ()=> {
-    restarted=true
-    if(paused){
-      synth.resume()
-    }
+    synth.speak(utterance)
   }
 }

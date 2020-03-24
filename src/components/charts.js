@@ -8,7 +8,7 @@ import list from "less/lib/less/functions/list";
 
 export class Charts extends Component{
   state={
-    stats:[]
+    stats:null
   }
   componentDidMount() {
     this.clear=getCatStats(stats=>this.setState({stats}))
@@ -16,10 +16,15 @@ export class Charts extends Component{
   componentWillUnmount() {
     this.clear()
   }
-
+  scrollLeft=()=>{
+    if(this.page){
+      this.page.scrollTo(this.page.scrollWidth,0)
+    }
+  }
   render(){
-    return <div className={style.page}  >
-
+    if(!this.state.stats) return 'Loading'
+    setTimeout(this.scrollLeft)
+    return <div className={style.page} ref={n=>this.page=n} >
       <BarChart
         data={this.state.stats}
         columns={wordCatsList}
@@ -27,9 +32,8 @@ export class Charts extends Component{
     </div>
   }
 }
-function BarChart({data,columns}) {
+function BarChart({data,columns, done}) {
   const maxH=Math.max(...data.map(dat=>columns.map(col=>dat[col]).reduce((a,b)=>(a||0)+(b||0))))
-
   return <div className={style.graph}>
     {
       data.map(atTime=>{
