@@ -37,30 +37,6 @@ input[type="text"]{
 }
 
 
-span[input-placeholder-wrapper]{
-  position: relative;
-
-  display: inline-block;
-  color: black;
-  input{
-
-  }
-  >span{
-    display: block;
-    position:absolute;
-    left:0;
-    top:0;
-    pointer-events: none;
-    border:1px solid transparent;
-    padding: 10px 20px;
-    font-size: 20px;
-    line-height: 20px;
-    margin: 0;
-    opacity: 0.8;
-    color:inherit;
-  }
-}
-
 button,a[class*="button"]{
   display: inline-flex;
   padding: 0.5em 0.75em;
@@ -72,13 +48,6 @@ button,a[class*="button"]{
   background: white;
   border:1px solid #666;
   text-decoration: none;
-  //&.primary {
-  //  color: white;
-  //  border: none;
-  //  background: #189ac1;
-  //  box-shadow: 0 2px 0 #13566a;
-  //  text-shadow: 0 0 16px #1d7c99;
-  //}
 
   &.float-bottom {
     position: fixed;
@@ -87,19 +56,6 @@ button,a[class*="button"]{
   }
   &[disabled]{
     opacity: 0.5;
-  }
-
-}
-h1{
-  margin:10px 20px;
-  &.centered {
-    color: #666;
-    font-weight: normal;
-    text-align: center;
-    strong{
-      color:black;
-      margin:0 0.2em
-    }
   }
 
 }

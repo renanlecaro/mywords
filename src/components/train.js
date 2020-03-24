@@ -113,33 +113,16 @@ export function Question({word, value, onKeyUp,
       <span input-placeholder-wrapper>
         <input type="text"
                ref={onRef}
-               style={{width:measureWidth(parts[1])}}
                value={value}
                onKeyUp={onKeyUp}
         />
-        <span>{!value && placeHolder || ''}</span>
+        <span
+          style={{opacity:(placeHolder && !value)?1:0}}
+        >{placeHolder || parts[1]}</span>
       </span>
       <span>{parts[2]}</span>
     </div>
 
-}
-
-export function measureWidth(text) {
-  var block=document.createElement('DIV')
-  block.innerText=text
-  block.style.padding='10px 20px'
-  block.style.fontSize='20px'
-  block.style.lineHeight='20px'
-  block.style.position='absolute'
-  block.style.border='1px solid'
-  block.style.left='-10000px'
-  block.style.fontWeight='400'
-
-  document.body.appendChild(block)
-  const width= block.getBoundingClientRect().width
-  document.body.removeChild(block)
-  // Chrome still crops a bit for some reason
-  return Math.floor(width)+20
 }
 
 class Nope extends Component{
