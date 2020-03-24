@@ -51,7 +51,7 @@ export class Add extends Component{
       from,
       to,
     })
-    sayInRussian(to)
+    sayInRussian(to)()
     showToast('Word "'+to+'" added to your list');
     this.manualEntryInput.value=''
     this.props.clear()

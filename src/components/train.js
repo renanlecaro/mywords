@@ -24,6 +24,7 @@ export class Train extends Component{
       mode:'ask',
       answer:''
     })
+    this.speakNow=sayInRussian(word.to)
   }
   componentDidMount() {
     this.setNewWord( getNextWordToTrain() )
@@ -33,7 +34,7 @@ export class Train extends Component{
   onSubmitAnswer = e=>{
     e.preventDefault()
     const {word, answer} = this.state;
-    sayInRussian(word.to)
+    this.speakNow()
 
     const target= starsSplit(word.to)[1]
 
