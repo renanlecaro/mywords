@@ -123,7 +123,7 @@ trainingData.forEach(analyseTrainingEvent)
 
 export function getWordList(cb) {
   events.on('change',cb)
-  cb(addMinStepToWordList())
+  cb(wordlist.map(addStatsToWord))
   return function clear() {
     events.off('change',cb)
   }
@@ -131,7 +131,7 @@ export function getWordList(cb) {
 
 function listChanged() {
   wordlist=wordlist.filter(w=>w.to || w.from)
-  events.emit('change',addMinStepToWordList())
+  events.emit('change',wordlist.map(addStatsToWord))
   localStorage.setItem('wordlist',JSON.stringify(wordlist))
   tellWorkerAboutBanedWords()
 }
@@ -151,22 +151,19 @@ export function addWordToList({from,to }) {
 }
 
 
-function addMinStepToWordList(){
+function addStatsToWord(word){
   const currentStep=trainingData.length
-  return wordlist
-    .map(word=>{
-      const stat=stats[word.id]
-      return {
-        ...word,
-        status:wordCat(stat),
-        minStep:stat && stat.minStep - currentStep
-      }
-    })
+  const stat=stats[word.id]
+  return {
+    ...word,
+    status:wordCat(stat),
+    minStep:stat && stat.minStep - currentStep
+  }
 }
 
 export function getNextWordToTrain() {
 
-  let stepped=addMinStepToWordList()
+  let stepped=wordlist.map(addStatsToWord)
 
 
   return (
@@ -211,7 +208,10 @@ export function registerResult({id, guessed,answer}) {
   trainingData.push(event)
   analyseTrainingEvent(event)
   localStorage.setItem('trainingData',JSON.stringify(trainingData))
-  return  getNextWordToTrain()
+  return  {
+    prevWord:addStatsToWord(wordlist.find(w=>w.id===id)),
+      nextWord:getNextWordToTrain()
+  }
 }
 
 export function updateWord(id, change) {

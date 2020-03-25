@@ -37,20 +37,32 @@ export class Train extends Component{
     this.speakNow()
 
     const target= starsSplit(word.to)[1]
+    const guessed=sameish(answer,target)
+    const {prevWord, nextWord}=
+      registerResult({id:word.id,  guessed});
+    this.nextWord=nextWord
+    this.setState({word:prevWord}, ()=>{
+      if(guessed){
 
-    if(sameish(answer,target)){
-      this.setNewWord( registerResult({id:word.id,  guessed:true}) )
-    }else{
-      this.setState({
-        mode:'incorrect'
-      })
-    }
+        this.setState({
+          mode:'correct'
+        })
+        setTimeout(this.trainNextWord,200)
+      }else{
+        this.setState({
+          mode:'incorrect'
+        })
+
+      }
+    })
+  }
+  trainNextWord=()=>{
+    this.setNewWord(this.nextWord)
+    this.nextWord=null
   }
   validateFailure=e=>{
     e.preventDefault()
-    const {word,answer} = this.state;
-    this.setNewWord(
-      registerResult({id:word.id,  guessed:false, answer}) )
+    this.trainNextWord()
   }
   setAnswer=e=>{
     this.setState({answer:e.target.value})
@@ -68,7 +80,10 @@ export class Train extends Component{
   }
   render() {
     if(!this.state.word) return 'loading'
-    return <div className={style.this} status={this.state.word.status}>
+    return <div
+      mode={this.state.mode}
+      className={style.this}
+      status={this.state.word.status}>
       {/*<StatsBackground status={this.state.word.status}/>*/}
 
       {this.renderByMode()}
