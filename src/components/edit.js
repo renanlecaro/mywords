@@ -70,6 +70,7 @@ export class Edit extends Component{
     if(search){
       return <footer>
         <button
+          className={'button'}
           onClick={this.clear}>
           Clear search
         </button>
@@ -78,13 +79,16 @@ export class Edit extends Component{
     return <footer>
 
       <Link
+        className={'button'}
         href={'/settings'}  >
         <i className={'fa fa-cog'}/>
       </Link>
       <Link
+        className={'button'}
         href={'/charts'}  >
         <i className={'fa fa-chart-area'}/>
       </Link>      <Link
+      className={'button'}
         href={'/batch'} >
         <i className={'fa fa-list'}/>
       </Link>
@@ -92,6 +96,7 @@ export class Edit extends Component{
 
       <div style={{flexGrow:1}}/>
       <Link
+        className={'button'}
           href={'/train'}  >
         <span>Learn</span>
         <i className={'fa fa-angle-right'}/>
