@@ -1,12 +1,13 @@
 import {   Component } from 'preact';
 import {getNextWordToTrain, registerResult} from "../services/trainer";
-import {sameish} from "../services/sameish";
+import {distance, sameish} from "../services/sameish";
 import {sayInRussian} from "../services/say";
 import {ShowDiff} from "./diff";
 import style from './train.less'
 
 import { Link } from 'preact-router/match';
 import {StatsBackground} from "./charts";
+import {getSetting} from "../services/settings";
 
 export function starsSplit(word) {
   if(word.replace(/[^*]/gi,'').length!=2){
@@ -22,7 +23,8 @@ export class Train extends Component{
     this.setState({
       word,
       mode:'ask',
-      answer:''
+      answer:'',
+      typoWarning:false
     })
     this.speakNow=sayInRussian(word.to)
   }
@@ -33,10 +35,13 @@ export class Train extends Component{
 
   onSubmitAnswer = e=>{
     e.preventDefault()
-    const {word, answer} = this.state;
-    this.speakNow()
-
+    const {word, answer,typoWarning} = this.state;
     const target= starsSplit(word.to)[1]
+    const typos = distance(answer,target)
+    if(typos==1 && !typoWarning && getSetting().warnTypo){
+      return this.setState({typoWarning:true})
+    }
+    this.speakNow()
     const guessed=sameish(answer,target)
     const {prevWord, nextWord}=
       registerResult({id:word.id,  guessed});
@@ -68,13 +73,14 @@ export class Train extends Component{
     this.setState({answer:e.target.value})
   }
   renderByMode(){
-    const {word,answer,mode} = this.state;
+    const {word,answer,mode,typoWarning} = this.state;
 
     if(mode==='incorrect'){
       return <Nope answer={answer} word={word} confirm={this.validateFailure}
              />
     }
     return <Ask
+      typoWarning={typoWarning}
       word={word} answer={answer} setAnswer={this.setAnswer}
       onSubmitAnswer={this.onSubmitAnswer}/>
   }
@@ -84,8 +90,6 @@ export class Train extends Component{
       mode={this.state.mode}
       className={style.this}
       status={this.state.word.status}>
-      {/*<StatsBackground status={this.state.word.status}/>*/}
-
       {this.renderByMode()}
     </div>
   }
@@ -102,9 +106,8 @@ class Ask extends Component {
   }
 
   render() {
-    let {word, answer, setAnswer, onSubmitAnswer} = this.props;
-    return  <form onSubmit={onSubmitAnswer}>
-        {/*<label>How do you say this in russian ?</label>*/}
+    let {word, answer, setAnswer, onSubmitAnswer,typoWarning} = this.props;
+    return  <form onSubmit={onSubmitAnswer} >
 
         <h1>{word.from}</h1>
 
@@ -112,6 +115,7 @@ class Ask extends Component {
         onKeyUp:setAnswer,
         onRef:n=>this.input=n})}
 
+      {typoWarning && <label>Please check for a typo</label>}
         <button className={' float-bottom'} type="submit">
           {answer ? 'Check' : 'I don\'t know'}
         </button>

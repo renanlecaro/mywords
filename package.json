@@ -41,6 +41,7 @@
     "chart.js": "^2.9.3",
     "diff": "^4.0.2",
     "fuse.js": "^3.6.1",
+    "js-levenshtein": "^1.1.6",
     "preact": "^10.3.2",
     "preact-chartjs-2": "^1.0.3",
     "preact-compat": "^3.19.0",

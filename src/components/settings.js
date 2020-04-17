@@ -11,7 +11,7 @@ export class Settings extends Component {
     setSetting(key, value)
   }
   render(props, state, context) {
-    const {whenEmptyList,useSounds,fullBackup,restoreProgress} = this.state;
+    const {whenEmptyList,useSounds,fullBackup,restoreProgress, ignoreIo, warnTypo} = this.state;
     return <div settings  className={style.this}>
 
       {/*<Link*/}
@@ -21,6 +21,40 @@ export class Settings extends Component {
       {/*  <span>Word List</span>*/}
       {/*</Link>*/}
       <form>
+        <h2>Distinction between ё and е</h2>
+        <p>The usage of the double dots is inconsistent, so you might want to ignore them
+          by default when checking if what you typed is correct.
+        </p>
+        <label>
+          <input type={"radio"} name={'ignoreIo'}
+                 checked={ignoreIo===true}
+                 onChange={e=>this.change('ignoreIo',true)}/>
+          Treat them as the same letter
+        </label>
+        <label>
+          <input type={"radio"} name={'ignoreIo'}
+                 checked={ignoreIo===false}
+                 onChange={e=>this.change('ignoreIo',false)}/>
+          Treat them as distinct letters
+        </label>
+
+        <h2>Warn on typos</h2>
+        <p>If you typed one letter wrong, instead of counting as a mistake, the app will tell you to
+          double check.
+        </p>
+        <label>
+          <input type={"radio"} name={'warnTypo'}
+                 checked={warnTypo===true}
+                 onChange={e=>this.change('warnTypo',true)}/>
+          Show me the warning
+        </label>
+        <label>
+          <input type={"radio"} name={'warnTypo'}
+                 checked={warnTypo===false}
+                 onChange={e=>this.change('warnTypo',false)}/>
+          Just treat it as a mistake
+        </label>
+
       <h2>List mastered</h2>
         <p>Whenever you guess a word right, we wait a bit before
           asking you about it again. If you've mastered all the words in your list
