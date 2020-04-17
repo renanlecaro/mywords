@@ -127,6 +127,16 @@ footer {
 
 }
 
+label[search-in-progress]{
+  animation: searching 0.7s infinite;
+}
+@keyframes searching  {
+  50%{
+    opacity: 0.5;
+    transform: translate(5px, 0);
+  }
+}
+
 form[manual-entry]{
   display: flex;
   align-items: center;

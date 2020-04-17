@@ -9,13 +9,14 @@ import debounce from 'lodash/debounce';
 import {wordMatch} from "../services/wordMatch";
 export class Add extends Component{
   state={
-    suggestions:[]
+    suggestions:[],
+    searching:false,
   }
 
   componentWillReceiveProps({search, list}) {
     if(search!=this.props.search || list!=this.props.list){
       this.setState({suggestions:this.state.suggestions
-          .filter(wordMatch(search))})
+          .filter(wordMatch(search)), searching:true})
       this.suggestDelayed(search)
     }
   }
@@ -73,7 +74,8 @@ export class Add extends Component{
   suggest=(str)=>{
      suggestions(str, result=>{
       this.setState({
-        suggestions:result
+        suggestions:result,
+        searching:false
       })
     })
   }
@@ -103,7 +105,7 @@ export class Add extends Component{
 
     </Fragment>
   }
-  render({search, list}, {from,to,suggestions}){
+  render({search, list}, {from,to,suggestions,searching}){
 
     if(!search) return null;
 
@@ -127,6 +129,7 @@ export class Add extends Component{
           </div>
         )
       }
+      {searching && <label search-in-progress >Searching for matching words ...</label>}
 
     </Fragment>
   }
