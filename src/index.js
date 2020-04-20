@@ -8,6 +8,7 @@ import {Settings} from "./components/settings";
 import {Charts} from "./components/charts";
 import './index.less'
 import {BatchAdd} from "./components/BatchAdd";
+import {EditOne} from "./components/EditOne";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Settings path="/settings"/>
         <Charts path="/charts"/>
         <BatchAdd path="/batch"/>
+        <EditOne path="/editOne/:id"/>
       </Router>
     </div>
   );

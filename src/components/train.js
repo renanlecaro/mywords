@@ -109,7 +109,7 @@ class Ask extends Component {
     let {word, answer, setAnswer, onSubmitAnswer,typoWarning} = this.props;
     return  <form onSubmit={onSubmitAnswer} >
 
-        <h1>{word.from}</h1>
+      <h1><Link href={"/editOne/"+word.id}>{word.from}</Link></h1>
 
       {Question({word, value:answer,
         onKeyUp:setAnswer,
@@ -166,9 +166,8 @@ class Nope extends Component{
     let parts=starsSplit(word.to)
     return (
       <form onSubmit={this.checkCorrectAnswerGiven}   >
-        {/*<label>It was <ShowDiff answer={answer} to={word.to}/></label>*/}
-
-        <h1>{word.from}</h1>
+ 
+        <h1><Link href={"/editOne/"+word.id}>{word.from}</Link></h1>
 
 
         {Question({

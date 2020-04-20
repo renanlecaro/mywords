@@ -119,6 +119,9 @@ function scheduleNext({guessCount,
 
 trainingData.forEach(analyseTrainingEvent)
 
+export function getWordById(id) {
+  return addStatsToWord((wordlist.find(w=>w.id==id)));
+}
 
 
 export function getWordList(cb) {
