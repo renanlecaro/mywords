@@ -82,15 +82,18 @@ export class Edit extends Component{
         className={'button'}
         href={'/settings'}  >
         <i className={'fa fa-cog'}/>
+        {/*<span>Settings</span>*/}
       </Link>
       <Link
         className={'button'}
         href={'/charts'}  >
         <i className={'fa fa-chart-area'}/>
+        {/*<span>Stats</span>*/}
       </Link>      <Link
       className={'button'}
         href={'/batch'} >
-        <i className={'fa fa-list'}/>
+      <i className={'fa fa-plus'}/>
+      <span>words</span>
       </Link>
 
 
