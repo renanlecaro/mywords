@@ -1,22 +1,25 @@
 {
-  "name": "my words",
+  "name": "слова",
   "short_name": "my words",
-  "description": "A minimal app to learn russian vocabulary from english.",
-  "start_url": "/",
+  "description": "мои слова : learn russian vocabulary from english.",
+  "start_url": "/?source=pwa",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#0e232e",
   "theme_color": "#013551",
+  "scope": "/",
   "icons": [
     {
       "src": "/assets/icons/android-chrome-192x192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
       "src": "/assets/icons/android-chrome-512x512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ]
 }
