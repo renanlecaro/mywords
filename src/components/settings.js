@@ -11,7 +11,7 @@ export class Settings extends Component {
     setSetting(key, value)
   }
   render(props, state, context) {
-    const {whenEmptyList,useSounds,fullBackup,restoreProgress, ignoreIo, warnTypo} = this.state;
+    const {whenEmptyList,useSounds,fullBackup,restoreProgress, ignoreAccents, warnTypo} = this.state;
     return <div settings  className={style.this}>
 
       {/*<Link*/}
@@ -21,21 +21,22 @@ export class Settings extends Component {
       {/*  <span>Word List</span>*/}
       {/*</Link>*/}
       <form>
-        <h2>Distinction between ё and е</h2>
-        <p>The usage of the double dots is inconsistent, so you might want to ignore them
-          by default when checking if what you typed is correct.
+        <h2>Ignore all accents when checking answer</h2>
+        <p>The usage of the double dots is inconsistent and
+          some vocabulary you input might have accentuation marks,
+          so you might want to ignore the accents alltogether.
         </p>
         <label>
-          <input type={"radio"} name={'ignoreIo'}
-                 checked={ignoreIo===true}
-                 onChange={e=>this.change('ignoreIo',true)}/>
-          Treat them as the same letter
+          <input type={"radio"} name={'ignoreAccents'}
+                 checked={ignoreAccents===true}
+                 onChange={e=>this.change('ignoreAccents',true)}/>
+          Ignore accents
         </label>
         <label>
-          <input type={"radio"} name={'ignoreIo'}
-                 checked={ignoreIo===false}
-                 onChange={e=>this.change('ignoreIo',false)}/>
-          Treat them as distinct letters
+          <input type={"radio"} name={'ignoreAccents'}
+                 checked={ignoreAccents===false}
+                 onChange={e=>this.change('ignoreAccents',false)}/>
+          Treat accented characters as different characters
         </label>
 
         <h2>Warn on typos</h2>

@@ -3,7 +3,7 @@ const defaultSettings={
   useSounds:true,
   fullBackup:true,
   restoreProgress:false,
-  warnTypo:true,ignoreIo:true,
+  warnTypo:true,ignoreAccents:true,
 }
 
 let settings={}
