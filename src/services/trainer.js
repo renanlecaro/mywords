@@ -180,27 +180,33 @@ function addStatsToWord(word) {
 export function getNextWordToTrain() {
   let stepped = wordlist.map(addStatsToWord);
   return (
-    getWordAtMinStep(stepped) ||
-    getNewWord(stepped) ||
-    addNewWord() ||
-    getWordAtMinStep(
-      stepped.filter(
-        ({ id }) => id !== trainingData[trainingData.length - 1].id
-      )
-    )
+    getWordThatNeedsARefresh(stepped) ||
+    getWordNeverTrainedBefore(stepped) ||
+    addNewWordFromDatasetAndTrainIt() ||
+    getWordThatNeedsRefreshEvenIfTooEarly(stepped)
   );
 }
 
-function getWordAtMinStep(list) {
-  return list.filter((word) => word.minStep <= 0)[0];
+function getWordThatNeedsARefresh(stepped) {
+  return stepped.filter((word) => word.minStep <= 0)[0];
 }
 
-function getNewWord(list) {
+function getWordThatNeedsRefreshEvenIfTooEarly(stepped) {
+  const lastTrainedId = trainingData[trainingData.length - 1].id;
+  const list = stepped.filter(({ id }) => id !== lastTrainedId);
+  if (!list.length) return null;
+  let minStep = Math.min(...list.map((word) => word.minStep));
+  if (minStep) {
+    return list.find((word) => word.minStep == minStep);
+  }
+}
+
+function getWordNeverTrainedBefore(list) {
   const unseen = list.filter((word) => !word.minStep);
   return unseen[unseen.length - 1];
 }
 
-function addNewWord() {
+function addNewWordFromDatasetAndTrainIt() {
   if (getSetting().whenEmptyList != "rework") {
     return addWordToList(getWordToAddToList());
   }
