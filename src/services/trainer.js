@@ -170,7 +170,7 @@ export function getNextWordToTrain() {
 
 
   return (
-    getWordAtMinStep(stepped.filter(word=>word.minStep<=0)) ||
+    getWordAtMinStep(stepped) ||
     getNewWord(stepped)  ||
     addNewWord() ||
     getWordAtMinStep(stepped.filter(({id})=>id!==trainingData[trainingData.length-1].id))
@@ -180,11 +180,7 @@ export function getNextWordToTrain() {
 }
 
 function getWordAtMinStep(list){
-  if(!list.length) return null
-  let minStep=Math.min(...list.map(word=>word.minStep))
-  if(minStep){
-    return list.find(word=>word.minStep == minStep)
-  }
+  return list.filter(word=>word.minStep<=0)[0]
 }
 
 function getNewWord(list){
