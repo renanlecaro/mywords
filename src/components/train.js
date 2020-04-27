@@ -1,5 +1,5 @@
 import {   Component } from 'preact';
-import {getNextWordToTrain, registerResult} from "../services/trainer";
+import {catColor, getNextWordToTrain, registerResult} from "../services/trainer";
 import {distance, sameish} from "../services/sameish";
 import {sayInRussian} from "../services/say";
 import {ShowDiff} from "./diff";
@@ -89,7 +89,7 @@ export class Train extends Component{
     return <div
       mode={this.state.mode}
       className={style.this}
-      status={this.state.word.status}>
+      style={{backgroundColor:catColor(this.state.word.status)}}>
       {this.renderByMode()}
     </div>
   }
@@ -166,7 +166,7 @@ class Nope extends Component{
     let parts=starsSplit(word.to)
     return (
       <form onSubmit={this.checkCorrectAnswerGiven}   >
- 
+
         <h1><Link href={"/editOne/"+word.id}>{word.from}</Link></h1>
 
 

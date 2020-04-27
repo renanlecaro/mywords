@@ -49,7 +49,9 @@ function trackChange(event,cb){
     const prevCat=wordCat(getStatsById(id))
     lastDay[prevCat]=(lastDay[prevCat]||0)-1
   }
+
   const result=cb()
+
   const newCat=wordCat(getStatsById(id))
   lastDay[newCat]=(lastDay[newCat]||0)+1
   events.emit('stats', catStats)
@@ -88,12 +90,25 @@ function analyseTrainingEvent(event ){
   })
 }
 
-export const wordCatsList=  ['0','1','2','3','4','5','6'];
+const rangeMax=5
+const l=[]
+for(var i=0; i<=rangeMax;i++) l.push(i+'');
+
+export let wordCatsList= l
 function wordCat(wordStats){
   if(!wordStats) return '0'
-  const log=Math.ceil(Math.log10(scheduleNext(wordStats)))
-  return Math.min(log, 6).toString()
+  return Math.min(wordStats.guessInARowCount, rangeMax).toString()
 }
+
+export function catColor(cat){
+  cat = parseInt(cat) || 0
+  if(cat>rangeMax) cat=rangeMax
+  const r = cat/rangeMax
+  let smooth=(a,b)=>Math.floor((b-a)*r+a)
+  return `hsl(${smooth(0,200)},${smooth(80,100)}%,${smooth(55,35)}%)`;
+
+}
+
 export function getCatStats(cb) {
   events.on('stats',cb)
   cb(catStats)

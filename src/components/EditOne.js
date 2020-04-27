@@ -1,5 +1,5 @@
 import {Component} from "preact";
-import {getWordById, updateWord} from "../services/trainer";
+import {catColor, getWordById, updateWord} from "../services/trainer";
 import style from './train.less'
 
 export class EditOne extends Component{
@@ -19,7 +19,7 @@ export class EditOne extends Component{
   render(props, {from,to,status}, context) {
     return <div
       className={style.this}
-      status={status}>
+      style={{backgroundColor:catColor(status)}}>
        <form onSubmit={this.save}>
         <h1>Quick editor</h1>
         <input type={'text'} value={from}

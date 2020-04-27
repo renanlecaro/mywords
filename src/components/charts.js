@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 
 import style from './charts.less'
-import {getCatStats, getListOfRussianWords, getWordList, wordCatsList} from "../services/trainer";
+import {catColor, getCatStats, getListOfRussianWords, getWordList, wordCatsList} from "../services/trainer";
 import {Link} from "preact-router/match";
 import list from "less/lib/less/functions/list";
 
@@ -44,9 +44,10 @@ function BarChart({data,columns, done}) {
             columns.map(column=>{
               const percent=Math.round(atTime[column]/maxH*100)
               const abs=window.innerHeight * percent/100
-              return <div status={ column}
+              return <div
                           style={{
-                height:percent+'%'
+                height:percent+'%',
+                backgroundColor:catColor(column)
               }}>
                   {abs > 20 && <span>{atTime[column]}</span>}
               </div>
@@ -57,39 +58,3 @@ function BarChart({data,columns, done}) {
     }
   </div>
 }
-//
-// export class StatsBackground extends Component{
-//   state={
-//     stats:{},
-//     list:[],
-//   }
-//   componentDidMount() {
-//     this.clear1=getCatStats(
-//       stats=>this.setState({stats:stats[stats.length-1]}))
-//     this.clear2=getWordList(list=>this.setState({list}))
-//   }
-//   componentWillUnmount() {
-//     this.clear1()
-//     this.clear2()
-//   }
-//   barW(val){
-//     const {list} = this.state
-//     return (val/(list.length||1)*100)+'%'
-//   }
-//   height=window.innerHeight;
-//   render(){
-//     return <div className={style.statsBackground } status={this.props.status}
-//     >
-//       <div status={'0'}>
-//         {
-//           wordCatsList.map(s=>{
-//           const width=this.barW(this.state.stats[s])
-//            return  <span status={s}
-//                   style={{width}}/>
-//           })
-//         }
-//       </div>
-//     </div>
-//
-//   }
-// }

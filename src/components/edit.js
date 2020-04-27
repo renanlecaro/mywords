@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
-import {  getWordList, updateWord} from "../services/trainer";
+import {catColor, getWordList, updateWord} from "../services/trainer";
 
 import VirtualList from 'preact-virtual-list';
 import style from './edit.less'
@@ -45,7 +45,7 @@ export class Edit extends Component{
                />
              </div>
 
-             <span status={status}/>
+             <span style={{backgroundColor:catColor(status)}}/>
              <div>
                <input type={'text'}
                       className={'text-like'}
