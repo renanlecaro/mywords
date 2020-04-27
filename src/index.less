@@ -1,10 +1,10 @@
-
-html, body {
+html,
+body {
   height: 100%;
   width: 100vw;
   max-width: 100vw;
   margin: 0;
-  font-family: 'Helvetica Neue', arial, sans-serif;
+  font-family: "Helvetica Neue", arial, sans-serif;
   font-weight: 400;
   color: #fff;
   -webkit-font-smoothing: antialiased;
@@ -12,37 +12,35 @@ html, body {
   background: #0e232e;
 }
 
-
 * {
   box-sizing: border-box;
 }
 
-label{
+label {
   font-weight: bold;
   font-size: 80%;
   display: block;
   line-height: 20px;
   margin-top: 20px;
 }
-input[type="text"]{
+input[type="text"] {
   display: block;
-  font-size:14px;
+  font-size: 14px;
   line-height: 20px;
   padding: 10px 20px;
   width: 100%;
   box-sizing: border-box;
   font-family: inherit;
-  border:1px solid #dedede;
-
+  border: 1px solid #dedede;
 }
 
-
-button,a[class*="button"]{
+button,
+a[class*="button"] {
   font-size: 16px;
   text-transform: uppercase;
   border-radius: 0;
   font-weight: bold;
-  border:none;
+  border: none;
   text-decoration: none;
   cursor: pointer;
   display: block;
@@ -51,9 +49,10 @@ button,a[class*="button"]{
   color: inherit;
   min-width: 40px;
   background: none;
-  &:active, &:hover{
+  &:active,
+  &:hover {
     outline: none;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
   }
 
   &.float-bottom {
@@ -61,18 +60,17 @@ button,a[class*="button"]{
     bottom: 0;
     right: 0;
   }
-  &[disabled]{
+  &[disabled] {
     opacity: 0.5;
   }
-
 }
 
-i{
-  padding:0 10px;
-  &:first-child{
+i {
+  padding: 0 10px;
+  &:first-child {
     padding-left: 0;
   }
-  &:last-child{
+  &:last-child {
     padding-right: 0;
   }
 }

@@ -1,21 +1,19 @@
-
-
-.this{
-  div[class="full-list"]{
+.this {
+  div[class="full-list"] {
     background: #0e232e;
     color: #ddd;
     margin-bottom: 100px;
-   > label {
+    > label {
       line-height: 20px;
-      padding:20px 20px;
+      padding: 20px 20px;
     }
   }
 }
 
-.searchBox{
-  margin:0;
+.searchBox {
+  margin: 0;
   position: fixed;
-  top:0;
+  top: 0;
   left: 0;
   right: 0;
   z-index: 1;
@@ -23,154 +21,151 @@
   box-shadow: 0 0 5px black;
 
   background: #013551;
-  color:white;
+  color: white;
   line-height: 20px;
   font-size: 20px;
-  input[type="text"]{
+  input[type="text"] {
     background: none;
     color: inherit;
-    border:none;
+    border: none;
     line-height: inherit;
     padding: 20px 60px;
     border-radius: 0;
-    font-size:inherit;
+    font-size: inherit;
     &:focus::placeholder {
       color: white;
       opacity: 1;
     }
   }
-  >i[searchicon]{
+  > i[searchicon] {
     pointer-events: none;
     position: absolute;
-    top:20px;
-    left:0;
+    top: 20px;
+    left: 0;
     width: 60px;
     text-align: center;
 
-    font-size:inherit;
+    font-size: inherit;
     line-height: inherit;
   }
 
-  &+*{
+  & + * {
     margin-top: 60px;
   }
 }
 
 footer {
   box-shadow: 0 0 5px black;
-   position: fixed;
-   bottom: 0;
-   left: 0;
-   right: 0;
-   display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
   justify-content: flex-end;
   background: #013551;
   color: white;
+}
 
- }
-
-.word{
+.word {
   height: 60px;
   position: relative;
   width: 100%;
-  &:nth-child(2n){
-    background: rgba(0,0,0,0.1);
+  &:nth-child(2n) {
+    background: rgba(0, 0, 0, 0.1);
   }
-  >div{
+  > div {
     position: absolute;
-    width:calc(50% - 20px);
+    width: calc(50% - 20px);
     top: 0;
-    &:first-child{
+    &:first-child {
       left: 0;
     }
-    &:last-child{
-      left:calc(50% - 20px);
+    &:last-child {
+      left: calc(50% - 20px);
     }
-    input{
+    input {
       color: inherit;
       border: none;
-    line-height: 60px;
-      padding: 0 0 0 20px ;
+      line-height: 60px;
+      padding: 0 0 0 20px;
       font-weight: bold;
       font-size: 16px;
       background: transparent;
     }
   }
-  >span{
+  > span {
     display: block;
     position: absolute;
     right: 20px;
-    top:0;
+    top: 0;
     bottom: 0;
-    margin:auto 0;
-    width:20px;
+    margin: auto 0;
+    width: 20px;
     height: 20px;
     border-radius: 2px;
     pointer-events: none;
-
   }
 }
 
-.suggestion{
+.suggestion {
   display: flex;
   align-items: center;
-  >div{
+  > div {
     line-height: 20px;
     overflow: hidden;
     padding: 10px 20px;
     flex-grow: 1;
   }
-  button{
+  button {
     margin-right: 20px;
   }
-
 }
 
-label[search-in-progress]{
+label[search-in-progress] {
   animation: searching 0.7s infinite;
 }
-@keyframes searching  {
-  50%{
+@keyframes searching {
+  50% {
     opacity: 0.5;
     transform: translate(5px, 0);
   }
 }
 
-form[manual-entry]{
+form[manual-entry] {
   display: flex;
   align-items: center;
-  input{
+  input {
     flex-grow: 1;
     margin: 0 20px;
   }
-  button{
+  button {
     margin-right: 20px;
   }
 }
-div[welcome-message]{
+div[welcome-message] {
   text-align: center;
 
   min-height: 80vh;
-  i{
+  i {
     font-size: 40px;
     margin: 40px 0;
     opacity: 0.4;
     line-height: 20px;
     animation: wiggle infinite 1s;
   }
-  h1{
+  h1 {
     font-weight: normal;
   }
 }
 
 @keyframes wiggle {
-  0%{
-    transform: translate(0,10px);
+  0% {
+    transform: translate(0, 10px);
   }
-  50%{
-    transform: translate(0,0px);
+  50% {
+    transform: translate(0, 0px);
   }
-  100%{
-     transform: translate(0,10px);
-   }
+  100% {
+    transform: translate(0, 10px);
+  }
 }
