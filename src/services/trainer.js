@@ -106,7 +106,7 @@ export function catColor(cat) {
   if (cat > rangeMax) cat = rangeMax;
   const r = cat / rangeMax;
   let smooth = (a, b) => Math.floor((b - a) * r + a);
-  return `hsl(${smooth(0, 200)},${smooth(80, 100)}%,${smooth(55, 35)}%)`;
+  return `hsl(${smooth(201, 82)},${smooth(50, 100)}%,${smooth(5, 49)}%)`;
 }
 
 export function getCatStats(cb) {
