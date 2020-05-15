@@ -54,7 +54,7 @@ export class Edit extends Component {
               <div>
                 <input
                   type={"text"}
-                  className={"text-like"}
+                  className={"text-like ru-text"}
                   value={to}
                   onChange={(e) => updateWord(id, { to: e.target.value })}
                 />

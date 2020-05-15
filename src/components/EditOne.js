@@ -30,6 +30,7 @@ export class EditOne extends Component {
           <input
             type={"text"}
             value={to}
+            className={"ru-text"}
             placeholder={"Russian"}
             onChange={(e) => this.setState({ to: e.target.value })}
           />

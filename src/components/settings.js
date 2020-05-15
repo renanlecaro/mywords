@@ -18,6 +18,7 @@ export class Settings extends Component {
       restoreProgress,
       ignoreAccents,
       warnTypo,
+      useCursiveFont,
     } = this.state;
     return (
       <div settings className={style.this}>
@@ -51,6 +52,27 @@ export class Settings extends Component {
               onChange={(e) => this.change("ignoreAccents", false)}
             />
             Treat accented characters as different characters
+          </label>
+
+          <h2>Use cursive font</h2>
+          <p>Trains you to read the cursive font in russian</p>
+          <label>
+            <input
+              type={"radio"}
+              name={"useCursiveFont"}
+              checked={useCursiveFont === true}
+              onChange={(e) => this.change("useCursiveFont", true)}
+            />
+            Cursive font
+          </label>
+          <label>
+            <input
+              type={"radio"}
+              name={"useCursiveFont"}
+              checked={useCursiveFont === false}
+              onChange={(e) => this.change("useCursiveFont", false)}
+            />
+            Normal font
           </label>
 
           <h2>Warn on typos</h2>

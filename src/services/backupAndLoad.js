@@ -3,22 +3,43 @@ import { sameish } from "./sameish";
 import { showToast } from "../components/notify";
 
 export function downloadBackup(fullBackup) {
-  const data = {
-    wordlist: JSON.parse(localStorage.getItem("wordlist")),
-    trainingData: fullBackup
-      ? JSON.parse(localStorage.getItem("trainingData"))
-      : [],
-  };
-  downloadJSON(data);
+  const data = fullBackup
+    ? lsToObject()
+    : {
+        wordlist: JSON.parse(localStorage.getItem("wordlist")),
+      };
+  const dt = new Date();
+  const filename = [
+    "myword",
+    fullBackup ? "backup" : "words",
+    dt.getFullYear(),
+    dt.getMonth() + 1,
+    dt.getDate(),
+  ].join("-");
+  downloadJSON(data, filename);
 }
 
-function downloadJSON(object) {
+function lsToObject() {
+  const data = {};
+  Object.entries(localStorage).forEach(([key, val]) => {
+    try {
+      data[key] = JSON.parse(val);
+    } catch (e) {
+      console.warn(key + " could not be parsed");
+    }
+  });
+  return data;
+}
+
+function downloadJSON(object, filename = "mywords") {
+  console.log(JSON.stringify(object));
+
   var dataStr =
     "data:text/json;charset=utf-8," +
     encodeURIComponent(JSON.stringify(object));
   var dlAnchorElem = document.createElement("a");
   dlAnchorElem.setAttribute("href", dataStr);
-  dlAnchorElem.setAttribute("download", "mywords.json");
+  dlAnchorElem.setAttribute("download", filename + ".json");
   dlAnchorElem.style.position = "absolute";
   dlAnchorElem.style.left = "-1000px";
   document.body.appendChild(dlAnchorElem);
@@ -42,13 +63,19 @@ export function restoreBackup(fileInput, restoreProgress) {
   reader.readAsText(fileInput.files[0]);
   reader.onload = (e) => {
     let text = e.target.result;
-    const { wordlist, trainingData } = JSON.parse(text);
-    if (restoreProgress && trainingData.length) {
-      localStorage.setItem("wordlist", JSON.stringify(wordlist));
-      localStorage.setItem("trainingData", JSON.stringify(trainingData));
-      window.location.reload();
+    const parsed = JSON.parse(text);
+    const { wordlist } = parsed;
+    if (restoreProgress) {
+      hardResetFromBackup(parsed);
+      window.location.pathname = "/";
     } else {
       importWords(wordlist);
     }
   };
+}
+
+function hardResetFromBackup(parsed) {
+  for (var key in parsed) {
+    localStorage.setItem(key, JSON.stringify(parsed[key]));
+  }
 }

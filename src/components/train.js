@@ -40,7 +40,14 @@ export class Train extends Component {
     const { word, answer, typoWarning } = this.state;
     const target = starsSplit(word.to)[1];
     const typos = distance(answer, target);
-    if (typos == 1 && !typoWarning && getSetting().warnTypo) {
+    console.log(word);
+    if (
+      typos == 1 &&
+      target.length > 3 &&
+      word.status != 0 &&
+      !typoWarning &&
+      getSetting().warnTypo
+    ) {
       return this.setState({ typoWarning: true });
     }
     this.speakNow();
@@ -144,8 +151,17 @@ export function Question({ word, value, onKeyUp, onRef, placeHolder = "" }) {
     <div className={style.fillTheBlank}>
       <span>{parts[0]}</span>
       <span input-placeholder-wrapper>
-        <input type="text" ref={onRef} value={value} onKeyUp={onKeyUp} />
-        <span style={{ opacity: placeHolder && !value ? 1 : 0 }}>
+        <input
+          type="text"
+          className={"ru-text"}
+          ref={onRef}
+          value={value}
+          onKeyUp={onKeyUp}
+        />
+        <span
+          className={"ru-text"}
+          style={{ opacity: placeHolder && !value ? 1 : 0 }}
+        >
           {placeHolder || parts[1]}
         </span>
       </span>

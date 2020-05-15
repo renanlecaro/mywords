@@ -1,3 +1,5 @@
+import EventEmitter from "events";
+
 const defaultSettings = {
   whenEmptyList: "add-word",
   useSounds: true,
@@ -5,7 +7,10 @@ const defaultSettings = {
   restoreProgress: false,
   warnTypo: true,
   ignoreAccents: true,
+  useCursiveFont: false,
 };
+
+const events = new EventEmitter();
 
 let settings = {};
 try {
@@ -18,8 +23,13 @@ export function getSetting() {
   return settings;
 }
 
+export function onSettingsChange(key, cb) {
+  events.on(key, cb);
+}
+
 export function setSetting(key, value) {
   settings[key] = value;
   localStorage.setItem("settings", JSON.stringify(settings));
+  events.emit(key);
   return settings[key];
 }
