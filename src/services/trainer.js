@@ -8,6 +8,7 @@ import EventEmitter from "events";
 import { getWordToAddToList, tellWorkerAboutBanedWords } from "./suggest";
 import { getSetting } from "./settings";
 import { dateKey } from "./formatDate";
+import { addedWords } from "./persistData";
 const events = new EventEmitter();
 
 try {
@@ -164,6 +165,7 @@ export function addWordToList({ from, to }) {
   };
   wordlist = [word, ...wordlist];
   listChanged();
+  addedWords(1);
   return word;
 }
 

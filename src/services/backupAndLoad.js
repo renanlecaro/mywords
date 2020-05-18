@@ -1,6 +1,7 @@
 import { addWordToList, getListOfRussianWords, getWordList } from "./trainer";
 import { sameish } from "./sameish";
 import { showToast } from "../components/notify";
+import { madeABackup } from "./persistData";
 
 export function downloadBackup(fullBackup) {
   const data = fullBackup
@@ -17,6 +18,7 @@ export function downloadBackup(fullBackup) {
     dt.getDate(),
   ].join("-");
   downloadJSON(data, filename);
+  madeABackup();
 }
 
 function lsToObject() {
