@@ -91,14 +91,14 @@ function analyseTrainingEvent(event) {
   });
 }
 
-export const rangeMax = 5;
+export const rangeMax = 6;
 const l = [];
 for (var i = 0; i <= rangeMax; i++) l.push(i + "");
 
 export let wordCatsList = l;
 function wordCat(wordStats) {
   if (!wordStats) return "0";
-  return Math.min(wordStats.guessInARowCount, rangeMax).toString();
+  return Math.min(1 + wordStats.guessInARowCount, rangeMax).toString();
 }
 
 export function getCatStats(cb) {

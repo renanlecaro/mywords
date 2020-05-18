@@ -2,6 +2,7 @@ import { rangeMax } from "./trainer";
 // generated then adjusted
 // https://color-range-generator.netlify.app/#0,93,46,141,100,52,6
 const colors = `
+#013551
 hsl(10,83%,36%)
 hsl(28,94%,47%)
 hsl(56,95%,48%)
