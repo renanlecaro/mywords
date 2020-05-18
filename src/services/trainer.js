@@ -3,7 +3,6 @@ import functionCaller from "less/lib/less/functions/function-caller";
 import { showToast } from "../components/notify";
 
 let wordlist = [];
-
 import EventEmitter from "events";
 import { getWordToAddToList, tellWorkerAboutBanedWords } from "./suggest";
 import { getSetting } from "./settings";
@@ -92,7 +91,7 @@ function analyseTrainingEvent(event) {
   });
 }
 
-const rangeMax = 5;
+export const rangeMax = 5;
 const l = [];
 for (var i = 0; i <= rangeMax; i++) l.push(i + "");
 
@@ -100,14 +99,6 @@ export let wordCatsList = l;
 function wordCat(wordStats) {
   if (!wordStats) return "0";
   return Math.min(wordStats.guessInARowCount, rangeMax).toString();
-}
-
-export function catColor(cat) {
-  cat = parseInt(cat) || 0;
-  if (cat > rangeMax) cat = rangeMax;
-  const r = cat / rangeMax;
-  let smooth = (a, b) => Math.floor((b - a) * r + a);
-  return `hsl(${smooth(201, 82)},${smooth(50, 100)}%,${smooth(5, 49)}%)`;
 }
 
 export function getCatStats(cb) {

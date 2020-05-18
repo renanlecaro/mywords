@@ -1,6 +1,7 @@
 import { Component } from "preact";
-import { catColor, getWordById, updateWord } from "../services/trainer";
+import { getWordById, updateWord } from "../services/trainer";
 import style from "./train.less";
+import { catColor } from "../services/catColor";
 
 export class EditOne extends Component {
   state = {};

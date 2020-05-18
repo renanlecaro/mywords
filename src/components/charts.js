@@ -2,7 +2,6 @@ import { h, Component } from "preact";
 
 import style from "./charts.less";
 import {
-  catColor,
   getCatStats,
   getListOfRussianWords,
   getWordList,
@@ -10,6 +9,7 @@ import {
 } from "../services/trainer";
 import { Link } from "preact-router/match";
 import list from "less/lib/less/functions/list";
+import { catColor } from "../services/catColor";
 
 export class Charts extends Component {
   state = {

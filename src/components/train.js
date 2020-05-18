@@ -1,9 +1,5 @@
 import { Component } from "preact";
-import {
-  catColor,
-  getNextWordToTrain,
-  registerResult,
-} from "../services/trainer";
+import { getNextWordToTrain, registerResult } from "../services/trainer";
 import { distance, sameish } from "../services/sameish";
 import { sayInRussian } from "../services/say";
 import { ShowDiff } from "./diff";
@@ -12,6 +8,7 @@ import style from "./train.less";
 import { Link } from "preact-router/match";
 import { StatsBackground } from "./charts";
 import { getSetting } from "../services/settings";
+import { catColor } from "../services/catColor";
 
 export function starsSplit(word) {
   if (word.replace(/[^*]/gi, "").length != 2) {

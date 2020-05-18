@@ -1,12 +1,13 @@
 import { h, Component } from "preact";
 import { Link } from "preact-router/match";
-import { catColor, getWordList, updateWord } from "../services/trainer";
+import { getWordList, updateWord } from "../services/trainer";
 
 import VirtualList from "preact-virtual-list";
 import style from "./edit.less";
 import { SearchBox } from "./seachbox";
 import { wordMatch } from "../services/wordMatch";
 import { Add } from "./add";
+import { catColor } from "../services/catColor";
 export class Edit extends Component {
   state = {
     list: null,
