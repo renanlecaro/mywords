@@ -34,8 +34,6 @@ function lsToObject() {
 }
 
 function downloadJSON(object, filename = "mywords") {
-  console.log(JSON.stringify(object));
-
   var dataStr =
     "data:text/json;charset=utf-8," +
     encodeURIComponent(JSON.stringify(object));

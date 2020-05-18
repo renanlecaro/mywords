@@ -37,7 +37,6 @@ export class Train extends Component {
     const { word, answer, typoWarning } = this.state;
     const target = starsSplit(word.to)[1];
     const typos = distance(answer, target);
-    console.log(word);
     if (
       typos == 1 &&
       target.length > 3 &&

@@ -19,7 +19,6 @@ console.info(colors);
 export function catColor(cat) {
   cat = parseInt(cat) || 0;
   if (cat > rangeMax) cat = rangeMax;
-  console.log(colors[cat]);
   return colors[cat];
   // const r = cat / rangeMax;
   // let smooth = (a, b) => Math.floor((b - a) * r + a);
