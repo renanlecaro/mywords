@@ -16,7 +16,6 @@ hsl(141,100%,52%)
 
 if (colors.length != rangeMax + 1)
   alert("we need " + (rangeMax + 1) + " colors");
-console.info(colors);
 export function catColor(cat) {
   cat = parseInt(cat) || 0;
   if (cat > rangeMax) cat = rangeMax;

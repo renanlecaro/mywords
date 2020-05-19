@@ -22,13 +22,6 @@ function forAutoAdd() {
 
 const worker = new Worker();
 
-export function tellWorkerAboutBanedWords() {
-  worker.postMessage({
-    action: "updateWords",
-    banned: getListOfRussianWords(),
-  });
-}
-
 export function getWordToAddToList() {
   const reject = getListOfRussianWords();
   return forAutoAdd().find(

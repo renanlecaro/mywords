@@ -4,7 +4,7 @@ import { showToast } from "../components/notify";
 
 let wordlist = [];
 import EventEmitter from "events";
-import { getWordToAddToList, tellWorkerAboutBanedWords } from "./suggest";
+import { getWordToAddToList } from "./suggest";
 import { getSetting } from "./settings";
 import { dateKey } from "./formatDate";
 import { addedWords } from "./persistData";
@@ -143,7 +143,6 @@ function listChanged() {
   wordlist = wordlist.filter((w) => w.to || w.from);
   events.emit("change", wordlist.map(addStatsToWord));
   localStorage.setItem("wordlist", JSON.stringify(wordlist));
-  tellWorkerAboutBanedWords();
 }
 listChanged();
 

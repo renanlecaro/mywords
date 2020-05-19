@@ -7,6 +7,7 @@ import { showToast } from "./notify";
 import { suggestions } from "../services/suggest";
 import debounce from "lodash/debounce";
 import { wordMatch } from "../services/wordMatch";
+import list from "less/lib/less/functions/list";
 export class Add extends Component {
   state = {
     suggestions: [],
@@ -116,16 +117,25 @@ export class Add extends Component {
       </Fragment>
     );
   }
+
+  suggestionValid = ({ from, to }) => {
+    return this.props.list.filter((w) => sameish(w.to, to)).length == 0;
+  };
   render({ search, list }, { from, to, suggestions, searching }) {
     if (!search) return null;
+    const validSuggestion = suggestions.filter(this.suggestionValid);
 
     return (
       <Fragment>
         {/*Shown above so that suggestions can lag*/}
         {this.manualEntry()}
 
-        {suggestions.length ? <label suggestions-label>Suggestions</label> : ""}
-        {suggestions.map((s) => (
+        {validSuggestion.length ? (
+          <label suggestions-label>Suggestions</label>
+        ) : (
+          ""
+        )}
+        {validSuggestion.map((s) => (
           <div className={style.suggestion} suggestion>
             <div>
               <div>{s.from}</div>

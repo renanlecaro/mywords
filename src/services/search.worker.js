@@ -1,69 +1,25 @@
 import { wordMatch } from "./wordMatch";
 import { sameish } from "./sameish";
 import big from "./dicts/big";
+import { buildIndex } from "./indexList";
 
 export const forAutocomplete = big;
 
-let reject = [],
-  nodupes = [];
+const searchFn = buildIndex(forAutocomplete);
+
+console.log(searchFn("cat"));
 
 self.addEventListener("message", (e) => {
   const { action, ...content } = e.data;
   switch (action) {
-    case "updateWords":
-      return updateWords(content);
     case "search":
-      return search(content);
+      const { search, msgId } = content;
+      const resultMsg = {
+        action: "searchResult",
+        result: searchFn(search),
+        msgId,
+      };
+      console.log(search, resultMsg);
+      self.postMessage(resultMsg);
   }
 });
-
-function updateWords({ banned }) {
-  reject = banned;
-
-  nodupes = forAutocomplete.filter(
-    (word) => !reject.find((rejected) => sameish(rejected, word.to))
-  );
-}
-
-let runningSeach = null;
-let timeoutToCancel = null;
-function search({ search, msgId }) {
-  if (runningSeach) {
-    clearTimeout(timeoutToCancel);
-    self.postMessage({
-      action: "searchResult",
-      result: null,
-      msgId: runningSeach,
-    });
-  }
-  runningSeach = msgId;
-
-  firstX(nodupes, 10, wordMatch(search), (result) => {
-    runningSeach = null;
-
-    const resultMsg = {
-      action: "searchResult",
-      result,
-      msgId,
-    };
-    self.postMessage(resultMsg);
-  });
-}
-
-function firstX(arr, count, test, cb, result = [], i = 0) {
-  const yieldAt = i + 100;
-  while (i < arr.length && result.length < count && i < yieldAt) {
-    if (test(arr[i])) {
-      result.push(arr[i]);
-    }
-    i++;
-  }
-  if (i === yieldAt) {
-    timeoutToCancel = setTimeout(
-      () => firstX(arr, count, test, cb, result, i),
-      0
-    );
-  } else {
-    cb(result);
-  }
-}
