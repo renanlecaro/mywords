@@ -1,5 +1,3 @@
-// TODO store version of db
-import functionCaller from "less/lib/less/functions/function-caller";
 import { showToast } from "../components/notify";
 
 let wordlist = [];
@@ -8,6 +6,7 @@ import { getWordToAddToList } from "./suggest";
 import { getSetting } from "./settings";
 import { dateKey } from "./formatDate";
 import { addedWords } from "./persistData";
+import { autoStar } from "./autoStart";
 const events = new EventEmitter();
 
 try {
@@ -147,12 +146,12 @@ function listChanged() {
 listChanged();
 
 export function addWordToList({ from, to }) {
-  const word = {
+  const word = autoStar({
     from,
     to,
     id: Math.max(0, ...wordlist.map((w) => w.id)) + 1,
     addedAt: new Date(),
-  };
+  });
   wordlist = [word, ...wordlist];
   listChanged();
   addedWords(1);

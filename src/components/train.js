@@ -25,6 +25,8 @@ export class Train extends Component {
       mode: "ask",
       answer: "",
       typoWarning: false,
+      typoContent: "",
+      wordShownFirstAt: Date.now(),
     });
     this.speakNow = sayInRussian(word.to);
   }
@@ -34,7 +36,13 @@ export class Train extends Component {
 
   onSubmitAnswer = (e) => {
     e.preventDefault();
-    const { word, answer, typoWarning } = this.state;
+    const {
+      word,
+      answer,
+      typoWarning,
+      wordShownFirstAt,
+      typoContent,
+    } = this.state;
     const target = starsSplit(word.to)[1];
     const typos = distance(answer, target);
     if (
@@ -44,11 +52,19 @@ export class Train extends Component {
       !typoWarning &&
       getSetting().warnTypo
     ) {
-      return this.setState({ typoWarning: true });
+      return this.setState({
+        typoWarning: true,
+        typoContent: answer,
+      });
     }
     this.speakNow();
     const guessed = sameish(answer, target);
-    const { prevWord, nextWord } = registerResult({ id: word.id, guessed });
+    const { prevWord, nextWord } = registerResult({
+      id: word.id,
+      guessed,
+      timing: Date.now() - wordShownFirstAt,
+      typo: typoWarning ? typoContent : undefined,
+    });
     this.nextWord = nextWord;
     this.setState({ word: prevWord }, () => {
       if (guessed) {
