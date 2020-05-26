@@ -1,5 +1,6 @@
 import style from "./edit.less";
 import { h, Component } from "preact";
+import IconSearch from "@fortawesome/fontawesome-free/svgs/solid/search.svg";
 
 export function SearchBox({ value, save, onRef, clear }) {
   return (
@@ -12,7 +13,7 @@ export function SearchBox({ value, save, onRef, clear }) {
         onChange={(e) => save(e.target.value)}
         ref={onRef}
       />
-      <i className={"fa fa-search "} searchicon />
+      <IconSearch searchicon />
     </label>
   );
 }

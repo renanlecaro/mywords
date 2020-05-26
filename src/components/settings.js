@@ -22,12 +22,6 @@ export class Settings extends Component {
     } = this.state;
     return (
       <div settings className={style.this}>
-        {/*<Link*/}
-        {/*  href={'/'}*/}
-        {/*  className={'button'} >*/}
-        {/*  <i className={'fa fa-angle-left'}/>*/}
-        {/*  <span>Word List</span>*/}
-        {/*</Link>*/}
         <form>
           <h2>Ignore all accents when checking answer</h2>
           <p>

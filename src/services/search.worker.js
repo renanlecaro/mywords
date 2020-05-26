@@ -7,8 +7,6 @@ export const forAutocomplete = big;
 
 const searchFn = buildIndex(forAutocomplete);
 
-console.log(searchFn("cat"));
-
 self.addEventListener("message", (e) => {
   const { action, ...content } = e.data;
   switch (action) {
@@ -19,7 +17,6 @@ self.addEventListener("message", (e) => {
         result: searchFn(search),
         msgId,
       };
-      console.log(search, resultMsg);
       self.postMessage(resultMsg);
   }
 });

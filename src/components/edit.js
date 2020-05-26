@@ -8,6 +8,14 @@ import { SearchBox } from "./seachbox";
 import { wordMatch } from "../services/wordMatch";
 import { Add } from "./add";
 import { catColor } from "../services/catColor";
+
+import IconGithub from "@fortawesome/fontawesome-free/svgs/brands/github.svg";
+import IconPlus from "@fortawesome/fontawesome-free/svgs/regular/plus-square.svg";
+import IconChart from "@fortawesome/fontawesome-free/svgs/regular/chart-bar.svg";
+import IconCog from "@fortawesome/fontawesome-free/svgs/solid/cog.svg";
+import IconArrowUp from "@fortawesome/fontawesome-free/svgs/solid/arrow-up.svg";
+import IconArrowRight from "@fortawesome/fontawesome-free/svgs/solid/arrow-right.svg";
+
 export class Edit extends Component {
   state = {
     list: null,
@@ -25,7 +33,7 @@ export class Edit extends Component {
     if (!list.length && !search) {
       return (
         <div welcome-message>
-          <i className={"fa fa-caret-up"} />
+          <IconArrowUp style={{ width: "2em" }} />
           <h1>Use the search to fill your list</h1>
         </div>
       );
@@ -87,21 +95,25 @@ export class Edit extends Component {
     return (
       <footer>
         <Link className={"button"} href={"/settings"}>
-          <i className={"fa fa-cog"} />
-          {/*<span>Settings</span>*/}
+          <IconCog />
         </Link>
         <Link className={"button"} href={"/charts"}>
-          <i className={"fa fa-chart-area"} />
-          {/*<span>Stats</span>*/}
+          <IconChart />
         </Link>{" "}
         <Link className={"button"} href={"/batch"}>
-          <i className={"fa fa-plus"} />
-          <span>words</span>
+          <IconPlus />
         </Link>
+        <a
+          className={"button"}
+          target={"blank"}
+          href={"https://github.com/renanlecaro/mywords/"}
+        >
+          <IconGithub />
+        </a>
         <div style={{ flexGrow: 1 }} />
         <Link className={"button"} href={"/train"}>
           <span>Learn</span>
-          <i className={"fa fa-angle-right"} />
+          <IconArrowRight />
         </Link>
       </footer>
     );

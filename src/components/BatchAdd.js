@@ -13,7 +13,7 @@ import {
   translateWord,
 } from "../services/autoTranslateList";
 import { autoStar } from "../services/autoStart";
-
+import IconPlus from "@fortawesome/fontawesome-free/svgs/regular/plus-square.svg";
 function splitUsing(val, regex) {
   return val
     .split(regex)
@@ -133,7 +133,7 @@ function ReviewScreen({ words, set, onSubmit }) {
         </div>
       ))}
       <button type={"submit"} className={"button"} style={{ float: "right" }}>
-        <i className={"fa fa-plus"} />
+        <IconPlus />
         <span>Add</span>
       </button>
     </form>
@@ -147,7 +147,6 @@ function InputRussianOnlyForm({ to, onSubmit, set }) {
       <label>Russian words, one per line</label>
       <textarea value={to} onChange={(e) => set({ to: e.target.value })} />
       <button type={"submit"} className={"button"} style={{ float: "right" }}>
-        <i className={"fa fa-globe"} />
         <span>Translate</span>
       </button>
     </form>
@@ -216,7 +215,7 @@ class BatchManualAdd extends Component {
         />
 
         <button type={"submit"} className={"button"} style={{ float: "right" }}>
-          <i className={"fa fa-plus"} />
+          <IconPlus />
           <span>Add words</span>
         </button>
       </form>
