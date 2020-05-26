@@ -161,7 +161,7 @@ export function Question({ word, value, onKeyUp, onRef, placeHolder = "" }) {
 
   return (
     <div className={style.fillTheBlank}>
-      <span>{parts[0]}</span>
+      <span className={"ru-text"}>{parts[0]}</span>
       <span input-placeholder-wrapper>
         <input
           type="text"
@@ -177,7 +177,7 @@ export function Question({ word, value, onKeyUp, onRef, placeHolder = "" }) {
           {placeHolder || parts[1]}
         </span>
       </span>
-      <span>{parts[2]}</span>
+      <span className={"ru-text"}>{parts[2]}</span>
     </div>
   );
 }
