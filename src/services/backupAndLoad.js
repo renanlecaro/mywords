@@ -47,6 +47,20 @@ function downloadJSON(object, filename = "mywords") {
   setTimeout(document.body.removeChild(dlAnchorElem), 1000);
 }
 
+export function removeAlreadyListedRussianWords(list) {
+  let rejected = 0;
+  const reject = getListOfRussianWords();
+  const result = [];
+  list.forEach((to) => {
+    if (reject.find((w) => sameish(w, to))) {
+      rejected++;
+    } else {
+      result.push(to);
+    }
+  });
+  if (rejected) showToast(rejected + " words ignored (already in list)");
+  return result;
+}
 export function importWords(wordlist) {
   const reject = getListOfRussianWords();
   let added = 0;
