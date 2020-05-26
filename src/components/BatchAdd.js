@@ -7,6 +7,7 @@ import {
 import { isRussian } from "./add";
 import style from "./BatchAdd.less";
 import { Link } from "preact-router/match";
+import pmap from "promise.map";
 import {
   checkStatusOfTranslator,
   translateWord,
@@ -21,25 +22,26 @@ function splitUsing(val, regex) {
 }
 export class BatchAdd extends Component {
   state = {
-    status: "",
+    status: "online",
     ru: "",
   };
   componentDidMount() {
-    checkStatusOfTranslator().then((status) => this.setState({ status }));
+    checkStatusOfTranslator().then(
+      (ok) => 0,
+      (error) => this.setState({ status: "offline" })
+    );
   }
 
   render(props, { status, ru }, context) {
-    if (status == "")
-      return "Checking if automatic translation is avaliable ..";
     if (status == "offline") return <BatchManualAdd defaultRu={ru} />;
-    if (status == "online")
-      return (
-        <AutoTranslator
-          onError={(ru) => {
-            this.setState({ ru, status: "offline" });
-          }}
-        />
-      );
+
+    return (
+      <AutoTranslator
+        onError={(ru) => {
+          this.setState({ ru, status: "offline" });
+        }}
+      />
+    );
   }
 }
 
@@ -55,6 +57,7 @@ class AutoTranslator extends Component {
   }
   parseRaw = (e) => {
     e.preventDefault();
+    if (!this.state.to) return;
     this.setState({ loading: true });
     translateRawText(this.state.to).then(
       (words) => this.setState({ words: words.map(autoStar), loading: false }),
@@ -99,7 +102,14 @@ function ReviewScreen({ words, set, onSubmit }) {
   };
   return (
     <form onSubmit={onSubmit} className={style.this}>
-      <h1>Review words translations</h1>
+      <h1>Review the translations </h1>
+      <p className={style.yandexLink}>
+        {" "}
+        Powered by
+        <a href="http://translate.yandex.com/" target="_blank">
+          Yandex.Translate
+        </a>
+      </p>
       {words.map((word, i) => (
         <div className={style.reviewRow}>
           <label>
@@ -124,7 +134,7 @@ function ReviewScreen({ words, set, onSubmit }) {
       ))}
       <button type={"submit"} className={"button"} style={{ float: "right" }}>
         <i className={"fa fa-plus"} />
-        <span>Add to my list</span>
+        <span>Add</span>
       </button>
     </form>
   );
@@ -137,8 +147,8 @@ function InputRussianOnlyForm({ to, onSubmit, set }) {
       <label>Russian words, one per line</label>
       <textarea value={to} onChange={(e) => set({ to: e.target.value })} />
       <button type={"submit"} className={"button"} style={{ float: "right" }}>
-        <i className={"fa fa-plus"} />
-        <span>Auto translate</span>
+        <i className={"fa fa-globe"} />
+        <span>Translate</span>
       </button>
     </form>
   );
@@ -151,7 +161,7 @@ function translateRawText(russianLines) {
   const lines = removeAlreadyListedRussianWords(
     splitUsing(russianLines, /\n/gi)
   );
-  return Promise.all(lines.map(translateWord));
+  return pmap(lines, translateWord, 2);
 }
 
 class BatchManualAdd extends Component {

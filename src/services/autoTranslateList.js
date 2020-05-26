@@ -28,7 +28,9 @@ function fromOnlineService(to) {
 }
 
 export function checkStatusOfTranslator() {
-  return fetch(new Request(translationAPi)).then((response) =>
-    response.status === 200 ? "online" : "offline"
-  );
+  return fetch(new Request(translationAPi)).then((response) => {
+    if (response.status !== 200) {
+      throw "offline";
+    }
+  });
 }
