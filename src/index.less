@@ -33,7 +33,14 @@ input[type="text"] {
   font-family: inherit;
   border: 1px solid #dedede;
 }
-
+svg {
+  display: inline;
+  height: auto;
+  width: 1em;
+  fill: currentColor;
+  vertical-align: top;
+  margin: 0 5px;
+}
 button,
 a[class*="button"] {
   font-size: 16px;
@@ -49,14 +56,6 @@ a[class*="button"] {
   color: inherit;
   min-width: 40px;
   background: none;
-  svg {
-    display: inline;
-    height: auto;
-    width: 1em;
-    fill: currentColor;
-    vertical-align: top;
-    margin: 0 5px;
-  }
 
   &:active,
   &:hover {
