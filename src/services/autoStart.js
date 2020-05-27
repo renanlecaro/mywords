@@ -13,5 +13,5 @@ export function autoStar(word) {
 }
 
 function autoStarRussian(to) {
-  return "*" + to.replace(/([ ?!.]+)$/gi, (a) => "*" + a);
+  return "*" + to.replace(/([ ?!.]*)$/gi, (a) => "*" + a);
 }
