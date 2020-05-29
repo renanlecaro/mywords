@@ -1,6 +1,4 @@
-import { wordMatch } from "./wordMatch";
-import { sameish } from "./sameish";
-import big from "./dicts/big";
+import big from "./dictionnary";
 import { buildIndex } from "./indexList";
 
 export const forAutocomplete = big;

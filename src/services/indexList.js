@@ -3,7 +3,12 @@ import { wordMatch } from "./wordMatch";
 export function buildIndex(list) {
   const index = {};
   list.forEach(({ from, to }, i) => {
-    const raw = from + " " + to;
+    const raw = (from + " " + to)
+      // They should be already but just making sure
+      .toLowerCase()
+      // We don't want to index details
+      .replace(/\([^)]*\)/gi, " ");
+
     const words = raw.split(/\b/gi);
     const starts = words
       .map((w) => simplify(w))

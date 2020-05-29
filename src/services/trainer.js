@@ -2,8 +2,6 @@ import { showToast } from "../components/notify";
 
 let wordlist = [];
 import EventEmitter from "events";
-import { getWordToAddToList } from "./suggest";
-import { getSetting } from "./settings";
 import { dateKey } from "./formatDate";
 import { addedWords } from "./persistData";
 import { autoStar } from "./autoStart";
@@ -173,7 +171,6 @@ export function getNextWordToTrain() {
   return (
     getWordThatNeedsARefresh(stepped) ||
     getWordNeverTrainedBefore(stepped) ||
-    addNewWordFromDatasetAndTrainIt() ||
     getWordThatNeedsRefreshEvenIfTooEarly(stepped)
   );
 }
@@ -187,6 +184,7 @@ function getWordThatNeedsRefreshEvenIfTooEarly(stepped) {
   const list = stepped.filter(({ id }) => id !== lastTrainedId);
   if (!list.length) return null;
   let minStep = Math.min(...list.map((word) => word.minStep));
+  showToast("You should add some words to your list !");
   if (minStep) {
     return list.find((word) => word.minStep == minStep);
   }
@@ -195,12 +193,6 @@ function getWordThatNeedsRefreshEvenIfTooEarly(stepped) {
 function getWordNeverTrainedBefore(list) {
   const unseen = list.filter((word) => !word.minStep);
   return unseen[unseen.length - 1];
-}
-
-function addNewWordFromDatasetAndTrainIt() {
-  if (getSetting().whenEmptyList != "rework") {
-    return addWordToList(getWordToAddToList());
-  }
 }
 
 export function registerResult({ id, guessed, answer }) {

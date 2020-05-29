@@ -1,7 +1,6 @@
 import EventEmitter from "events";
 
 const defaultSettings = {
-  whenEmptyList: "add-word",
   useSounds: true,
   fullBackup: true,
   restoreProgress: false,

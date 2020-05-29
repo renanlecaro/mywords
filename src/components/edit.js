@@ -82,7 +82,7 @@ export class Edit extends Component {
   };
 
   renderFooter() {
-    const { search } = this.state;
+    const { search, list } = this.state;
     if (search) {
       return (
         <footer>
@@ -111,7 +111,7 @@ export class Edit extends Component {
           <IconGithub />
         </a>
         <div style={{ flexGrow: 1 }} />
-        <Link className={"button"} href={"/train"}>
+        <Link className={"button"} href={"/train"} disabled={!list.length}>
           <span>Learn</span>
           <IconArrowRight />
         </Link>

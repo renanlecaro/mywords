@@ -1,31 +1,6 @@
-import phrases from "./dicts/phrases";
-import common from "./dicts/common";
-
-import { getListOfRussianWords } from "./trainer";
-import { sameish } from "./sameish";
-
 import Worker from "worker-loader!./search.worker.js";
 
-import { getSetting } from "./settings";
-
-function forAutoAdd() {
-  switch (getSetting().whenEmptyList) {
-    case "add-word":
-      return common.filter((w) => w.from.match(/noun|verb|adjective/));
-
-    case "add-sentence":
-      return phrases;
-  }
-}
-
 const worker = new Worker();
-
-export function getWordToAddToList() {
-  const reject = getListOfRussianWords();
-  return forAutoAdd().find(
-    (word) => !reject.find((rejected) => sameish(rejected, word.to))
-  );
-}
 
 let msgId = 0;
 export function suggestions(search = "", cb) {
@@ -39,6 +14,4 @@ export function suggestions(search = "", cb) {
   };
   worker.addEventListener("message", onResult);
   worker.postMessage({ action: "search", search, msgId: currentMsgId });
-
-  //
 }

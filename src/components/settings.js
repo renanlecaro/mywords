@@ -93,41 +93,6 @@ export class Settings extends Component {
             Just treat it as a mistake
           </label>
 
-          <h2>List mastered</h2>
-          <p>
-            Whenever you guess a word right, we wait a bit before asking you
-            about it again. If you've mastered all the words in your list but
-            you keep training, we can either give you more words to learn or
-            keep training already know words.
-          </p>
-          <label>
-            <input
-              type={"radio"}
-              name={"whenEmptyList"}
-              checked={whenEmptyList === "add-word"}
-              onChange={(e) => this.change("whenEmptyList", "add-word")}
-            />
-            Add a common word to the list
-          </label>
-          <label>
-            <input
-              type={"radio"}
-              name={"whenEmptyList"}
-              checked={whenEmptyList === "add-sentence"}
-              onChange={(e) => this.change("whenEmptyList", "add-sentence")}
-            />
-            Add an idiomatic sentences
-          </label>
-          <label>
-            <input
-              type={"radio"}
-              name={"whenEmptyList"}
-              checked={whenEmptyList === "rework"}
-              onChange={(e) => this.change("whenEmptyList", "rework")}
-            />
-            Study already known words
-          </label>
-
           <h2>Audio</h2>
           <p>
             We use the text to speech engine of your device to playback words
