@@ -111,7 +111,7 @@ export class Edit extends Component {
           <IconGithub />
         </a>
         <div style={{ flexGrow: 1 }} />
-        <Link className={"button"} href={"/train"} disabled={!list.length}>
+        <Link className={"button"} href={"/train"} disabled={list.length < 2}>
           <span>Learn</span>
           <IconArrowRight />
         </Link>
