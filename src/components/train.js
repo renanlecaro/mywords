@@ -173,12 +173,12 @@ class Ask extends Component {
 
         {typoWarning && <label>Please check for a typo</label>}
 
-        <button
-          className={"delay float-bottom"}
+        <a
+          className={"button delay float-bottom"}
           onClick={this.props.sendToEndOfList}
         >
           Learn later
-        </button>
+        </a>
         <button className={" float-bottom"} type="submit">
           {answer ? "Check" : "I don't know"}
         </button>
@@ -244,12 +244,12 @@ class Nope extends Component {
           onRef: (n) => (this.input = n),
           placeHolder: <ShowDiff answer={answer} to={parts[1]} />,
         })}
-        <button
-          className={"delay float-bottom"}
+        <a
+          className={"button delay float-bottom"}
           onClick={this.props.sendToEndOfList}
         >
           Learn later
-        </button>
+        </a>
         <button className={"primary float-bottom"} disabled={!this.isCorrect()}>
           Next word
         </button>
