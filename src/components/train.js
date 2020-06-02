@@ -1,5 +1,9 @@
 import { Component } from "preact";
-import { getNextWordToTrain, registerResult } from "../services/trainer";
+import {
+  getNextWordToTrain,
+  registerResult,
+  sendToEndOfList,
+} from "../services/trainer";
 import { distance, sameish } from "../services/sameish";
 import { sayInRussian } from "../services/say";
 import { ShowDiff } from "./diff";
@@ -79,6 +83,7 @@ export class Train extends Component {
       }
     });
   };
+
   trainNextWord = () => {
     this.setNewWord(this.nextWord);
     this.nextWord = null;
@@ -90,12 +95,30 @@ export class Train extends Component {
   setAnswer = (e) => {
     this.setState({ answer: e.target.value });
   };
+  sendToEndOfList = (e) => {
+    const { word, wordShownFirstAt } = this.state;
+    e.preventDefault();
+    sendToEndOfList(word.id);
+    const { prevWord, nextWord } = registerResult({
+      id: word.id,
+      guessed: false,
+      isSkip: true,
+      timing: Date.now() - wordShownFirstAt,
+    });
+    this.nextWord = nextWord;
+    this.trainNextWord();
+  };
   renderByMode() {
     const { word, answer, mode, typoWarning } = this.state;
 
     if (mode === "incorrect") {
       return (
-        <Nope answer={answer} word={word} confirm={this.validateFailure} />
+        <Nope
+          answer={answer}
+          word={word}
+          confirm={this.validateFailure}
+          sendToEndOfList={this.sendToEndOfList}
+        />
       );
     }
     return (
@@ -105,6 +128,7 @@ export class Train extends Component {
         answer={answer}
         setAnswer={this.setAnswer}
         onSubmitAnswer={this.onSubmitAnswer}
+        sendToEndOfList={this.sendToEndOfList}
       />
     );
   }
@@ -148,6 +172,13 @@ class Ask extends Component {
         })}
 
         {typoWarning && <label>Please check for a typo</label>}
+
+        <button
+          className={"delay float-bottom"}
+          onClick={this.props.sendToEndOfList}
+        >
+          Learn later
+        </button>
         <button className={" float-bottom"} type="submit">
           {answer ? "Check" : "I don't know"}
         </button>
@@ -213,6 +244,12 @@ class Nope extends Component {
           onRef: (n) => (this.input = n),
           placeHolder: <ShowDiff answer={answer} to={parts[1]} />,
         })}
+        <button
+          className={"delay float-bottom"}
+          onClick={this.props.sendToEndOfList}
+        >
+          Learn later
+        </button>
         <button className={"primary float-bottom"} disabled={!this.isCorrect()}>
           Next word
         </button>

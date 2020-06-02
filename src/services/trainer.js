@@ -67,24 +67,27 @@ function getStatsById(id) {
 
 function analyseTrainingEvent(event) {
   return trackChange(event, () => {
-    const { id, time, guessed, index } = event;
+    const { id, time, isSkip, guessed, index } = event;
     stats[id] = getStatsById(id);
-    const s = stats[id];
-    s.lastSeen = index;
-
-    if (guessed) {
-      s.guessCount++;
-      s.guessInARowCount++;
-      s.failInARowCount = 0;
+    if (isSkip) {
+      delete stats[id];
     } else {
-      s.failCount++;
-      s.guessInARowCount = 0;
-      s.failInARowCount++;
-    }
+      const s = stats[id];
+      s.lastSeen = index;
 
-    const delay = scheduleNext(s);
-    s.minStep = index + delay;
-    return delay;
+      if (guessed) {
+        s.guessCount++;
+        s.guessInARowCount++;
+        s.failInARowCount = 0;
+      } else {
+        s.failCount++;
+        s.guessInARowCount = 0;
+        s.failInARowCount++;
+      }
+
+      const delay = scheduleNext(s);
+      s.minStep = index + delay;
+    }
   });
 }
 
@@ -195,13 +198,14 @@ function getWordNeverTrainedBefore(list) {
   return unseen[unseen.length - 1];
 }
 
-export function registerResult({ id, guessed, answer }) {
+export function registerResult({ id, isSkip, guessed, answer }) {
   const event = {
     time: new Date(),
     id,
     guessed,
     index: trainingData.length,
     answer,
+    isSkip,
   };
 
   trainingData.push(event);
@@ -223,4 +227,11 @@ export function updateWord(id, change) {
 
 export function getListOfRussianWords() {
   return wordlist.map((w) => w.to);
+}
+
+export function sendToEndOfList(id) {
+  const word = wordlist.find((w) => w.id == id);
+  wordlist = [word].concat(wordlist.filter((w) => w !== word));
+  showToast("Word added to end of list");
+  listChanged();
 }

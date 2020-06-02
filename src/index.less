@@ -67,6 +67,13 @@ a[class*="button"] {
     position: fixed;
     bottom: 0;
     right: 0;
+    &.delay {
+      left: 0;
+      right: auto;
+      &:not(:hover) {
+        opacity: 0.5;
+      }
+    }
   }
   &[disabled] {
     opacity: 0.3;
