@@ -4,6 +4,7 @@ import { getSetting, setSetting } from "../services/settings";
 import { Link } from "preact-router/match";
 import { downloadBackup, restoreBackup } from "../services/backupAndLoad";
 import style from "./settings.less";
+import { DisplayChangeLog } from "./DisplayChangeLog";
 export class Settings extends Component {
   state = getSetting();
   change(key, value) {
@@ -215,6 +216,7 @@ export class Settings extends Component {
             Hard reset ...
           </button>
         </form>
+        <DisplayChangeLog />
       </div>
     );
   }
