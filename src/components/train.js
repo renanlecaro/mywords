@@ -147,12 +147,27 @@ export class Train extends Component {
 }
 
 class Ask extends Component {
-  componentDidMount() {
+  focusInput = () => {
     this.input.focus();
+  };
+  blurInput = () => {
+    // Focusing only opens the keyboard if the input
+    // was previously blurred.
+    this.input.blur();
+  };
+  componentDidMount() {
+    window.addEventListener("focus", this.focusInput);
+    window.addEventListener("blur", this.blurInput);
+    this.focusInput();
   }
+  componentWillUnmount() {
+    window.removeEventListener("focus", this.focusInput);
+    window.removeEventListener("blur", this.blurInput);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.word.id != nextProps.word.id) {
-      setTimeout(() => this.input.focus());
+      setTimeout(this.focusInput);
     }
   }
 
