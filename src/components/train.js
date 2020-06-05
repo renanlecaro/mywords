@@ -147,12 +147,20 @@ export class Train extends Component {
 }
 
 class Ask extends Component {
-  componentDidMount() {
+  autoFocus = () => {
     this.input.focus();
+  };
+  componentDidMount() {
+    window.addEventListener("focus", this.autoFocus);
+    this.autoFocus();
   }
+  componentWillUnmount() {
+    window.removeEventListener("focus", this.autoFocus);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.word.id != nextProps.word.id) {
-      setTimeout(() => this.input.focus());
+      setTimeout(this.autoFocus);
     }
   }
 
