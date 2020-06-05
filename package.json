@@ -5,13 +5,14 @@
   "license": "MIT",
   "scripts": {
     "start": "per-env",
-    "start:production": "npm run -s serve",
-    "start:development": "npm run -s dev",
-    "build": "preact build --no-prerender",
-    "build-json": "preact build --no-prerender --json",
+    "start:production": "npm run update-changelog && npm run -s serve",
+    "start:development": "npm run update-changelog && npm run -s dev",
+    "build": "npm run update-changelog && preact build --no-prerender",
+    "build-json": "npm run update-changelog && preact build --no-prerender --json",
     "serve": "preact build && sirv build --cors --single",
     "dev": "preact watch --port 7000",
-    "pretty": "prettier --write src/**/*.{js,less,json}"
+    "pretty": "prettier --write src/**/*.{js,less,json}",
+    "update-changelog": "node ./updateChangelog.js"
   },
   "devDependencies": {
     "husky": "^4.2.5",
@@ -37,6 +38,7 @@
     "preact-router": "^3.2.1",
     "preact-virtual-list": "^0.3.1",
     "promise.map": "^0.1.0",
+    "request": "^2.88.2",
     "svg-inline-loader": "^0.8.2"
   },
   "husky": {
