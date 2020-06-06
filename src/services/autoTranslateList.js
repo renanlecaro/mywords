@@ -20,6 +20,12 @@ function fromOfflineDictionary(to) {
 
 function fromOnlineService(to) {
   const clean = to.replace(/\*/gi, "").replace(/\([^)]+\)/gi, " ");
+  if (window.location.host === "localhost:7000") {
+    return Promise.resolve({
+      from: "Fake translation for " + clean,
+      to,
+    });
+  }
 
   const url = translationAPi + "translate/ru/en/" + encodeURIComponent(clean);
   return fetch(new Request(url))
