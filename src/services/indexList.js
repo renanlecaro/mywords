@@ -1,40 +1,64 @@
 import { wordMatch } from "./wordMatch";
 
-export function buildIndex(list) {
+export function makeSearchFunction(list) {
+  const index = buildIndexFromList(list);
+  return function search(search = "", max = 10) {
+    let trimmedList = wordsForSearch(list, index, search);
+    return xResults(trimmedList, wordMatch(search), max);
+  };
+}
+
+export function buildIndexFromList(list) {
   const index = {};
   list.forEach(({ from, to }, i) => {
-    const raw = (from + " " + to)
-      // They should be already but just making sure
-      .toLowerCase()
-      // We don't want to index details
-      .replace(/\([^)]*\)/gi, " ");
+    const raw = from + " " + to;
 
-    const words = raw.split(/\b/gi);
-    const starts = words
-      .map((w) => simplify(w))
-      .map((w) => w.slice(0, 3))
-      .filter((w) => w.length === 3);
-
-    unique(starts).forEach((start) => {
+    wordsKeysForIndex(raw).forEach((start) => {
       index[start] = index[start] || [];
       index[start].push(i);
     });
   });
+  return index;
+}
 
-  return function search(search, max = 10) {
-    const chars = simplify(search).slice(0, 3);
+export function wordsForSearch(list, index, search) {
+  const indexLists = wordsKeysForIndex(search)
+    .map((i) => index[i])
+    .filter((i) => i);
+  if (indexLists.length === 0) return list;
 
-    let trimmedList =
-      chars.length < 3 ? list : (index[chars] || []).map((id) => list[id]);
+  const intersection = indexLists[0].filter(
+    (i) => !indexLists.slice(1).find((ids) => ids.indexOf(i) === -1)
+  );
 
-    return xResults(trimmedList, wordMatch(search), max);
-  };
+  return intersection.map((i) => list[i]);
+}
+
+export function wordsKeysForIndex(raw) {
+  return unique(
+    splitWords(raw)
+      .map((w) => w.slice(0, 3))
+      .filter((w) => w.length === 3)
+  );
+}
+export function splitWords(raw) {
+  return (
+    raw
+      // They should be already but just making sure
+      .toLowerCase()
+      // We don't want to index details in brakets
+      .replace(/\([^)]*\)/gi, " ")
+      // Get the word boundaries, not just spaces
+      .split(/\b/gi)
+      .map((w) => simplify(w))
+      .filter((i) => i)
+  );
 }
 
 function xResults(list, matcher, limit = 10) {
   const res = [];
   let i = 0;
-  while (res.length < limit && i < list.length - 1) {
+  while (res.length < limit && i < list.length) {
     const current = list[i];
     if (matcher(current)) res.push(current);
     i++;
@@ -42,7 +66,7 @@ function xResults(list, matcher, limit = 10) {
   return res;
 }
 
-function unique(words) {
+export function unique(words) {
   const res = [];
   words.forEach((word) => {
     if (res.indexOf(word) === -1) res.push(word);
@@ -50,7 +74,7 @@ function unique(words) {
   return res;
 }
 
-function simplify(stringToCheck = "") {
+export function simplify(stringToCheck = "") {
   const clean = stringToCheck
     .toLowerCase()
     .replace(/[ .,\/#!?$%\^&\*;:{}=\-_`~()]/g, "")

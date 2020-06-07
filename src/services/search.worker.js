@@ -1,9 +1,9 @@
 import big from "./dictionnary";
-import { buildIndex } from "./indexList";
+import { makeSearchFunction } from "./indexList";
 
 export const forAutocomplete = big;
 
-const searchFn = buildIndex(forAutocomplete);
+const searchFn = makeSearchFunction(forAutocomplete);
 
 self.addEventListener("message", (e) => {
   const { action, ...content } = e.data;
