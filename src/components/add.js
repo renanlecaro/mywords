@@ -74,7 +74,7 @@ export class Add extends Component {
   };
 
   suggest = (str) => {
-    suggestions(str, (result) => {
+    suggestions({ search: str, max: 10 }).then((result) => {
       this.setState({
         suggestions: result,
         searching: false,

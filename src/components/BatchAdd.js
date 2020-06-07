@@ -14,6 +14,7 @@ import {
 } from "../services/autoTranslateList";
 import { autoStar } from "../services/autoStart";
 import IconPlus from "@fortawesome/fontawesome-free/svgs/regular/plus-square.svg";
+import commonWords from "../services/common-russian-words";
 function splitUsing(val, regex) {
   return val
     .split(regex)
@@ -146,6 +147,15 @@ function InputRussianOnlyForm({ to, onSubmit, set }) {
       <h1>Batch add words</h1>
       <label>Russian words, one per line</label>
       <textarea value={to} onChange={(e) => set({ to: e.target.value })} />
+      {!to && (
+        <a
+          className={"button"}
+          style={{ float: "left" }}
+          onClick={(e) => set({ to: commonWords.join("\n") })}
+        >
+          Add common words
+        </a>
+      )}
       <button type={"submit"} className={"button"} style={{ float: "right" }}>
         <span>Translate</span>
       </button>

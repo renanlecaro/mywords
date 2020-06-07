@@ -1,7 +1,16 @@
+import { splitWords } from "./indexList";
+
 export const wordMatch = (search) => {
-  search = search.toLowerCase();
-  return ({ from, to }) =>
-    !search ||
-    from.toLowerCase().indexOf(search) != -1 ||
-    to.toLowerCase().indexOf(search) != -1;
+  if (!search.trim()) return () => true;
+  const mustBePresent = splitWords(search);
+
+  return ({ from, to }) => {
+    const present = splitWords(from + " " + to);
+    for (var i = 0; i < mustBePresent.length; i++) {
+      const word = mustBePresent[i];
+      const match = present.find((w) => w.startsWith(word));
+      if (!match) return false;
+    }
+    return true;
+  };
 };

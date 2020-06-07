@@ -2,7 +2,7 @@ var _rollbarConfig = {
   accessToken: "0b10923f94c84f759bdf18839d02f9cc",
   captureUncaught: true,
   captureUnhandledRejections: true,
-  enabled: window.location.host !== "localhost:8080",
+  enabled: !window.location.host.startsWith("localhost"),
   payload: {
     environment: "production",
   },

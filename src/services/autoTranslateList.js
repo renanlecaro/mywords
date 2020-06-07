@@ -12,7 +12,7 @@ export function translateWord(to) {
 
 function fromOfflineDictionary(to) {
   return new Promise((resolve, reject) => {
-    suggestions(to, (list) => {
+    suggestions({ search: to, max: 10 }).then((list) => {
       resolve(list.find((w) => sameish(w.to, to)));
     });
   });
@@ -20,6 +20,13 @@ function fromOfflineDictionary(to) {
 
 function fromOnlineService(to) {
   const clean = to.replace(/\*/gi, "").replace(/\([^)]+\)/gi, " ");
+  if (window.location.host.startsWith("localhost")) {
+    console.warn("Faked translation for " + clean);
+    return Promise.resolve({
+      from: "Fake translation for " + clean,
+      to,
+    });
+  }
 
   const url = translationAPi + "translate/ru/en/" + encodeURIComponent(clean);
   return fetch(new Request(url))

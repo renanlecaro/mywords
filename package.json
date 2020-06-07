@@ -12,7 +12,9 @@
     "serve": "preact build && sirv build --cors --single",
     "dev": "preact watch --port 7000",
     "pretty": "prettier --write src/**/*.{js,less,json}",
-    "update-changelog": "node ./updateChangelog.js"
+    "update-changelog": "node ./updateChangelog.js",
+    "test": "jest",
+    "watch": "jest --watch -u"
   },
   "devDependencies": {
     "husky": "^4.2.5",
@@ -29,6 +31,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.1",
     "diff": "^4.0.2",
+    "jest": "^26.0.1",
     "js-levenshtein": "^1.1.6",
     "lint-staged": "^10.2.2",
     "preact": "^10.3.2",
