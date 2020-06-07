@@ -2,9 +2,20 @@ import { wordMatch } from "./wordMatch";
 
 export function makeSearchFunction(list) {
   const index = buildIndexFromList(list);
+  let lastSearch = null;
+  let lastList = null;
+  function getTrimmedList(search) {
+    const searchKey = wordsKeysForIndex(search).join(",");
+    if (lastSearch !== searchKey) {
+      console.log("searchKey updated : " + lastSearch + "->" + searchKey);
+      lastSearch = searchKey;
+      lastList = wordsForSearch(list, index, search);
+    }
+    return lastList;
+  }
   return function search(search = "", max = 10) {
-    let trimmedList = wordsForSearch(list, index, search);
-    return xResults(trimmedList, wordMatch(search), max);
+    const result = xResults(getTrimmedList(search), wordMatch(search), max);
+    return result;
   };
 }
 
@@ -12,7 +23,6 @@ export function buildIndexFromList(list) {
   const index = {};
   list.forEach(({ from, to }, i) => {
     const raw = from + " " + to;
-
     wordsKeysForIndex(raw).forEach((start) => {
       index[start] = index[start] || [];
       index[start].push(i);

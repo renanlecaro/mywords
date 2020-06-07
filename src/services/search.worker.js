@@ -2,19 +2,22 @@ import big from "./dictionnary";
 import { makeSearchFunction } from "./indexList";
 
 export const forAutocomplete = big;
+forAutocomplete.sort((a, b) => a.to.length - b.to.length);
 
 const searchFn = makeSearchFunction(forAutocomplete);
 
-self.addEventListener("message", (e) => {
-  const { action, ...content } = e.data;
+export function reactToMessage({ action, ...content }) {
   switch (action) {
     case "search":
-      const { search, msgId } = content;
-      const resultMsg = {
+      const { search, max, msgId } = content;
+      return {
         action: "searchResult",
-        result: searchFn(search),
+        result: searchFn(search, max),
         msgId,
       };
-      self.postMessage(resultMsg);
   }
+}
+
+self.addEventListener("message", (e) => {
+  self.postMessage(reactToMessage(e.data));
 });

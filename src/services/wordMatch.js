@@ -1,6 +1,7 @@
 import { splitWords } from "./indexList";
 
 export const wordMatch = (search) => {
+  if (!search.trim()) return () => true;
   const mustBePresent = splitWords(search);
 
   return ({ from, to }) => {
