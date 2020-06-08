@@ -3,7 +3,7 @@ import Worker from "worker-loader!./search.worker.js";
 const worker = new Worker();
 
 let msgId = 0;
-export function suggestions({ search, max }) {
+export function search({ search, max }) {
   return new Promise((resolve, reject) => {
     const currentMsgId = msgId++;
     const onResult = (ev) => {

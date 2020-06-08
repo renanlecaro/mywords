@@ -1,4 +1,4 @@
-import { suggestions } from "./suggest";
+import { search } from "./search";
 import { sameish } from "./sameish";
 
 const translationAPi = "https://mywords-backend.herokuapp.com/";
@@ -12,7 +12,7 @@ export function translateWord(to) {
 
 function fromOfflineDictionary(to) {
   return new Promise((resolve, reject) => {
-    suggestions({ search: to, max: 10 }).then((list) => {
+    search({ search: to, max: 10 }).then((list) => {
       resolve(list.find((w) => sameish(w.to, to)));
     });
   });

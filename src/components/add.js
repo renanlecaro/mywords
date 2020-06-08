@@ -4,7 +4,7 @@ import { sayInRussian } from "../services/say";
 import { sameish, simplify } from "../services/sameish";
 import style from "./edit.less";
 import { showToast } from "./notify";
-import { suggestions } from "../services/suggest";
+import { search } from "../services/search";
 import debounce from "lodash/debounce";
 import { wordMatch } from "../services/wordMatch";
 import list from "less/lib/less/functions/list";
@@ -74,7 +74,7 @@ export class Add extends Component {
   };
 
   suggest = (str) => {
-    suggestions({ search: str, max: 10 }).then((result) => {
+    search({ search: str, max: 10 }).then((result) => {
       this.setState({
         suggestions: result,
         searching: false,
