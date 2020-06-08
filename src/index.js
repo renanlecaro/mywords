@@ -10,6 +10,7 @@ import { BatchAdd } from "./components/BatchAdd";
 import { EditOne } from "./components/EditOne";
 import { CustomFontImporter } from "./components/CustomFont";
 
+import "./db/db";
 export default function App() {
   return (
     <div id="app">

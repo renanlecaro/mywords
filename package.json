@@ -30,10 +30,12 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.1",
+    "deep-equal": "^2.0.3",
     "diff": "^4.0.2",
     "jest": "^26.0.1",
     "js-levenshtein": "^1.1.6",
     "lint-staged": "^10.2.2",
+    "mockdate": "^3.0.2",
     "preact": "^10.3.2",
     "preact-cli-svg-loader": "^1.1.0",
     "preact-compat": "^3.19.0",

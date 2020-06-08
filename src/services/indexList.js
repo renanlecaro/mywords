@@ -7,7 +7,6 @@ export function makeSearchFunction(list) {
   function getTrimmedList(search) {
     const searchKey = wordsKeysForIndex(search).join(",");
     if (lastSearch !== searchKey) {
-      console.log("searchKey updated : " + lastSearch + "->" + searchKey);
       lastSearch = searchKey;
       lastList = wordsForSearch(list, index, search);
     }

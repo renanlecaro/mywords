@@ -7,7 +7,7 @@ export function sameish(a, b) {
 export function simplify(stringToCheck = "") {
   const clean = stringToCheck
     .toLowerCase()
-    .replace(/[ .,\/#!?$%\^&\*;:{}=\-_`~()]/g, "")
+    .replace(/[ .,\/#!?$%\^&;:{}=\-_`~()]/g, "")
     .trim();
   return getSetting().ignoreAccents ? removeAccents(clean) : clean;
 }
