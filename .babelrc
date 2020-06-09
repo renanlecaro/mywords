@@ -5,5 +5,5 @@
         ["preact-cli/babel", { "modules": "commonjs" }]
       ]
     }
-  }
+  },
 }

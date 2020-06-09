@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { starsSplit } from "./train";
+import { starsSplit } from "../services/sameish";
 const jsdiff = require("diff");
 
 export function ShowDiff({ answer = "", to = "" }) {

@@ -15,19 +15,18 @@
     "update-changelog": "node ./updateChangelog.js",
     "create-changelog": "node ./updateChangelog.js --create-only",
     "test": "jest",
-    "watch": "jest --watch -u"
+    "watch": "jest --watch"
   },
   "devDependencies": {
     "husky": "^4.2.5",
-    "identity-obj-proxy": "^3.0.0",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "per-env": "^1.0.2",
     "preact-cli": "^3.0.0-rc.10",
     "preact-render-spy": "^1.2.1",
+    "prettier": "^2.0.5",
     "sirv-cli": "^0.4.5",
-    "worker-loader": "^2.0.0",
-    "prettier": "^2.0.5"
+    "worker-loader": "^2.0.0"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.1",

@@ -1,7 +1,18 @@
-import { reducer } from "./reducer";
+import * as actions from "./actions/_index";
+
 import deepEqual from "deep-equal";
 
 import EventEmitter from "events";
+
+function reducer(store, params) {
+  store = { words: [], ...store };
+  const action = actions[params.action];
+  if (!action) {
+    console.warn("no action named " + params.action);
+    return {};
+  }
+  return action(store, params);
+}
 
 export function change(payload) {
   return new Promise((resolve, reject) => {
