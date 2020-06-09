@@ -1,6 +1,14 @@
 // This script pulls the public commits to create a changelog
 const fs = require("fs");
 const request = require("request");
+const outputFile = "./src/changeLog.js";
+if (
+  process.argv.find((arg) => arg == "--create-only") &&
+  fs.existsSync(outputFile)
+) {
+  process.exit(0);
+}
+
 const url =
   "https://api.github.com/repos/renanlecaro/mywords/commits?sha=master";
 
@@ -25,7 +33,7 @@ request(
       .filter((c) => c.message.indexOf("Merge pull request") === -1);
 
     fs.writeFileSync(
-      "./src/changeLog.js",
+      outputFile,
       `
 // this file is auto generated, don't edit it my hand 
 export const commits=${JSON.stringify(parsed)};  

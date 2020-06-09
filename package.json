@@ -6,13 +6,14 @@
   "scripts": {
     "start": "per-env",
     "start:production": "npm run update-changelog && npm run -s serve",
-    "start:development": "npm run update-changelog && npm run -s dev",
+    "start:development": "npm run create-changelog && npm run -s dev",
     "build": "npm run update-changelog && preact build --no-prerender",
     "build-json": "npm run update-changelog && preact build --no-prerender --json",
     "serve": "preact build && sirv build --cors --single",
     "dev": "preact watch --port 7000",
     "pretty": "prettier --write src/**/*.{js,less,json}",
     "update-changelog": "node ./updateChangelog.js",
+    "create-changelog": "node ./updateChangelog.js --create-only",
     "test": "jest",
     "watch": "jest --watch -u"
   },
