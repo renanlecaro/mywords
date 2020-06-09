@@ -88,7 +88,7 @@ function checkJSONserialization(object) {
     !deepEqual(object, JSON.parse(JSON.stringify(object)))
   ) {
     debugLog(object);
-    throw "Change must be serializable :";
+    throw "Change must be serializable";
   }
 }
 

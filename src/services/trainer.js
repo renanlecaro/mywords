@@ -26,8 +26,7 @@ export function getNextWordToTrain(store = storeCache) {
     .map((word) => ({
       ...word,
       probability: probabilityOfWordGuess(word),
-    }))
-    .reverse();
+    }));
   return (
     getWordThatNeedsARefresh(list) ||
     getWordNeverTrainedBefore(list) ||

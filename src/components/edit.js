@@ -20,7 +20,7 @@ export class Edit extends Component {
   };
   componentDidMount() {
     this.clearListener = getWordList((list) => {
-      this.setState({ list });
+      this.setState({ list: [...list].reverse() });
     });
   }
   componentWillUnmount() {

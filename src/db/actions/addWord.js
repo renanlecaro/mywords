@@ -15,6 +15,6 @@ export function addWord({ words }, { time, from, to, eid }) {
     stats: emptyStats(),
   };
   preventDuplicate(words, { id: eid, to });
-  words = [newWord, ...words];
+  words = [...words, newWord];
   return { words };
 }
