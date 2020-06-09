@@ -1,20 +1,20 @@
 import { emptyStats, preventDuplicate } from "./_index";
 
-export function addWord({ words }, { time, from, to, id }) {
+export function addWord({ words }, { time, from, to, eid }) {
   from = from.trim();
   to = to.trim();
   if (!from) throw "A word needs a 'from' field";
   if (!to) throw "A word needs a 'to' field";
-  if (!id) id = Math.floor(Math.random() * 100000000);
+
   const newWord = {
     createdAt: time,
     updatedAt: time,
     from,
     to,
-    id,
+    id: eid,
     stats: emptyStats(),
   };
-  preventDuplicate(words, { id, to });
-  words.push(newWord);
+  preventDuplicate(words, { id: eid, to });
+  words = [newWord, ...words];
   return { words };
 }

@@ -1,7 +1,7 @@
-import { change, resetForTest } from "../db.js";
+import { change, reset } from "../db.js";
 
 describe("updateWord", () => {
-  beforeEach(resetForTest);
+  beforeEach(reset);
 
   describe("deleteWord", () => {
     it("removes the word", () => {

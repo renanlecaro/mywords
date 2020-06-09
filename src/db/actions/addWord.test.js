@@ -1,7 +1,7 @@
-import { change, resetForTest } from "../db.js";
+import { change, reset } from "../db.js";
 
 describe("addWord", () => {
-  beforeEach(resetForTest);
+  beforeEach(reset);
 
   it("adds the word to the list", () => {
     return change({ action: "addWord", from: "Hello", to: "Привет" }).then(
@@ -61,5 +61,10 @@ describe("addWord", () => {
         change({ action: "addWord", from: "Hello", to: "здравствуйте" })
       )
       .then((s) => expect(s.words.length).toEqual(2));
+  });
+  it("Adds the word at the beginning of the list", () => {
+    return change({ action: "addWord", from: "1", to: "Привет" })
+      .then(() => change({ action: "addWord", from: "2", to: "здравствуйте" }))
+      .then((s) => expect(s.words.map((w) => w.from)).toEqual(["2", "1"]));
   });
 });

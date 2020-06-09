@@ -33,3 +33,8 @@ export class ToastDisplay extends Component {
 export function showToast(text, className = "success") {
   toastEvents.emit("toast", { className, text });
 }
+
+export function pipeError(e) {
+  toastEvents.emit("toast", { className: "error", text: e.toString() });
+  throw e;
+}

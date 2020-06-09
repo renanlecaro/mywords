@@ -14,5 +14,6 @@ export function userAnswer({ words }, { id, isSuccess, answer, time }) {
   }
   stats.ltr.push({ d: starredDistance(answer, word.to), t: time });
   stats.ltr = stats.ltr.slice(-10);
+  stats.lastTest = time;
   return { words, lastWordAsked: id };
 }

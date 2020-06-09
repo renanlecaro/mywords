@@ -1,4 +1,5 @@
 import { emptyStats, preventDuplicate } from "./_index";
+import { starredSameish } from "../../services/sameish";
 
 export function updateWord({ words }, { id, time, from = "", to = "" }) {
   const word = words.find((w) => w.id === id);

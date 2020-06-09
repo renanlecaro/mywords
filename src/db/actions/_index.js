@@ -4,6 +4,7 @@ export { addWord } from "./addWord";
 export { deleteWord } from "./deleteWord";
 export { updateWord } from "./updateWord";
 export { userAnswer } from "./userAnswer";
+export { learnWordLater } from "./learnWordLater";
 
 export function emptyStats() {
   return {

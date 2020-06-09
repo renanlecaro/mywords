@@ -15,7 +15,7 @@
     "update-changelog": "node ./updateChangelog.js",
     "create-changelog": "node ./updateChangelog.js --create-only",
     "test": "jest",
-    "watch": "jest --watch"
+    "watch": "jest --watch -u"
   },
   "devDependencies": {
     "husky": "^4.2.5",

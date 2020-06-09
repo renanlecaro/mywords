@@ -17,9 +17,9 @@ export class EditOne extends Component {
     updateWord(id, { from, to });
     history.back();
   };
-  render(props, { from, to, status }, context) {
+  render(props, { from, to, status, stats }, context) {
     return (
-      <div className={style.this} style={{ backgroundColor: catColor(status) }}>
+      <div className={style.this} style={{ backgroundColor: catColor(stats) }}>
         <form onSubmit={this.save}>
           <h1>Quick editor</h1>
           <input

@@ -4,8 +4,17 @@ import deepEqual from "deep-equal";
 
 import EventEmitter from "events";
 
+const events = new EventEmitter();
+
+let store, logs;
+export function reset() {
+  events.removeAllListeners();
+  store = { words: [] };
+  logs = [];
+}
+reset();
+
 function reducer(store, params) {
-  store = { words: [], ...store };
   const action = actions[params.action];
   if (!action) {
     console.warn("no action named " + params.action);
@@ -15,6 +24,7 @@ function reducer(store, params) {
 }
 
 export function change(payload) {
+  debugLog("change:", payload);
   return new Promise((resolve, reject) => {
     checkJSONserialization(payload);
 
@@ -22,6 +32,7 @@ export function change(payload) {
       return reject("Missing an action");
     }
     payload.time = payload.time || Date.now();
+    payload.eid = payload.eid || Math.floor(Math.random() * 100000000);
 
     applyEvent(payload);
 
@@ -33,15 +44,11 @@ export function change(payload) {
 
 export function subscribe(cb) {
   events.addListener("change", cb);
-  setTimeout(() => cb(store));
+  cb(store);
   return function () {
     events.removeListener("change", cb);
   };
 }
-
-let store = {};
-let logs = [];
-const events = new EventEmitter();
 
 function applyEvent(event) {
   Object.assign(store, reducer(store, event));
@@ -77,14 +84,16 @@ if (!logs.length) {
 
 function checkJSONserialization(object) {
   if (
-    process.env !== "production" &&
+    process.env.NODE_ENV !== "production" &&
     !deepEqual(object, JSON.parse(JSON.stringify(object)))
   ) {
-    throw "Change must be serializable";
+    debugLog(object);
+    throw "Change must be serializable :";
   }
 }
-export function resetForTest() {
-  events.removeAllListeners();
-  store = {};
-  logs = [];
+
+function debugLog(...args) {
+  if (process.env.NODE_ENV === "development") {
+    console.debug(...args);
+  }
 }

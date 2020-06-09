@@ -53,9 +53,10 @@ export class Add extends Component {
     addWordToList({
       from,
       to,
+    }).then((s) => {
+      sayInRussian(to)();
+      showToast('Word "' + to + '" added to your list');
     });
-    sayInRussian(to)();
-    showToast('Word "' + to + '" added to your list');
     this.manualEntryInput.value = "";
     this.props.clear();
   }

@@ -55,24 +55,26 @@ export class Train extends Component {
     }
     this.speakNow();
     const guessed = sameish(answer, target);
-    const { prevWord, nextWord } = registerResult({
+    registerResult({
       id: word.id,
       guessed,
       timing: Date.now() - wordShownFirstAt,
       typo: typoWarning ? typoContent : undefined,
-    });
-    this.nextWord = nextWord;
-    this.setState({ word: prevWord }, () => {
-      if (guessed) {
-        this.setState({
-          mode: "correct",
-        });
-        setTimeout(this.trainNextWord, 200);
-      } else {
-        this.setState({
-          mode: "incorrect",
-        });
-      }
+      answer,
+    }).then(({ prevWord, nextWord }) => {
+      this.nextWord = nextWord;
+      this.setState({ word: prevWord }, () => {
+        if (guessed) {
+          this.setState({
+            mode: "correct",
+          });
+          setTimeout(this.trainNextWord, 200);
+        } else {
+          this.setState({
+            mode: "incorrect",
+          });
+        }
+      });
     });
   };
 
@@ -88,17 +90,12 @@ export class Train extends Component {
     this.setState({ answer: e.target.value });
   };
   sendToEndOfList = (e) => {
-    const { word, wordShownFirstAt } = this.state;
     e.preventDefault();
-    sendToEndOfList(word.id);
-    const { prevWord, nextWord } = registerResult({
-      id: word.id,
-      guessed: false,
-      isSkip: true,
-      timing: Date.now() - wordShownFirstAt,
+    const { word } = this.state;
+    sendToEndOfList(word.id).then((nextWord) => {
+      this.nextWord = nextWord;
+      this.trainNextWord();
     });
-    this.nextWord = nextWord;
-    this.trainNextWord();
   };
   renderByMode() {
     const { word, answer, mode, typoWarning } = this.state;
@@ -130,7 +127,7 @@ export class Train extends Component {
       <div
         mode={this.state.mode}
         className={style.this}
-        style={{ backgroundColor: catColor(this.state.word.status) }}
+        style={{ backgroundColor: catColor(this.state.word.stats) }}
       >
         {this.renderByMode()}
       </div>

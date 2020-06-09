@@ -8,10 +8,7 @@ import { SearchBox } from "./seachbox";
 import { wordMatch } from "../services/wordMatch";
 import { Add } from "./add";
 import { catColor } from "../services/catColor";
-
-import IconGithub from "@fortawesome/fontawesome-free/svgs/brands/github.svg";
 import IconPlus from "@fortawesome/fontawesome-free/svgs/regular/plus-square.svg";
-import IconChart from "@fortawesome/fontawesome-free/svgs/regular/chart-bar.svg";
 import IconCog from "@fortawesome/fontawesome-free/svgs/solid/cog.svg";
 import IconArrowUp from "@fortawesome/fontawesome-free/svgs/solid/arrow-up.svg";
 import IconArrowRight from "@fortawesome/fontawesome-free/svgs/solid/arrow-right.svg";
@@ -22,7 +19,9 @@ export class Edit extends Component {
     search: "",
   };
   componentDidMount() {
-    this.clearListener = getWordList((list) => this.setState({ list }));
+    this.clearListener = getWordList((list) => {
+      this.setState({ list });
+    });
   }
   componentWillUnmount() {
     this.clearListener();
@@ -48,7 +47,7 @@ export class Edit extends Component {
         <VirtualList
           data={filteredList}
           rowHeight={60}
-          renderRow={({ from, to, id, status }) => (
+          renderRow={({ from, to, id, stats }) => (
             <div className={style.word}>
               <div>
                 <input
@@ -59,7 +58,7 @@ export class Edit extends Component {
                 />
               </div>
 
-              <span style={{ backgroundColor: catColor(status) }} />
+              <span style={{ backgroundColor: catColor(stats) }} />
               <div>
                 <input
                   type={"text"}
@@ -97,19 +96,11 @@ export class Edit extends Component {
         <Link className={"button"} href={"/settings"}>
           <IconCog />
         </Link>
-        <Link className={"button"} href={"/charts"}>
-          <IconChart />
-        </Link>{" "}
+
         <Link className={"button"} href={"/batch"}>
           <IconPlus />
         </Link>
-        <a
-          className={"button"}
-          target={"blank"}
-          href={"https://github.com/renanlecaro/mywords/"}
-        >
-          <IconGithub />
-        </a>
+
         <div style={{ flexGrow: 1 }} />
         <Link className={"button"} href={"/train"} disabled={list.length < 2}>
           <span>Learn</span>
@@ -130,7 +121,7 @@ export class Edit extends Component {
     );
   }
   render(props, { list, search }) {
-    if (!list) return "loading";
+    if (!list) return "loading list";
     return (
       <div className={style.this}>
         {this.renderSearch()}
