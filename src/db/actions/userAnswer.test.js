@@ -4,6 +4,20 @@ describe("updateWord", () => {
   beforeEach(resetForTest);
 
   describe("userAnswer", () => {
+    it("stores the id in lastWordAsked", () => {
+      return change({ action: "addWord", from: "Hello", to: "Привет" })
+        .then((store) =>
+          change({
+            action: "userAnswer",
+            id: store.words[0].id,
+            isSuccess: true,
+            answer: "Привет",
+          })
+        )
+        .then((store) => {
+          expect(store.lastWordAsked).toEqual(store.words[0].id);
+        });
+    });
     it("updates the stats", () => {
       return change({ action: "addWord", from: "Hello", to: "Привет" })
         .then((store) => {
