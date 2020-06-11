@@ -2,6 +2,7 @@ import { addWordToList, getListOfRussianWords, getWordList } from "./trainer";
 import { sameish } from "./sameish";
 import { showToast } from "../components/notify";
 import { madeABackup } from "./persistData";
+import { replayLog } from "../db/db";
 
 export function downloadBackup(fullBackup) {
   const data = fullBackup
@@ -92,4 +93,61 @@ function hardResetFromBackup(parsed) {
   for (var key in parsed) {
     localStorage.setItem(key, JSON.stringify(parsed[key]));
   }
+}
+
+function migrateDataToReducer() {
+  const logs = JSON.parse(localStorage.getItem("trainingData")).filter(
+    (l) => l.time
+  );
+
+  const words = JSON.parse(localStorage.getItem("wordlist"));
+
+  const wordMaps = {};
+  words.forEach((w) => (wordMaps[w.id] = w));
+
+  const wordEvents = words.reverse().map(({ from, to, id }, i) => ({
+    action: "addWord",
+    time: new Date(logs[0].time) - words.length + i,
+    from,
+    to,
+    eid: id,
+  }));
+
+  const logEvents = logs
+    .map(({ guessed, id, time, isSkip, answer }) => {
+      const word = wordMaps[id];
+      if (!word) return;
+
+      if (isSkip) {
+        return {
+          action: "learnWordLater",
+          id,
+          time: +new Date(time),
+        };
+      }
+      let fakeAnswer;
+      if (typeof answer == "undefined") {
+        // fake answer
+        answer = guessed ? word.to : "";
+        fakeAnswer = true;
+      }
+      return {
+        action: "userAnswer",
+        id,
+        answer,
+        isSuccess: guessed,
+        time: +new Date(time),
+        fakeAnswer,
+      };
+    })
+    .filter((i) => i);
+
+  replayLog(wordEvents.concat(logEvents));
+}
+if (
+  localStorage.getItem("trainingData") &&
+  !localStorage.getItem("trainingDataMigrated")
+) {
+  migrateDataToReducer();
+  localStorage.setItem("trainingDataMigrated", "true");
 }

@@ -71,11 +71,25 @@ function loadLogsFromLS() {
   if (process.env.NODE_ENV === "test") return;
   const json = localStorage.getItem("db-log");
   if (json) {
-    JSON.parse(json).forEach((payload) => {
-      logs.push(payload);
-      applyEvent(payload);
-    });
+    replayLog(JSON.parse(json));
   }
+}
+
+export function replayLog(toReplay) {
+  reset();
+  toReplay.forEach((payload) => {
+    logs.push(payload);
+    try {
+      applyEvent(payload);
+    } catch (e) {
+      // if(process.env.NODE_ENV!=='production'){
+      //   throw e
+      // }else{
+      console.warn("replay error : " + e);
+      // }
+    }
+  });
+  storeContentChanged();
 }
 
 if (!logs.length) {
