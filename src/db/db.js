@@ -9,7 +9,7 @@ const events = new EventEmitter();
 let store, logs;
 export function reset() {
   events.removeAllListeners();
-  store = { words: [] };
+  store = { words: [], step: 0 };
   logs = [];
 }
 reset();

@@ -10,8 +10,10 @@ export function emptyStats() {
   return {
     s: 0, // Successes
     siar: 0, // Successes in a row
+    msiar: 0, // Maximum success streak length
     f: 0, // Failures
     fiar: 0, // failures in a row
+    mfiar: 0, // Maximum failure streak length
     ltr: [], // last ten results
   };
 }
