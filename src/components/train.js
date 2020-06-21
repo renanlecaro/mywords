@@ -12,6 +12,7 @@ import style from "./train.less";
 import { Link } from "preact-router/match";
 import { getSetting } from "../services/settings";
 import { catColor } from "../services/catColor";
+import { debugLog } from "../db/db";
 
 export class Train extends Component {
   state = {};
@@ -25,6 +26,7 @@ export class Train extends Component {
       wordShownFirstAt: Date.now(),
     });
     this.speakNow = sayInRussian(word.to);
+    debugLog(word.to);
   }
   componentDidMount() {
     this.setNewWord(getNextWordToTrain());
@@ -55,6 +57,7 @@ export class Train extends Component {
     }
     this.speakNow();
     const guessed = sameish(answer, target);
+
     registerResult({
       id: word.id,
       guessed,
@@ -137,12 +140,12 @@ export class Train extends Component {
 
 class Ask extends Component {
   focusInput = () => {
-    this.input.focus();
+    this.input && this.input.focus();
   };
   blurInput = () => {
     // Focusing only opens the keyboard if the input
     // was previously blurred.
-    this.input.blur();
+    this.input && this.input.blur();
   };
   componentDidMount() {
     window.addEventListener("focus", this.focusInput);

@@ -14,7 +14,8 @@ export function emptyStats() {
     f: 0, // Failures
     fiar: 0, // failures in a row
     mfiar: 0, // Maximum failure streak length
-    ltr: [], // last ten results
+    ltr: [], // last ten results,
+    minStepToAskAgain: 0, // Step at which the word should be asked again
   };
 }
 export function preventDuplicate(words, { id, to }) {

@@ -6,7 +6,12 @@ const synth = window.speechSynthesis;
 synth && synth.getVoices();
 
 export function sayInRussian(toText) {
-  if (!synth) return;
+  if (!synth) return () => null;
+
+  if (process.env.NODE_ENV !== "production") {
+    // In development the TTS is awful on firefox
+    return () => null;
+  }
   const voice = synth.getVoices().find((v) => v.lang.startsWith("ru"));
   if (!getSetting().useSounds) return;
   const cleaned = toText.replace(/\*/gi, "").split(/\(|\//gi)[0];

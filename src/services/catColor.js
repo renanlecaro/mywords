@@ -16,7 +16,12 @@ hsl(141,100%,52%)
 export function catColor(stats) {
   if (!(stats.s + stats.f)) return colors[0];
 
-  return colors[Math.min(1 + stats.siar, colors.length - 2) + 1];
+  const fullAlpha = colors[Math.min(1 + stats.msiar, colors.length - 2) + 1];
+  if (stats.msiar == stats.siar) {
+    return fullAlpha;
+  } else {
+    return fullAlpha.replace("hsl(", "hsla(").replace(")", ",50%)");
+  }
   // const r = cat / rangeMax;
   // let smooth = (a, b) => Math.floor((b - a) * r + a);
   // return `hsl(${smooth(199, 62)},${smooth(100, 96)}%,${smooth(19, 62)}%)`;

@@ -1,5 +1,6 @@
 {
   "moduleNameMapper": {
     "\\.(svg|less|css)$": "<rootDir>/__mocks__/styleMock.js"
-  }
+  },
+  "setupFiles": ["<rootDir>/src/test-helpers.js"]
 }

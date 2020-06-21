@@ -1,15 +1,17 @@
 import { pipeError, showToast } from "../components/notify";
 
 import { change, subscribe } from "../db/db";
-import { probabilityOfWordGuess } from "./probabilityOfWordGuess";
 
 let storeCache = {};
-subscribe((store) => {
-  storeCache = store;
-});
+export function syncCache() {
+  subscribe((store) => {
+    storeCache = store;
+  });
+}
+syncCache();
 
 export function getWordById(id) {
-  return storeCache.words.find((w) => w.id == id);
+  return storeCache.words.find((w) => w.id === id);
 }
 
 export function getWordList(cb) {
@@ -21,28 +23,24 @@ export function addWordToList({ from, to }) {
 }
 
 export function getNextWordToTrain(store = storeCache) {
-  const list = store.words
-    .filter((w) => w.id !== store.lastWordAsked)
-    .map((word) => ({
-      ...word,
-      probability: probabilityOfWordGuess(word),
-    }));
+  const list = store.words.filter((w) => w.id !== store.lastWordAsked);
+
   return (
-    getWordThatNeedsARefresh(list) ||
+    getWordThatNeedsARefresh(list, store.step) ||
     getWordNeverTrainedBefore(list) ||
     getWordThatNeedsRefreshEvenIfTooEarly(list)
   );
 }
 
-function getWordThatNeedsARefresh(list) {
+function getWordThatNeedsARefresh(list, step) {
   return list.filter(
-    (word) => word.stats.s + word.stats.f > 0 && word.probability <= 0.5
+    (word) => word.stats.s + word.stats.f > 0 && word.minStepToAskAgain >= step
   )[0];
 }
 
 function getWordThatNeedsRefreshEvenIfTooEarly(list) {
   showToast("You should add some words to your list !");
-  return list.sort((a, b) => a.probability - b.probability)[0];
+  return list.sort((a, b) => a.minStepToAskAgain - b.minStepToAskAgain)[0];
 }
 
 function getWordNeverTrainedBefore(list) {
@@ -58,7 +56,7 @@ export function registerResult({ id, guessed, answer }) {
   return change({ action: "userAnswer", id, isSuccess: guessed, answer })
     .then((store) => {
       return {
-        prevWord: store.words.find((w) => w.id == id),
+        prevWord: store.words.find((w) => w.id === id),
         nextWord: getNextWordToTrain(store),
       };
     })

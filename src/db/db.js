@@ -76,20 +76,18 @@ function loadLogsFromLS() {
 }
 
 export function replayLog(toReplay) {
+  const start = Date.now();
   reset();
   toReplay.forEach((payload) => {
     logs.push(payload);
     try {
       applyEvent(payload);
     } catch (e) {
-      // if(process.env.NODE_ENV!=='production'){
-      //   throw e
-      // }else{
-      console.warn("replay error : " + e);
-      // }
+      debugLog("replay error : " + e, payload);
     }
   });
   storeContentChanged();
+  debugLog("replayLog took " + (Date.now() - start) + "ms");
 }
 
 if (!logs.length) {
@@ -106,7 +104,7 @@ function checkJSONserialization(object) {
   }
 }
 
-function debugLog(...args) {
+export function debugLog(...args) {
   if (process.env.NODE_ENV === "development") {
     console.debug(...args);
   }
