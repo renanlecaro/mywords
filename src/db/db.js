@@ -65,13 +65,28 @@ function storeContentChanged() {
 function saveLogsToLS() {
   if (process.env.NODE_ENV === "test") return;
   localStorage.setItem("db-log", JSON.stringify(logs));
+  localStorage.setItem("db-cache", JSON.stringify(store));
+  localStorage.setItem(
+    "db-cache-version",
+    JSON.stringify(process.env.COMMIT_REF)
+  );
 }
 
 function loadLogsFromLS() {
   if (process.env.NODE_ENV === "test") return;
-  const json = localStorage.getItem("db-log");
-  if (json) {
-    replayLog(JSON.parse(json));
+  const lslogs = localStorage.getItem("db-log");
+  const cache = localStorage.getItem("db-cache");
+  const version = localStorage.getItem("db-cache-version");
+  if (cache && lslogs && version && version == process.env.COMMIT_REF) {
+    console.info("Using cached version");
+    store = JSON.parse(store);
+    logs = JSON.parse(lslogs);
+    storeContentChanged();
+  } else if (lslogs) {
+    console.info("App upgraded, re-running log");
+    replayLog(JSON.parse(lslogs));
+  } else {
+    console.info("No previous data");
   }
 }
 
