@@ -216,6 +216,11 @@ export class Settings extends Component {
             Hard reset ...
           </button>
         </form>
+        <h2>Current version of the app</h2>
+        <p>
+          You are running the app version :{" "}
+          {process.env.COMMIT_REF || "Unknown"}
+        </p>
         <DisplayChangeLog />
       </div>
     );
