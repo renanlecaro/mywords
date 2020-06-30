@@ -83,6 +83,7 @@ function migrateDataToReducer() {
 
   replayLog(wordEvents.concat(logEvents));
 }
+window.migrateDataToReducer = migrateDataToReducer;
 if (
   localStorage.getItem("trainingData") &&
   !localStorage.getItem("trainingDataMigrated")
