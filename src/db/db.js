@@ -3,14 +3,13 @@ import * as actions from "./actions/_index";
 import deepEqual from "deep-equal";
 
 import EventEmitter from "events";
-import { generateBackup } from "./backupRestore";
 import { appContentChanged } from "../services/persistData";
 
 const events = new EventEmitter();
 
 let store, logs;
 export function reset() {
-  events.removeAllListeners();
+  events && events.removeAllListeners();
   store = { words: [], step: 0 };
   logs = [];
 }

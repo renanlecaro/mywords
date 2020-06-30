@@ -1,6 +1,6 @@
-import { downloadBackup } from "./backupAndLoad";
 import { showToast } from "../components/notify";
 import { getLS, updateLS } from "./LS";
+import { downloadBackup } from "../db/backupRestore";
 
 updateLS("installDate", (date) => date || Date.now());
 
@@ -28,6 +28,6 @@ if (navigator.storage)
     }
     if (needsBackup()) {
       showToast("Backup of your list downloading");
-      downloadBackup(true);
+      downloadBackup();
     }
   });
