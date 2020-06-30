@@ -3,6 +3,8 @@ import * as actions from "./actions/_index";
 import deepEqual from "deep-equal";
 
 import EventEmitter from "events";
+import { generateBackup } from "./backupRestore";
+import { appContentChanged } from "../services/persistData";
 
 const events = new EventEmitter();
 
@@ -13,6 +15,10 @@ export function reset() {
   logs = [];
 }
 reset();
+
+export function getLogs() {
+  return logs;
+}
 
 function reducer(store, params) {
   const action = actions[params.action];
@@ -59,6 +65,7 @@ function storeContentChanged() {
   setTimeout(() => {
     checkJSONserialization(store);
     saveLogsToLS();
+    appContentChanged();
   });
 }
 

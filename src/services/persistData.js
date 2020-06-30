@@ -9,8 +9,12 @@ export function madeABackup() {
   updateLS("wordsAddedSinceLastSave", (count) => 0);
 }
 
-export function addedWords(added = 1) {
+export function appContentChanged(added = 1) {
   updateLS("wordsAddedSinceLastSave", (count) => (count || 0) + added);
+}
+
+export function needsBackup() {
+  return getLS("wordsAddedSinceLastSave");
 }
 if (navigator.storage)
   navigator.storage.persist().then(function (persisted) {
@@ -22,7 +26,7 @@ if (navigator.storage)
 
       return;
     }
-    if (getLS("wordsAddedSinceLastSave")) {
+    if (needsBackup()) {
       showToast("Backup of your list downloading");
       downloadBackup(true);
     }

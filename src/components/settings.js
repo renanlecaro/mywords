@@ -1,10 +1,10 @@
 import { h, Component, Fragment } from "preact";
 import { getSetting, setSetting } from "../services/settings";
 
-import { Link } from "preact-router/match";
-import { downloadBackup, restoreBackup } from "../services/backupAndLoad";
 import style from "./settings.less";
 import { DisplayChangeLog } from "./DisplayChangeLog";
+import { needsBackup } from "../services/persistData";
+import { downloadBackup, restoreBackup } from "../db/backupRestore";
 export class Settings extends Component {
   state = getSetting();
   change(key, value) {
@@ -15,8 +15,6 @@ export class Settings extends Component {
     const {
       whenEmptyList,
       useSounds,
-      fullBackup,
-      restoreProgress,
       ignoreAccents,
       warnTypo,
       useCursiveFont,
@@ -122,35 +120,15 @@ export class Settings extends Component {
 
           <h2>Backup</h2>
           <p>
-            You want to change on which device you are training ? Then select
-            "words and progress" below, generate your backup file, and load it
-            on another device. If you just want to share your vocabulary list
-            with a friend, select "just words" and they'll be able to import it
-            to complete their existing list.
+            You want to change on which device you are training ? Then generate
+            your backup file here, and load it on another device.
           </p>
-          <label>
-            <input
-              type={"radio"}
-              name={"fullBackup"}
-              checked={!fullBackup}
-              onChange={(e) => this.change("fullBackup", false)}
-            />
-            just words
-          </label>
-          <label>
-            <input
-              type={"radio"}
-              name={"fullBackup"}
-              checked={fullBackup}
-              onChange={(e) => this.change("fullBackup", true)}
-            />
-            words and progress
-          </label>
+
           <button
             className={"primary"}
             onClick={(e) => {
               e.preventDefault();
-              downloadBackup(getSetting().fullBackup);
+              downloadBackup();
             }}
           >
             Download
@@ -158,36 +136,15 @@ export class Settings extends Component {
 
           <h2>Restore</h2>
           <p>
-            If you restore a file that was exported with "only words" selected,
-            then we'll just add the words to the list. If the file is a full
-            backup, then you can choose to replace your current word list and
-            progress with the ones from this file. You can also just extract the
-            words from the backup. If a word is already present in your list, we
-            won't touch it.
+            Replace the current application state with a file exported earlier
+            from the same app
           </p>
 
-          <label>
-            <input
-              type={"radio"}
-              name={"restoreProgress"}
-              checked={!restoreProgress}
-              onChange={(e) => this.change("restoreProgress", false)}
-            />
-            Only add missing words
-          </label>
-          <label>
-            <input
-              type={"radio"}
-              name={"restoreProgress"}
-              checked={restoreProgress}
-              onChange={(e) => this.change("restoreProgress", true)}
-            />
-            Replace current state with backup
-          </label>
           <input
             type={"file"}
+            accept=".mywordsbackup"
             onChange={(e) => {
-              restoreBackup(e.target, getSetting().restoreProgress);
+              restoreBackup(e.target);
             }}
           />
 
@@ -207,7 +164,9 @@ export class Settings extends Component {
                   "This will reset all your words and progress, are you sure ?"
                 )
               ) {
-                downloadBackup(true);
+                if (needsBackup()) {
+                  downloadBackup();
+                }
                 localStorage.clear();
                 window.location.reload();
               }

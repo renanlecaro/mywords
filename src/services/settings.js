@@ -2,8 +2,6 @@ import EventEmitter from "events";
 
 const defaultSettings = {
   useSounds: true,
-  fullBackup: true,
-  restoreProgress: false,
   warnTypo: true,
   ignoreAccents: true,
   useCursiveFont: false,
