@@ -5,5 +5,6 @@ export function learnWordLater({ words }, { id }) {
   word.stats = emptyStats();
   return {
     words: [...words.filter((w) => w !== word), word],
+    lastWordAsked: id,
   };
 }

@@ -4,7 +4,7 @@ import {
   registerResult,
   sendToEndOfList,
 } from "../services/trainer";
-import { distance, sameish, starsSplit } from "../services/sameish";
+import { decompose, distance, sameish, starsSplit } from "../services/sameish";
 import { sayInRussian } from "../services/say";
 import { ShowDiff } from "./diff";
 import style from "./train.less";
@@ -17,13 +17,17 @@ import { debugLog } from "../db/db";
 export class Train extends Component {
   state = {};
   setNewWord(word) {
+    const { parts, recompose } = decompose(word.to);
+    this.recompose = recompose;
     this.setState({
       word,
       mode: "ask",
-      answer: "",
+      parts,
+      answers: parts.filter((p) => p.type == "input").map(() => ""),
       typoWarning: false,
       typoContent: "",
       wordShownFirstAt: Date.now(),
+      placeHolders: [],
     });
     this.speakNow = sayInRussian(word.to);
     debugLog(word.to);
@@ -32,31 +36,42 @@ export class Train extends Component {
     this.setNewWord(getNextWordToTrain());
   }
 
-  onSubmitAnswer = (e) => {
-    e.preventDefault();
-    const {
-      word,
-      answer,
-      typoWarning,
-      wordShownFirstAt,
-      typoContent,
-    } = this.state;
-    const target = starsSplit(word.to)[1];
-    const typos = distance(answer, target);
+  answerDistance() {
+    const { word, answers } = this.state;
+    const target = word.to.replace(/\*/gi, "");
+    const answer = this.recompose(answers);
+    return distance(answer, target);
+  }
+
+  reportTypo() {
+    const { word, typoWarning, answers } = this.state;
     if (
-      typos == 1 &&
-      target.length > 3 &&
+      this.answerDistance() == 1 &&
       word.status != 0 &&
       !typoWarning &&
       getSetting().warnTypo
     ) {
-      return this.setState({
+      this.setState({
         typoWarning: true,
-        typoContent: answer,
+        typoContent: this.recompose(answers),
       });
+      return true;
     }
+    return false;
+  }
+  reportResult() {
     this.speakNow();
-    const guessed = sameish(answer, target);
+    const {
+      parts,
+      word,
+      answers,
+      typoWarning,
+      wordShownFirstAt,
+      typoContent,
+    } = this.state;
+    const target = word.to.replace(/\*/gi, "");
+    const answer = this.recompose(answers);
+    const guessed = !this.answerDistance(answer, target);
 
     registerResult({
       id: word.id,
@@ -75,10 +90,24 @@ export class Train extends Component {
         } else {
           this.setState({
             mode: "incorrect",
+            answers: answers.map((r) => ""),
+            placeHolders: parts
+              .filter((p) => p.type == "input")
+              .map((p) => (
+                <ShowDiff answer={answers[p.answerIndex]} to={p.text} />
+              )),
           });
         }
       });
     });
+  }
+  onSubmitAnswer = (e) => {
+    e.preventDefault();
+    const { mode } = this.state;
+    if (mode == "incorrect") {
+      return this.validateFailure();
+    }
+    return this.reportTypo() || this.reportResult();
   };
 
   trainNextWord = () => {
@@ -86,11 +115,16 @@ export class Train extends Component {
     this.nextWord = null;
   };
   validateFailure = (e) => {
-    e.preventDefault();
-    this.trainNextWord();
+    if (this.answerDistance()) {
+      return; // didn't type well
+    } else {
+      this.trainNextWord();
+    }
   };
-  setAnswer = (e) => {
-    this.setState({ answer: e.target.value });
+  setAnswer = (i) => (e) => {
+    const answers = [...this.state.answers];
+    answers[i] = e.target.value;
+    this.setState({ answers });
   };
   sendToEndOfList = (e) => {
     e.preventDefault();
@@ -101,23 +135,24 @@ export class Train extends Component {
     });
   };
   renderByMode() {
-    const { word, answer, mode, typoWarning } = this.state;
+    const {
+      word,
+      answer,
+      mode,
+      typoWarning,
+      parts,
+      answers,
+      placeHolders,
+    } = this.state;
 
-    if (mode === "incorrect") {
-      return (
-        <Nope
-          answer={answer}
-          word={word}
-          confirm={this.validateFailure}
-          sendToEndOfList={this.sendToEndOfList}
-        />
-      );
-    }
     return (
       <Ask
+        mode={mode}
+        placeHolders={placeHolders}
         typoWarning={typoWarning}
         word={word}
-        answer={answer}
+        parts={parts}
+        answers={answers}
         setAnswer={this.setAnswer}
         onSubmitAnswer={this.onSubmitAnswer}
         sendToEndOfList={this.sendToEndOfList}
@@ -139,32 +174,42 @@ export class Train extends Component {
 }
 
 class Ask extends Component {
-  focusInput = () => {
-    this.input && this.input.focus();
-  };
-  blurInput = () => {
-    // Focusing only opens the keyboard if the input
-    // was previously blurred.
-    this.input && this.input.blur();
-  };
-  componentDidMount() {
-    window.addEventListener("focus", this.focusInput);
-    window.addEventListener("blur", this.blurInput);
-    this.focusInput();
-  }
-  componentWillUnmount() {
-    window.removeEventListener("focus", this.focusInput);
-    window.removeEventListener("blur", this.blurInput);
-  }
+  // focusInput = () => {
+  //   this.input && this.input.focus();
+  // };
+  // blurInput = () => {
+  //   // Focusing only opens the keyboard if the input
+  //   // was previously blurred.
+  //   this.input && this.input.blur();
+  // };
+  // componentDidMount() {
+  //   window.addEventListener("focus", this.focusInput);
+  //   window.addEventListener("blur", this.blurInput);
+  //   this.focusInput();
+  // }
+  // componentWillUnmount() {
+  //   window.removeEventListener("focus", this.focusInput);
+  //   window.removeEventListener("blur", this.blurInput);
+  // }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.word.id != nextProps.word.id) {
-      setTimeout(this.focusInput);
+      // setTimeout(this.focusInput);
     }
   }
 
   render() {
-    let { word, answer, setAnswer, onSubmitAnswer, typoWarning } = this.props;
+    let {
+      word,
+      parts,
+      answers,
+      setAnswer,
+      onSubmitAnswer,
+      typoWarning,
+      mode,
+      placeHolders,
+    } = this.props;
+    console.log("Ask has props : ", { parts });
     return (
       <form onSubmit={onSubmitAnswer}>
         <h1>
@@ -172,10 +217,11 @@ class Ask extends Component {
         </h1>
 
         {Question({
-          word,
-          value: answer,
+          parts,
+          answers,
           onKeyUp: setAnswer,
           onRef: (n) => (this.input = n),
+          placeHolders,
         })}
 
         {typoWarning && <label>Please check for a typo</label>}
@@ -187,80 +233,96 @@ class Ask extends Component {
           Learn later
         </a>
         <button className={" float-bottom"} type="submit">
-          {answer ? "Check" : "I don't know"}
+          {mode == "incorrect" ? "Next" : "Check"}
         </button>
       </form>
     );
   }
 }
 
-export function Question({ word, value, onKeyUp, onRef, placeHolder = "" }) {
-  let parts = starsSplit(word.to);
-
+export function Question({ parts, answers, onKeyUp, onRef, placeHolders }) {
   return (
     <div className={style.fillTheBlank}>
-      <span className={"ru-text"}>{parts[0]}</span>
-      <span input-placeholder-wrapper>
-        <input
-          type="text"
-          className={"ru-text"}
-          ref={onRef}
-          value={value}
-          onKeyUp={onKeyUp}
-        />
-        <span
-          className={"ru-text"}
-          style={{ opacity: placeHolder && !value ? 1 : 0 }}
-        >
-          {placeHolder || parts[1]}
-        </span>
-      </span>
-      <span className={"ru-text"}>{parts[2]}</span>
+      {parts.map((p, i) =>
+        p.type == "text" ? (
+          <span className={"ru-text"} key={i}>
+            {p.text}
+          </span>
+        ) : (
+          <span key={i} input-placeholder-wrapper>
+            <input
+              type="text"
+              className={"ru-text"}
+              value={answers[p.answerIndex]}
+              onKeyUp={onKeyUp(p.answerIndex)}
+            />
+            <span
+              className={"ru-text"}
+              style={{
+                opacity:
+                  placeHolders[p.answerIndex] && !answers[p.answerIndex]
+                    ? 1
+                    : 0,
+              }}
+            >
+              {placeHolders[p.answerIndex] || p.text}
+            </span>
+          </span>
+        )
+      )}
     </div>
   );
 }
-
-class Nope extends Component {
-  componentDidMount() {
-    this.input.focus();
-  }
-  state = { check: "" };
-  isCorrect() {
-    const { word } = this.props;
-    const target = starsSplit(word.to)[1];
-    return sameish(this.state.check, target);
-  }
-  checkCorrectAnswerGiven = (e) => {
-    e.preventDefault();
-    if (this.isCorrect()) {
-      this.props.confirm(e);
-    }
-  };
-  render({ answer, word, confirm }, { check }) {
-    let parts = starsSplit(word.to);
-    return (
-      <form onSubmit={this.checkCorrectAnswerGiven}>
-        <h1>
-          <Link href={"/editOne/" + word.id}>{word.from}</Link>
-        </h1>
-
-        {Question({
-          word,
-          value: check,
-          onKeyUp: (e) => this.setState({ check: e.target.value }),
-          onRef: (n) => (this.input = n),
-          placeHolder: <ShowDiff answer={answer} to={parts[1]} />,
-        })}
-        <a
-          className={"button delay float-bottom"}
-          onClick={this.props.sendToEndOfList}
-        >
-          Learn later
-        </a>
-        <button className={"primary float-bottom"} disabled={!this.isCorrect()}>
-          Next word
-        </button>
-      </form>
-    );
-  }
-}
+//
+// class Nope extends Component {
+//   componentDidMount() {
+//     this.input.focus();
+//   }
+//   state = { check: [] };
+//   isCorrect() {
+//     const { word } = this.props;
+//     const target = starsSplit(word.to)[1];
+//     return sameish(this.state.check, target);
+//   }
+//   checkCorrectAnswerGiven = (e) => {
+//     e.preventDefault();
+//     if (this.isCorrect()) {
+//       this.props.confirm(e);
+//     }
+//   };
+//   render({ answers,parts, word, confirm }, { check }) {
+//
+//     return (
+//       <form onSubmit={this.checkCorrectAnswerGiven}>
+//         <h1>
+//           <Link href={"/editOne/" + word.id}>{word.from}</Link>
+//         </h1>
+//
+//         {Question({
+//           word,
+//           parts,
+//           answers: check,
+//           onKeyUp: i=>e => {
+//             const check=[...this.state.check]
+//             check[i]=e.target.value
+//             this.setState({ check })
+//           },
+//           // onRef: (n) => (this.input = n),
+//           placeHolder:
+//             parts.filter(p=>p.type=='input')
+//               .map(p=><ShowDiff answer={answers[p.answerIndex]} to={p.text} />)
+//
+//         })}
+//         <a
+//           className={"button delay float-bottom"}
+//           onClick={this.props.sendToEndOfList}
+//         >
+//           Learn later
+//         </a>
+//         <button className={"primary float-bottom"} disabled={!this.isCorrect()}>
+//           Next word
+//         </button>
+//       </form>
+//     );
+//   }
+// }

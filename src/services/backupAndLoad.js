@@ -1,5 +1,5 @@
 import { addWordToList, getListOfRussianWords, getWordList } from "./trainer";
-import { sameish } from "./sameish";
+import { sameish, starsSplit } from "./sameish";
 import { showToast } from "../components/notify";
 import { madeABackup } from "./persistData";
 import { replayLog } from "../db/db";
@@ -131,10 +131,12 @@ function migrateDataToReducer() {
         answer = guessed ? word.to : "";
         fakeAnswer = true;
       }
+      let split = starsSplit(word.to);
+      const fullAnswer = split[0] + answer + split[2];
       return {
         action: "userAnswer",
         id,
-        answer,
+        answer: fullAnswer,
         isSuccess: guessed,
         time: +new Date(time),
         fakeAnswer,

@@ -20,10 +20,42 @@ export function removeAccents(str) {
 }
 
 export function starsSplit(word) {
-  if (word.replace(/[^*]/gi, "").length != 2) {
-    return ["", word, ""];
+  const starsCount = word.replace(/[^*]/gi, "").length;
+  if (starsCount === 0) {
+    return ["", word];
   }
-  return (" " + word + " ").split("*").map((w) => (w == " " ? "" : w));
+  return word.split("*");
+}
+
+export function decompose(word) {
+  const split = starsSplit(word);
+  const parts = split
+    .map((text, i) => {
+      const type = i % 2 === 0 ? "text" : "input";
+      const part = {
+        text,
+        type,
+      };
+      if (type === "input") part.answerIndex = (i - 1) / 2;
+      return part;
+    })
+    .filter((el) => el.text);
+
+  function recompose(answers) {
+    return parts
+      .map((part) => {
+        if (part.type == "text") {
+          return part.text;
+        } else {
+          return answers[part.answerIndex];
+        }
+      })
+      .join("");
+  }
+  return {
+    parts,
+    recompose,
+  };
 }
 
 export function starredSameish(a, b) {

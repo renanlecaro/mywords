@@ -14,11 +14,13 @@ describe("reactToMessage", function () {
   it("finds words in the dictionnary", () => {
     const payload = {
       action: "search",
-      search: "cat",
+      search: "кошка",
       max: 1,
       msgId: 0,
     };
     const words = reactToMessage(payload).result;
-    expect(words).toEqual([{ from: "tom-cat", to: "кот" }]);
+    expect(words).toEqual([
+      { from: "cat, grapnel, drag, climbing-irons (sg - pl)", to: "кошка" },
+    ]);
   });
 });
