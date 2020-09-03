@@ -42,7 +42,8 @@ svg {
   margin: 0 5px;
 }
 button,
-a[class*="button"] {
+a[class*="button"],
+label[class*="button"] {
   font-size: 16px;
   text-transform: uppercase;
   border-radius: 0;
@@ -50,12 +51,12 @@ a[class*="button"] {
   border: none;
   text-decoration: none;
   cursor: pointer;
-  display: block;
   line-height: 20px;
   padding: 20px;
   color: inherit;
   min-width: 40px;
   background: none;
+  display: inline-block;
 
   &:active,
   &:hover {

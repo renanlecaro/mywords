@@ -7,14 +7,11 @@ import { Settings } from "./components/settings";
 import "./index.less";
 import { BatchAdd } from "./components/BatchAdd";
 import { EditOne } from "./components/EditOne";
-import { CustomFontImporter } from "./components/CustomFont";
-
 import "./db/db";
 export default function App() {
   return (
     <div id="app">
       <ToastDisplay />
-      <CustomFontImporter />
       <Router>
         <Edit path="/" />
         <Train path="/train" />

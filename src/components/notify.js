@@ -20,7 +20,7 @@ export class ToastDisplay extends Component {
     this.timeoutNumber = setTimeout(() => {
       this.timeoutNumber = null;
       this.setState({ text: "" });
-    }, 1500);
+    }, text.length * 100);
   };
 
   render() {

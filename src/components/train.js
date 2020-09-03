@@ -10,7 +10,6 @@ import { ShowDiff } from "./diff";
 import style from "./train.less";
 
 import { Link } from "preact-router/match";
-import { getSetting } from "../services/settings";
 import { catColor } from "../services/catColor";
 import { debugLog } from "../db/db";
 
@@ -45,12 +44,7 @@ export class Train extends Component {
 
   reportTypo() {
     const { word, typoWarning, answers } = this.state;
-    if (
-      this.answerDistance() == 1 &&
-      word.status != 0 &&
-      !typoWarning &&
-      getSetting().warnTypo
-    ) {
+    if (this.answerDistance() == 1 && word.status != 0 && !typoWarning) {
       this.setState({
         typoWarning: true,
         typoContent: this.recompose(answers),

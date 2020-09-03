@@ -1,4 +1,3 @@
-import { getSetting } from "./settings";
 import levenshtein from "js-levenshtein";
 
 export function sameish(a, b) {
@@ -9,7 +8,7 @@ export function simplify(stringToCheck = "") {
     .toLowerCase()
     .replace(/[ .,\/#!?$%\^&;:{}=\-_`~()]/g, "")
     .trim();
-  return getSetting().ignoreAccents ? removeAccents(clean) : clean;
+  return removeAccents(clean);
 }
 export function distance(a, b) {
   return levenshtein(simplify(a), simplify(b));

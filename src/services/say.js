@@ -1,5 +1,3 @@
-import { getSetting } from "./settings";
-
 const synth = window.speechSynthesis;
 
 // warm up the tts engine
@@ -13,7 +11,7 @@ export function sayInRussian(toText) {
     return () => null;
   }
   const voice = synth.getVoices().find((v) => v.lang.startsWith("ru"));
-  if (!getSetting().useSounds) return;
+
   const cleaned = toText.replace(/\*/gi, "").split(/\(|\//gi)[0];
   const utterance = new SpeechSynthesisUtterance(cleaned);
   if (voice) {
